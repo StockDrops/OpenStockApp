@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:properties="clr-namespace:OpenStockApp.Resources.Strings"
+             xmlns:vm="clr-namespace:OpenStockApp.ViewModels.Settings"
+             xmlns:mctbehaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             xmlns:behaviors="clr-namespace:OpenStockApp.Behaviors"
+             xmlns:converters="clr-namespace:CommunityToolkit.Maui.Converters;assembly=CommunityToolkit.Maui"
+             x:Class="OpenStockApp.Views.Settings.DiscordSettingsView"
+             
+             HorizontalOptions="Fill"
+             x:Name="parent">
+    <ContentView.Resources>
+        <converters:VariableMultiValueConverter x:Key="AllTrueConverter" ConditionType="All" />
+    </ContentView.Resources>
+    <ContentView.Content>
+        <!--<Grid>
+        <Button Command="{Binding SaveWebhookCommand}" Text="Why won't you fucking work..."/>
+    </Grid>-->
+        <Grid Margin="{StaticResource SmallTopBottomMargin}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackLayout Grid.Row="0" >
+
+            <Label Margin="{StaticResource SmallTopMargin}"
+                   Style="{StaticResource SubtitleTextStyle}"
+                   Text="{x:Static properties:Resources.SettingsPageDiscordTitle}" />
+
+            </StackLayout>
+            <StackLayout Grid.Row="1">
+                <!--<Button Command="{Binding UpdateWebhookCommand}" Text="Why won't you fucking work..."/>-->
+                <Label Text="{x:Static properties:Resources.SettingsPageDiscordText}"
+                   Style="{StaticResource BodyTextStyle}"/>
+                <StackLayout Margin="0,8,0,18"
+                         HorizontalOptions="Fill"
+                         Grid.Column="0">
+                    <Label Text="{x:Static properties:Resources.SettingsWebhookUrl}"
+                       Style="{StaticResource BodyTextStyle}"/>
+                    <Entry Keyboard="Url"
+                           Text="{Binding WebhookUrl}"
+                           MaximumWidthRequest="1500"
+                           MinimumWidthRequest="{OnPlatform Android=400, UWP=1200}"
+                           HorizontalOptions="StartAndExpand"
+                               >
+                        <Entry.Behaviors>
+                            <!--ValidStyle="{StaticResource ValidEntry}"
+                                                              InvalidStyle="{StaticResource InvalidEntry}"-->
+                            <mctbehaviors:MultiValidationBehavior x:Name="DiscordValidator"
+                                                                  Flags="ValidateOnValueChanged"
+                                                              >
+                                <behaviors:ShortDiscordWebhookValidationBehavior x:Name="ShortDiscordValidator"
+                                                                                 mctbehaviors:MultiValidationBehavior.Error="{Binding ValidationMessage, Source={x:Reference ShortDiscordValidator}}"
+                                                                                 DecorationFlags="NullToEmpty,Trim"
+                                                                                 MinimumLength="1"
+                                                                                 UriKind="Absolute"
+                                                                                 Flags="ValidateOnValueChanged"/>
+                                <behaviors:DiscordWebhookValidationBehavior x:Name="LongDiscordValidator"
+                                                                        mctbehaviors:MultiValidationBehavior.Error="{Binding ValidationMessage, Source={x:Reference LongDiscordValidator}}"
+                                                                        Flags="ValidateOnValueChanged"
+                                                                        DecorationFlags="NullToEmpty,Trim"
+                                                                        UriKind="Absolute"/>
+                            </mctbehaviors:MultiValidationBehavior>
+
+                            <mctbehaviors:EventToCommandBehavior EventName="TextChanged"
+                                                                 Command="{Binding ClearConfirmationMessageCommand, Mode=TwoWay}"/>
+                        </Entry.Behaviors>
+                    </Entry>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20" />
+                        </Grid.RowDefinitions>
+
+                        <StackLayout>
+                            <Label Grid.Row="0" Grid.RowSpan="2"  
+                               Text="{Binding Errors[0], Source={x:Reference DiscordValidator}, Mode=OneWay}"
+                               
+                                IsVisible="{Binding IsNotValid, Source={x:Reference DiscordValidator}}"
+                       
+                       TextColor="Red"/>
+                        </StackLayout>
+                    </Grid>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal"> <!--Adding VerticalOptions="CenterAndExpand" here for some reason breaks the bindingcontext.--> 
+                    <Button Text="{x:Static properties:Resources.SettingsWebhookUrlButtonText}"
+                            Command="{Binding UpdateWebhookCommand}"
+                            IsEnabled="{Binding IsValid, Source={x:Reference DiscordValidator}, Mode=TwoWay}"
+                            WidthRequest="150" />
+                    <Button Text="{x:Static properties:Resources.SettingsTestWebhookButtonText}"
+                        Command="{Binding TestWebhookCommand}"
+                        IsEnabled="{Binding IsValid, Source={x:Reference DiscordValidator}, Mode=TwoWay}"
+                        WidthRequest="180" 
+                    />
+                    <Grid VerticalOptions="CenterAndExpand" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0"
+                           Grid.Row="0"
+                           Text="{Binding ConfirmationMessage.Message, Mode=TwoWay}"
+                           VerticalOptions="Center"
+                       Margin="{StaticResource XSmallLeftMargin}"
+                       TextColor="Green">
+                            <Label.IsVisible>
+                                <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                    <Binding Path="IsValid" Source="{x:Reference DiscordValidator}" Mode="TwoWay"/>
+                                    <Binding Path="ConfirmationMessage.IsVisible" Mode="TwoWay" />
+                                </MultiBinding>
+                            </Label.IsVisible>
+                        </Label>
+                    </Grid>
+                </StackLayout>
+            </StackLayout>
+            <!--<StackLayout Grid.Row="0" >
+
+                <Label Margin="{StaticResource SmallTopMargin}"
+                   Style="{StaticResource SubtitleTextStyle}"
+                   Text="{x:Static properties:Resources.SettingsPageDiscordTitle}" />
+
+            </StackLayout>
+            <StackLayout Grid.Row="1">
+                <Button Command="{Binding UpdateWebhookCommand}" Text="Why won't you fucking work..."/>
+                <Label Text="{x:Static properties:Resources.SettingsPageDiscordText}"
+                   Style="{StaticResource BodyTextStyle}"/>
+                <StackLayout Margin="0,8,0,18"
+                         HorizontalOptions="Fill"
+                         Grid.Column="0">
+                    <Label Text="{x:Static properties:Resources.SettingsWebhookUrl}"
+                       Style="{StaticResource BodyTextStyle}"
+                               />
+
+                    <Entry         Keyboard="Url"
+                               Text="{Binding WebhookUrl}"
+                               MaximumWidthRequest="1500"
+                               >
+                        <Entry.Behaviors>
+                            --><!--ValidStyle="{StaticResource ValidEntry}"
+                                                              InvalidStyle="{StaticResource InvalidEntry}"--><!--
+                            <mctbehaviors:MultiValidationBehavior x:Name="DiscordValidator"
+                                                              
+                                                              Flags="ValidateOnValueChanged"
+                                                              >
+                                <behaviors:ShortDiscordWebhookValidationBehavior x:Name="ShortDiscordValidator"
+                                                                    mctbehaviors:MultiValidationBehavior.Error="{Binding ValidationMessage, Source={x:Reference ShortDiscordValidator}}"         
+                                                                    DecorationFlags="NullToEmpty,Trim"
+                                                                    MinimumLength="1"
+                                                                    UriKind="Absolute"
+                                                                    Flags="ValidateOnValueChanged"
+                                                                    
+                                                                    />
+                                <behaviors:DiscordWebhookValidationBehavior x:Name="LongDiscordValidator"
+                                                                        mctbehaviors:MultiValidationBehavior.Error="{Binding ValidationMessage, Source={x:Reference LongDiscordValidator}}"
+                                                                        Flags="ValidateOnValueChanged"
+                                                                        DecorationFlags="NullToEmpty,Trim"
+                                                                        UriKind="Absolute"
+                                                                        
+                                                                      
+                                                                        
+                                                                    />
+                            </mctbehaviors:MultiValidationBehavior>
+
+                            <mctbehaviors:EventToCommandBehavior EventName="TextChanged"
+                                                             Command="{Binding ClearConfirmationMessageCommand, Mode=TwoWay}"
+                                                             
+                                                             />
+                        </Entry.Behaviors>
+                    </Entry>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20" />
+                        </Grid.RowDefinitions>
+
+                        <StackLayout>
+                            <Label Grid.Row="0" Grid.RowSpan="2"  
+                               Text="{Binding Errors[0], Source={x:Reference DiscordValidator}, Mode=OneWay}"
+                               
+                       IsVisible="{Binding IsNotValid, Source={x:Reference DiscordValidator}}"
+                       
+                       TextColor="Red"/>
+                        </StackLayout>
+                    </Grid>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal"
+                         VerticalOptions="CenterAndExpand"
+                         >
+                    <Button Text="{x:Static properties:Resources.SettingsWebhookUrlButtonText}"
+                        Command="{Binding UpdateWebhookCommand}"
+                        
+                        
+                        WidthRequest="150" 
+                    />
+                    --><!--IsEnabled="{Binding IsValid, Source={x:Reference DiscordValidator}}"
+                Style="{StaticResource LeftSideButton}"--><!--
+                    <Button Text="{x:Static properties:Resources.SettingsTestWebhookButtonText}"
+                        Command="{Binding Source={x:Reference parent}, Path=BindingContext.TestWebhookCommand}"
+                        
+                        IsEnabled="{Binding IsValid, Source={x:Reference DiscordValidator}, Mode=TwoWay}"
+                        WidthRequest="180" 
+                    />
+                    <Grid VerticalOptions="CenterAndExpand" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0"
+                           Grid.Row="0"
+                           Text="{Binding ConfirmationMessage.Message, Mode=TwoWay}"
+                           VerticalOptions="Center"
+                       Margin="{StaticResource XSmallLeftMargin}"
+                       TextColor="Green">
+                            <Label.IsVisible>
+                                <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                    <Binding Path="IsValid" Source="{x:Reference DiscordValidator}" Mode="TwoWay"/>
+                                    <Binding Path="ConfirmationMessage.IsVisible" Mode="TwoWay" />
+                                </MultiBinding>
+                            </Label.IsVisible>
+                        </Label>
+                    </Grid>
+                </StackLayout>
+            </StackLayout>-->
+        </Grid>
+    </ContentView.Content>
+</ContentView>

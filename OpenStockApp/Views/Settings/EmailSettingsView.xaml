@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:properties="clr-namespace:OpenStockApp.Resources.Strings"
+             xmlns:mctbehaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             xmlns:mctconverters="clr-namespace:CommunityToolkit.Maui.Converters;assembly=CommunityToolkit.Maui"
+             xmlns:custombehaviors="clr-namespace:OpenStockApp.Behaviors"
+             xmlns:local="clr-namespace:OpenStockApp.Views.Settings"
+             xmlns:vm="clr-namespace:OpenStockApp.ViewModels.Settings"
+             x:Class="OpenStockApp.Views.Settings.EmailSettingsView"
+             x:DataType="vm:EmailSettingsViewModel"
+             HorizontalOptions="Fill">
+    <ContentView.Resources>
+        <mctconverters:BoolToObjectConverter FalseObject="Red" TrueObject="Green" x:Key="BoolToObjectConverter" />
+        <mctconverters:BoolToObjectConverter FalseObject="False" TrueObject="True" x:Key="LogInOutGmailConverter"/>
+        <mctconverters:BoolToObjectConverter FalseObject="Log In Microsoft Email" TrueObject="Log Out Microsoft Email" x:Key="LogInOutMicrosoftConverter" />
+        <mctconverters:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+    </ContentView.Resources>
+    
+    <StackLayout HorizontalOptions="Fill">
+        <Label
+                    Margin="{StaticResource SmallTopMargin}"
+                    Style="{StaticResource SubtitleTextStyle}"
+                    Text="{x:Static properties:Resources.SettingsPageEmailTitle}" />
+        <StackLayout Margin="{StaticResource SmallTopBottomMargin}"
+                     HorizontalOptions="Fill"
+                     VerticalOptions="Fill">
+            <Label
+                
+                        Style="{StaticResource BodyTextStyle}"
+                        Text="{x:Static properties:Resources.SettingsPageEmailText}" />
+            <Grid HorizontalOptions="Fill"
+                  VerticalOptions="Fill">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="60"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0"
+                    Style="{StaticResource BodyTextStyle}"
+                   Text="{Binding LoggedInUser}"
+                   LineBreakMode="WordWrap"/>
+                <local:EmailSocialLoginButtonsView Grid.Row="1" 
+                                                   
+                                                   />
+                <!--<Grid Grid.Row="1" VerticalOptions="Fill">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    
+                    <Button Text="Gmail"
+                            Grid.Column="0"
+                        IsVisible="{Binding IsNotLoggedIn}"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="Start"
+                        Style="{StaticResource LeftSideButton}"
+                        Command="{Binding LogInOutGmailCommand}"
+                    />
+                    <Button Text="Microsoft Email"
+                            Grid.Column="1"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="Start"
+                        IsVisible="{Binding IsNotLoggedIn}"
+                        Command="{Binding LogInOutHotmailCommand}"
+                        Style="{StaticResource LeftSideButton}"/>
+                </Grid>-->
+                
+                
+            </Grid>
+            <Button 
+                        Text="Log Out" 
+                        WidthRequest="150"
+                        VerticalOptions="FillAndExpand"
+                        HorizontalOptions="Start"
+                        IsVisible="{Binding IsLoggedIn}"
+                        Style="{StaticResource LeftSideButton}"
+                        Command="{Binding LogOutCommand}"
+                        />
+            <StackLayout Orientation="Horizontal"
+                         >
+                
+                <Button Text="Test Email Settings"
+                        IsEnabled="{Binding IsLoggedIn}"
+                        Command="{Binding TestLoggedInEmailService}"
+                        
+                        Style="{StaticResource LeftSideButton}" />
+                
+                <Grid VerticalOptions="CenterAndExpand" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0"
+                           Grid.Row="0"
+                           Text="{Binding EmailOAuthConfirmationMessage.Message, Mode=TwoWay}"
+                           Style="{StaticResource BodyTextStyle}"
+                           VerticalOptions="Center"
+                           Margin="{StaticResource XSmallLeftMargin}"
+                           TextColor="{Binding EmailOAuthConfirmationMessage.IsSuccess, Converter={StaticResource BoolToObjectConverter}}"
+                           IsVisible="{Binding EmailOAuthConfirmationMessage.IsVisible}"/>
+                    
+                </Grid>
+            </StackLayout>
+            <StackLayout Margin="{StaticResource XSmallTopMargin}"
+                         HorizontalOptions="Fill">
+
+                <Label Text="Enable Email Integration"
+                       Style="{StaticResource BodyTextStyle}"/>
+                <CheckBox IsChecked="{Binding SmtpEmailUser.Enabled}"
+                          Style="{StaticResource BaseCheckBox}"/>
+
+
+                <!--<telerik:RadDataForm CurrentItem="{Binding CurrentEmailUser}" Is />-->
+                <Label Text="Name"
+                       Style="{StaticResource BodyTextStyle}"/>
+                <Entry Text="{Binding SmtpEmailUser.Name}" 
+                       x:Name="nameTxtBox" 
+                       
+                       Style="{StaticResource BaseEntry}">
+                    <Entry.Behaviors>
+                        <mctbehaviors:TextValidationBehavior MinimumLength="1"
+                                                             MaximumLength="255"
+                                                             ValidStyle="{StaticResource ValidEntry}"
+                                                              InvalidStyle="{StaticResource InvalidEntry} "
+                                                             Flags="ValidateOnValueChanged"
+                                                             custombehaviors:FormValidationBehavior.Required="True"/>
+                    </Entry.Behaviors>
+                </Entry>
+                <Label Text="Email Address"
+                       Style="{StaticResource BodyTextStyle}"/>
+                <Entry x:Name="emailTxtBox"
+                       Text="{Binding SmtpEmailUser.EmailAddress}"
+                       Style="{StaticResource BaseEntry}">
+                    <Entry.Behaviors>
+                        <mctbehaviors:EmailValidationBehavior ValidStyle="{StaticResource ValidEntry}"
+                                                              InvalidStyle="{StaticResource InvalidEntry} "
+                                                              custombehaviors:FormValidationBehavior.Required="True"
+                                                              Flags="ValidateOnValueChanged"/>
+                        
+                    </Entry.Behaviors>
+                </Entry>
+                <Label Text="Username"
+                       Style="{StaticResource BodyTextStyle}"/>
+                <Entry x:Name="userNameTxtBox" Text="{Binding SmtpEmailUser.Username}" Style="{StaticResource BaseEntry}">
+                    <Entry.Behaviors>
+                        <mctbehaviors:TextValidationBehavior MinimumLength="1"
+                                                             MaximumLength="255"
+                                                             ValidStyle="{StaticResource ValidEntry}"
+                                                              InvalidStyle="{StaticResource InvalidEntry} "
+                                                             Flags="ValidateOnValueChanged"
+                                                             custombehaviors:FormValidationBehavior.Required="True"/>
+                    </Entry.Behaviors>
+                </Entry>
+                <Label Text="Password"
+                       Style="{StaticResource BodyTextStyle}"/>
+                <Label Text="Use an app token if you have 2FA enabled."
+                       Style="{StaticResource BodyTextStyle}"/>
+                <Entry IsPassword="True" 
+                       x:Name="passwordTxtBox"
+                       Style="{StaticResource BaseEntry}"
+                       >
+                    <Entry.Behaviors>
+                        <mctbehaviors:TextValidationBehavior MinimumLength="1"
+                                                             MaximumLength="255"
+                                                             ValidStyle="{StaticResource ValidEntry}"
+                                                              InvalidStyle="{StaticResource InvalidEntry} "
+                                                             Flags="ValidateOnValueChanged"
+                                                             custombehaviors:FormValidationBehavior.Required="True"/>
+                    </Entry.Behaviors>
+                </Entry>
+                <Label Text="Host"
+                       Style="{StaticResource BodyTextStyle}"/>
+                <Entry x:Name="hostTxtBox" Text="{Binding SmtpEmailUser.Host}" Style="{StaticResource BaseEntry}" >
+                    <Entry.Behaviors>
+                        <mctbehaviors:UriValidationBehavior MinimumLength="3"
+                                                            DecorationFlags="Trim"
+                                                            UriKind="Absolute"
+                                                            ValidStyle="{StaticResource ValidEntry}"
+                                                              InvalidStyle="{StaticResource InvalidEntry} "
+                                                            Flags="ValidateOnValueChanged"
+                                                            custombehaviors:FormValidationBehavior.Required="True"/>
+                    </Entry.Behaviors>
+                </Entry>
+                <Label Text="SMTP Port"
+                       Style="{StaticResource BodyTextStyle}"/>
+                <Entry Keyboard="Numeric" x:Name="portTxtBox"  
+                       Text="{Binding SmtpEmailUser.SmtpPort}" 
+                       Style="{StaticResource BaseEntry}">
+                    <Entry.Behaviors>
+                        <mctbehaviors:NumericValidationBehavior MinimumValue="0"
+                                                                MaximumValue="99999"
+                                                                MaximumDecimalPlaces="0"
+                                                             Flags="ValidateOnValueChanged"
+                                                                ValidStyle="{StaticResource ValidEntry}"
+                                                              InvalidStyle="{StaticResource InvalidEntry} "
+                                                             custombehaviors:FormValidationBehavior.Required="True"/>
+                    </Entry.Behaviors>
+                </Entry>
+                <Label Text="Use SSL?"
+                       Style="{StaticResource BodyTextStyle}"/>
+                <CheckBox x:Name="sslCheckBox" 
+                          IsChecked="{Binding SmtpEmailUser.UseSSL}"
+                          Style="{StaticResource BaseCheckBox}"
+                          />
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Save Email Settings"
+                            x:Name="EmailSaveButton" Style="{StaticResource LeftSideButton}"
+                            IsEnabled="{Binding IsValid, Source={x:Reference FormValidator}, Mode=TwoWay}">
+                        <Button.Behaviors>
+                            <custombehaviors:FormValidationBehavior Flags="ValidateOnValueChanged" x:Name="FormValidator" />
+                        </Button.Behaviors>
+                    </Button>
+                    <Button Text="Test Email Settings"
+                            IsEnabled="{Binding IsValid, Source={x:Reference FormValidator}, Mode=TwoWay}"
+                            Style="{StaticResource LeftSideButton}" />
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </StackLayout>
+</ContentView>

@@ -1,0 +1,73 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:styles="clr-namespace:OpenStockApp.Resources.Styles"
+    xmlns:views="clr-namespace:OpenStockApp.Views"
+    x:Class="OpenStockApp.Resources.Styles.Labels"
+    >
+    <ResourceDictionary.MergedDictionaries>
+        <styles:_Thickness/>
+    </ResourceDictionary.MergedDictionaries>
+    
+    <!--Base Styles-->
+    <!--<Style x:Key="BaseLabelStyle" TargetType="{x:Type Label}">
+        <Setter Property="FontSize" Value="{StaticResource MediumFontSize}" />
+        <Setter Property="LineBreakMode" Value="WordWrap" />
+    </Style>-->
+    <Style x:Key="BaseLabelStyle" TargetType="{x:Type Label}">
+        <Setter Property="FontSize" Value="Medium" />
+        <!--<Setter Property="FontFamily" Value="{OnPlatform UWP='Segoe UI'}"/>-->
+        <Setter Property="LineBreakMode" Value="WordWrap" />
+    </Style>
+    
+    <!--<Style x:Key="BaseIconStyle" TargetType="{x:Type Label}">
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+    </Style>-->
+
+    <!--<Style x:Key="PageTitleStyle" TargetType="{x:Type Label}">
+        <Setter Property="FontSize" Value="{StaticResource XLargeFontSize}" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="Margin" Value="{StaticResource MediumLeftMargin}" />
+    </Style>-->
+    <Style x:Key="PageTitleStyle" TargetType="{x:Type Label}">
+        <Setter Property="FontSize" Value="Title" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="Margin" Value="{StaticResource MediumLeftMargin}" />
+    </Style>
+
+    <Style x:Key="SubtitleTextStyle" TargetType="{x:Type Label}">
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontSize" Value="Medium" />
+        <!--<Setter Property="FontFamily" Value="OpenSansRegular"/>-->
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+
+    <Style x:Key="BodyTextStyle" TargetType="{x:Type Label}">
+    </Style>
+
+    <Style x:Key="ListTitleStyle" TargetType="{x:Type Label}">
+        <Setter Property="LineBreakMode" Value="NoWrap" />
+        <Setter Property="FontAttributes" Value="Bold" />
+    </Style>
+
+    <Style x:Key="ListSubTitleStyle" TargetType="{x:Type Label}">
+        <Setter Property="LineBreakMode" Value="NoWrap" />
+    </Style>
+
+    <Style x:Key="SmallIconStyle" TargetType="{x:Type Label}">
+        <Setter Property="FontSize" Value="16" />
+    </Style>
+
+    <Style x:Key="MediumIconStyle" TargetType="{x:Type Label}">
+        <Setter Property="FontSize" Value="24" />
+    </Style>
+
+    <Style x:Key="BigIconStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="48" />
+    </Style>
+    <!--<Style x:Key="HyperlinkStyle" TargetType="views:HyperlinkLabel">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource BackgroundColorDark}, Dark={StaticResource BackgroundColor}}"/>
+    </Style>-->
+</ResourceDictionary>

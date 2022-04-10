@@ -1,0 +1,81 @@
+name: Build Windows Desktop
+# https://github.com/actions/virtual-environments 
+
+on:
+  # push:
+  #   branches: [ main ]
+
+  # pull_request:
+  #   branches: [ main ]
+
+  workflow_dispatch:
+
+env:
+    DOTNETVERSION:  6.0.200
+    MAUIROLLBACKLINK: https://aka.ms/dotnet/maui/preview.14.json
+
+jobs:
+  buildwindows:
+    runs-on: windows-2022
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET Core SDK ${{env.DOTNETVERSION}}
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '${{env.DOTNETVERSION}}'
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          vs-prerelease: true
+
+      - name: Install .NET MAUI
+        shell: pwsh
+        run: |
+          & dotnet --version
+          & dotnet nuget locals all --clear
+          & dotnet workload install maui --from-rollback-file ${{env.MAUIROLLBACKLINK}} --source https://aka.ms/dotnet6/nuget/index.json --source https://api.nuget.org/v3/index.json
+          & dotnet workload install android ios maccatalyst tvos macos maui wasm-tools --from-rollback-file ${{env.MAUIROLLBACKLINK}} --source https://aka.ms/dotnet6/nuget/index.json --source https://api.nuget.org/v3/index.json
+
+      - name: Restore nuget packages
+        run: dotnet restore
+
+      - name: Build WinUI3
+        run: msbuild <path_to_Sln> -restore -p:Configuration=Release  /p:AppxBundlePlatforms="x86|x64|ARM" /p:AppxPackageDir=<OUTPUT_FOLDER_PATH> /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /p:GenerateAppxPackageOnBuild=true /p:UapAppxPackageBuildMode=StoreUpload
+
+     # - name: Create signing pfx file from secrets
+      #  shell: pwsh
+       # id: secret-file
+        #env:
+         # SECRET_DATA1: ${{ secrets.WIN_SIGN_CERT }}
+        #run: |
+        #  $secretFile = "XamCATFidCert.pfx"; 
+         # $encodedBytes = [System.Convert]::FromBase64String($env:SECRET_DATA1); 
+          #Set-Content $secretFile -Value $encodedBytes -AsByteStream;
+          #Write-Output "::set-output name=SECRET_FILE::$secretFile";
+      #    Write-Output " ";
+       #   Write-Output "CHECK FILE EXISTS";
+        #  Write-Output " ";
+         # ls
+
+      - name: Pack Windows App
+        shell: pwsh
+        run: |
+          & "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\MakeAppx" pack /v /h SHA256 /d "<OUTPUT_FOLDER_PATH>" /p <PATH TO MSIX>.msix
+          & ls
+
+     # - name: Sign Windows App
+      #  shell: pwsh
+       # env:
+        #  CERT_PASSWORD: ${{ secrets.WIN_CERT_PASSWORD }}
+       # run: |
+        #  & "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\SignTool" sign /a /fd SHA256 /f XamCATFidCert.pfx /p $WIN_CERT_PASSWORD <PATH TO MSIX>.msix
+
+      - uses: actions/upload-artifact@v2
+        if: ${{ false }}
+        with:
+          name: artifacts-windows
+          path: |
+            *.msix

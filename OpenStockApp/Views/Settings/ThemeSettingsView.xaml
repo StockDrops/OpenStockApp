@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:strings="clr-namespace:OpenStockApp.Resources.Strings"
+             xmlns:vsettings="clr-namespace:OpenStockApp.Views.Settings"
+             xmlns:vms="clr-namespace:OpenStockApp.ViewModels.Settings"
+             xmlns:essentials="clr-namespace:Microsoft.Maui.Essentials;assembly=Microsoft.Maui.Essentials"
+             xmlns:converters="clr-namespace:OpenStockApp.Converters"
+             x:Class="OpenStockApp.Views.Settings.ThemeSettingsView"
+             
+             
+             >
+    <!--BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark}, Light={StaticResource BackgroundColor}}"-->
+    <!--x:DataType="vms:ThemeViewModel"-->
+    <ContentView.Resources>
+        <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" EnumType="{x:Type essentials:AppTheme}" />
+    </ContentView.Resources>
+    <ScrollView>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+           
+                <Label Margin="{StaticResource SmallTopBottomMargin}"
+                       Grid.Row="0"
+                       Style="{StaticResource SubtitleTextStyle}"
+                       Text="{x:Static strings:Resources.SettingsPageChooseThemeText}" />
+                <StackLayout Margin="{StaticResource XSmallTopMargin}" Grid.Row="1">
+                    <RadioButton
+                            GroupName="AppTheme"
+                            Content="{x:Static strings:Resources.SettingsPageRadioButtonLightTheme}"
+                            FontSize="Small"
+                            VerticalOptions="Center"
+                            TextColor="{AppThemeBinding Dark={StaticResource BackgroundColor},Light={StaticResource BackgroundColorDark}}"
+                            IsChecked="{Binding Theme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light}" >
+                    </RadioButton>
+                    <RadioButton
+                            GroupName="AppTheme"
+                            Content="{x:Static strings:Resources.SettingsPageRadioButtonDarkTheme}"
+                            Margin="{StaticResource XSmallTopMargin}"
+                            FontSize="Small"
+                            TextColor="{AppThemeBinding Dark={StaticResource BackgroundColor},Light={StaticResource BackgroundColorDark}}"
+                            IsChecked="{Binding Theme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark}" />
+                    <RadioButton
+                            GroupName="AppTheme"
+                            Content="{x:Static strings:Resources.SettingsPageRadioButtonWindowsDefaultTheme}"
+                            Margin="{StaticResource XSmallTopMargin}"
+                            FontSize="Small"
+                            TextColor="{AppThemeBinding Dark={StaticResource BackgroundColor},Light={StaticResource BackgroundColorDark}}"    
+                            IsChecked="{Binding Theme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Unspecified}" />
+                </StackLayout>
+        </Grid>
+    </ScrollView>
+</ContentView>

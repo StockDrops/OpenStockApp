@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Shell  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Class="OpenStockApp.Pages.DesktopShell"
+        xmlns:vm="clr-namespace:OpenStockApp.ViewModels"
+        xmlns:alerts="clr-namespace:OpenStockApp.Pages.Alerts"
+        xmlns:settings="clr-namespace:OpenStockApp.Pages.Settings"
+        xmlns:strings="clr-namespace:OpenStockApp.Resources.Strings"
+        x:DataType="vm:ShellViewModel"
+        FlyoutBackground="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}"
+        
+        FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}"
+        >
+    <Shell.FlyoutHeader>
+        <Grid>
+            <Image Source="{AppThemeBinding Light=logo_stockdrops_light.png, Dark=logo_stockdrops_dark.png}"
+                   SemanticProperties.Description="StockDrops Logo"
+                   HeightRequest="142"
+                   VerticalOptions="Center"
+                   WidthRequest="230"
+                   HorizontalOptions="Center" />
+        </Grid>
+    </Shell.FlyoutHeader>
+
+    <FlyoutItem Title="{Binding Notifications.Title}"
+                Icon="{AppThemeBinding Light=notifications.png, Dark=notifications_dark.png}">
+        <Tab>
+            <ShellContent Title="{Binding Notifications.Title}"
+                  Icon="{AppThemeBinding Light=notifications.png, Dark=notifications_dark.png}"
+                  ContentTemplate="{DataTemplate alerts:NotificationsPage}"
+                  />
+        </Tab>
+    </FlyoutItem>
+    
+    <FlyoutItem Title="{Binding AlertSettings.Title}"
+                Icon="{AppThemeBinding Light=edit_notifications.png, Dark=edit_notifications_dark.png}">
+        <Tab Title="{x:Static strings:Resources.ShellAlertSettings}">
+            <ShellContent Title="{Binding AlertSettings.Title}"
+                          Icon="{AppThemeBinding Light=edit_notifications.png, Dark=edit_notifications_dark.png}"
+                          ContentTemplate="{DataTemplate alerts:AlertSettingsPage}"
+                  />
+            <ShellContent Title="Active Notifications"
+                          ContentTemplate="{DataTemplate alerts:ActiveNotificationsPage}"/>
+        </Tab>
+    </FlyoutItem>
+    
+    <FlyoutItem 
+        Title="{Binding Settings.Title}"
+        Icon="{AppThemeBinding Light=settings.png, Dark=settings_dark.png}"
+                >
+        <Tab Title="{Binding Settings.Title}">
+            <ShellContent Title="{Binding PersonalizationSettings.Title}"
+                  ContentTemplate="{DataTemplate settings:PersonalizationSettingsPage}"
+                  />
+            <ShellContent Title="{Binding IntegrationSettings.Title}"
+                      ContentTemplate="{DataTemplate settings:IntegrationsSettingsPage}"/>
+            <ShellContent Title="{Binding AboutSettings.Title}"
+                      ContentTemplate="{DataTemplate settings:AboutSettingsPage}"/>
+        </Tab>
+    </FlyoutItem>
+</Shell>

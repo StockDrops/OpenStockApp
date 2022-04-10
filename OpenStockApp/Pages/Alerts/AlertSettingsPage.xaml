@@ -1,0 +1,209 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:vm="clr-namespace:OpenStockApp.ViewModels.AlertSettings"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:main="clr-namespace:OpenStockApp"
+             xmlns:models="clr-namespace:OpenStockApp.Core.Maui.Models;assembly=OpenStockApp.Core.Maui"
+             xmlns:api="clr-namespace:OpenStockApi.Core.Models.Products;assembly=OpenStockApi.Core"
+             xmlns:apiusers="clr-namespace:OpenStockApi.Core.Models.Users;assembly=OpenStockApi.Core"
+             xmlns:users="clr-namespace:OpenStockApi.Core.Models.Users;assembly=OpenStockApi.Core"
+             xmlns:strings="clr-namespace:OpenStockApp.Resources.Strings"
+             xmlns:converters="clr-namespace:OpenStockApp.Converters"
+             x:Class="OpenStockApp.Pages.Alerts.AlertSettingsPage"
+             x:DataType="vm:AlertSettingsViewModel"
+             x:Name="page"
+             Title="{x:Static strings:Resources.ShellAddNotifications}"
+             >
+    <ContentPage.Behaviors>
+        <!--<mct:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding LoadProducts}" />-->
+    </ContentPage.Behaviors>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <mct:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueObject="Busy... Please wait..." FalseObject="Save Alert Settings" />
+            <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <mct:EnumToIntConverter x:Key="EnumToIntConverter" />
+            <converters:DisplayedNotificationActionsToNotificationsActionConverter x:Key="DisplayedNotificationActionsConverter" EnumType="{x:Type apiusers:NotificationAction}" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80" />
+        </Grid.RowDefinitions>
+        <main:ConnectionIndicatorView IsConnected="{Binding BindingContext.IsConnected, Source={x:Reference page}}"
+                                      ConnectCommand="{Binding BindingContext.ConnectCommand, Source={x:Reference page}}"
+                                      Grid.Row="0"/>
+        <ScrollView Grid.Row="1">
+            <StackLayout Margin="{OnPlatform iOS='30,60,30,30', Default='30'}" IsVisible="{Binding IsLoggedIn}">
+                <Label Text="{x:Static strings:Resources.AddNotificationsExplanationTitle}" LineBreakMode="WordWrap" Style="{StaticResource ListTitleStyle}" Margin="0,10,0,10" />
+                <Label Text="{x:Static strings:Resources.AddNotificationsExplanation}" LineBreakMode="CharacterWrap" Style="{StaticResource BodyTextStyle}" HorizontalOptions="Start" MaximumWidthRequest="1400" Margin="0,10,0,10"/>
+                <Label Text="Retailer Options" Style="{StaticResource ListTitleStyle}" Margin="0,10,0,10"/>
+                <StackLayout>
+
+
+                    <Picker Title="Select a country"
+                        ItemsSource="{Binding Countries}"
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedItem="{Binding SelectedCountry}"
+                        
+                        >
+                        <Picker.Behaviors>
+                            <mct:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding LoadRetailers}"/>
+                        </Picker.Behaviors>
+
+                    </Picker>
+
+                    <CollectionView ItemsSource="{Binding Retailers}"
+                            Margin="0,10,0,10"
+                            >
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="users:RetailerOptions">
+                                <Grid HeightRequest="90"
+                                HorizontalOptions="Start"
+                                  
+                            WidthRequest="100"
+                                Margin="10,0,10,0">
+                                    <StackLayout>
+                                        <Label Text="{Binding Retailer.Name}" />
+
+                                        <Label Text="Enable" />
+                                        <Switch IsToggled="{Binding IsEnabled}"/>
+                                        <!--<Picker SelectedItem="{Binding ModelOptions.NotificationAction}" />-->
+                                    </StackLayout>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+
+
+                <Label Text="Products Options" Style="{StaticResource ListTitleStyle}"/>
+                <Picker Title="Select a Product to track"
+                ItemsSource="{Binding Products}"
+                ItemDisplayBinding="{Binding Name}"
+                SelectedItem="{Binding SelectedProduct, Mode=OneWayToSource}"
+                        Margin="0,10,0,10"
+                >
+                <Picker.Behaviors>
+                    <mct:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding LoadModels}" />
+                </Picker.Behaviors>
+            </Picker>
+                <SearchBar x:Name="searchBar"
+                           IsTextPredictionEnabled="True"
+                           Placeholder="Search for a model"
+                           SearchCommand="{Binding PerformSearch}"
+                           SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
+                           Margin="0,10,0,10">
+                    <SearchBar.Behaviors>
+                        <mct:EventToCommandBehavior EventName="TextChanged"
+                                                    Command="{Binding PerformSearch}"
+                                                    CommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
+                    </SearchBar.Behaviors>
+                </SearchBar>
+                <CollectionView ItemsSource="{Binding Models}"
+                            IsGrouped="true"
+                            Margin="0,10,0,10">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                                     Span="4"
+                                     VerticalItemSpacing="10"
+                                     HorizontalItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                    <CollectionView.GroupHeaderTemplate>
+                        <DataTemplate x:DataType="models:GroupedObversableModelOptions">
+                            <Grid HorizontalOptions="StartAndExpand"
+                                  VerticalOptions="StartAndExpand"
+                                  MinimumHeightRequest="80"
+                                  HeightRequest="80">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.1*"/>
+                                    <RowDefinition Height="0.8*"/>
+                                    <RowDefinition Height="0.1*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.2*"/>
+                                    <ColumnDefinition Width="0.6*"/>
+                                    <ColumnDefinition Width="0.2*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Name}"
+                                   Style="{StaticResource SubtitleTextStyle}"
+                                       Grid.Column="1"
+                                       Grid.Row="1"
+                                       HorizontalOptions="CenterAndExpand"
+                                       VerticalOptions="CenterAndExpand"
+                                   />
+                            </Grid>
+                            
+                        </DataTemplate>
+                    </CollectionView.GroupHeaderTemplate>
+                    <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:ObservableModelOptions">
+                        <Grid HeightRequest="350"
+                              WidthRequest="400">
+                                <Grid.Behaviors>
+                                    <mct:MultiValidationBehavior  />
+                                </Grid.Behaviors>
+                            <StackLayout>
+                                    <Label Text="{Binding Model.Name}"
+                                           LineBreakMode="WordWrap"
+                                           FontSize="Small"
+                                           FontAttributes="Bold"
+                                           Margin="0,10,0,10"/>
+
+                                    <Label Text="Enable" Margin="0,10,0,10" />
+                                <Switch IsToggled="{Binding ModelOptions.IsEnabled}"/>
+                                    <Label Text="Max Price" Margin="0,10,0,10"/>
+                                <Entry Keyboard="Numeric" IsTextPredictionEnabled="False" Text="{Binding ModelOptions.MaxPrice}">
+                                    <Entry.Behaviors>
+                                        <mct:NumericValidationBehavior Flags="ValidateOnValueChanged"
+                                                                       MaximumDecimalPlaces="2"
+                                                                       InvalidStyle="{StaticResource InvalidEntry}"
+                                                                       ValidStyle="{StaticResource ValidEntry}"
+                                            />
+                                    </Entry.Behaviors>
+                                </Entry>
+                                    <Label Text="Min Price" Margin="0,10,0,10"/>
+                                    <Entry Text="{Binding ModelOptions.MinPrice}" Keyboard="Numeric" >
+                                        <Entry.Behaviors>
+                                            <mct:NumericValidationBehavior Flags="ValidateOnValueChanged"
+                                                                       MaximumDecimalPlaces="2"
+                                                                       InvalidStyle="{StaticResource InvalidEntry}"
+                                                                       ValidStyle="{StaticResource ValidEntry}"                                                                       
+                                            />
+                                        </Entry.Behaviors>
+                                    </Entry>
+                                    <Label Text="Action on Notification" Margin="0,10,0,10" />
+                                    <Picker ItemDisplayBinding="{Binding Description}"
+                                            SelectedIndex="{Binding ModelOptions.NotificationAction, Converter={StaticResource EnumToIntConverter}}"
+                                            
+                                            ItemsSource="{Binding BindingContext.NotificationActions, Source={x:Reference page}}"
+                                            />
+                            </StackLayout>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
+        </StackLayout>
+    </ScrollView>
+        <Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
+                Command="{Binding SaveModelOptions}" 
+                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                 IsVisible="{Binding IsLoggedIn}"
+                Grid.Row="2"/>
+        <Button Text="Log In"
+                Grid.Row="2"
+                IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}}" />
+    </Grid>
+
+        <!--</ContentPage>
+        <ContentPage Title="Test 2">
+            <s:UserSettingsView/>
+        </ContentPage>
+    </TabbedPage.Children>-->
+    
+</ContentPage>

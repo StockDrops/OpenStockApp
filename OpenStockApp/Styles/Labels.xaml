@@ -1,0 +1,28 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:styles="clr-namespace:StockDrops.Maui.Styles"
+    xmlns:views="clr-namespace:StockDrops.Maui.Views"
+    x:Class="StockDrops.Maui.Styles.Labels"
+    >
+    <ResourceDictionary.MergedDictionaries>
+        <styles:_Thickness/>
+    </ResourceDictionary.MergedDictionaries>
+
+
+   
+
+    <!--<Style x:Key="BaseIconStyle" TargetType="{x:Type Label}">
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+    </Style>-->
+
+    <!--<Style x:Key="PageTitleStyle" TargetType="{x:Type Label}">
+        <Setter Property="FontSize" Value="{StaticResource XLargeFontSize}" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="Margin" Value="{StaticResource MediumLeftMargin}" />
+    </Style>-->
+    
+
+</ResourceDictionary>

@@ -1,0 +1,33 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="StockDrops.Maui.Styles._Thickness">
+
+    <!--Medium size margins-->
+    <Thickness x:Key="MediumLeftMargin">24,0,0,0</Thickness>
+    <Thickness x:Key="MediumLeftTopRightMargin">24,24,24,0</Thickness>
+    <Thickness x:Key="MediumTopMargin">0,24,0,0</Thickness>
+    <Thickness x:Key="MediumLeftRightMargin">24,0,24,0</Thickness>
+    <Thickness x:Key="MediumBottomMargin">0, 0, 0, 24</Thickness>
+    <Thickness x:Key="MediumLeftTopRightBottomMargin">24,24,24,24</Thickness>
+
+    <!--Small size margins-->
+    <Thickness x:Key="SmallLeftMargin">6, 0, 0, 0</Thickness>
+    <Thickness x:Key="SmallLeftTopMargin">6, 6, 0, 0</Thickness>
+    <Thickness x:Key="SmallLeftRightMargin">6, 0, 6, 0</Thickness>
+    <Thickness x:Key="SmallTopMargin">0, 6, 0, 0</Thickness>
+    <Thickness x:Key="SmallRightMargin">0, 0, 6, 0</Thickness>
+    <Thickness x:Key="SmallTopBottomMargin">0, 6, 0, 6</Thickness>
+    <Thickness x:Key="SmallTopBottomRightMargin">0, 6, 6, 6</Thickness>
+    <Thickness x:Key="SmallLeftTopRightBottomMargin">6, 6, 6, 6</Thickness>
+
+    <!--Extra Small size margins-->
+    <Thickness x:Key="XSmallLeftMargin">8, 0, 0, 0</Thickness>
+    <Thickness x:Key="XSmallTopMargin">0, 8, 0, 0</Thickness>
+    <Thickness x:Key="XSmallTopBottomMargin">0, 8, 0, 8</Thickness>
+    <Thickness x:Key="XSmallLeftTopRightBottomMargin">8, 8, 8, 8</Thickness>
+
+    <!--Extra Extra Small size margins-->
+    <Thickness x:Key="XXSmallTopMargin">0, 4, 0, 0</Thickness>
+
+</ResourceDictionary>

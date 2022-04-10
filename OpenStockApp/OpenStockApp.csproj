@@ -1,0 +1,208 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFrameworks>net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) and '$(MSBuildRuntimeType)' == 'Full'">$(TargetFrameworks);net6.0-windows10.0.19041</TargetFrameworks>
+		<OutputType>Exe</OutputType>
+		<RootNamespace>OpenStockApp</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
+    
+		<!-- Display name -->
+		<ApplicationTitle>StockDrops OpenStock App</ApplicationTitle>
+
+		<!-- App Identifier -->
+		<ApplicationId>com.stockdrops.StockDropsOpenStockApp</ApplicationId>
+		<ApplicationId Condition="$(TargetFramework.Contains('-windows'))">9833150E-67CE-483A-AE72-F712156DC535</ApplicationId>
+
+		<!-- Versions -->
+		<ApplicationDisplayVersion>1.1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1.1.0</ApplicationVersion>
+		<Version>1.1.0</Version>
+
+		<!-- Required for C# Hot Reload -->
+		<UseInterpreter Condition="'$(Configuration)' == 'Debug'">True</UseInterpreter>
+
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-ios'">14.2</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-maccatalyst'">14.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</TargetPlatformMinVersion>
+		<Nullable>enable</Nullable>
+		<Platforms>AnyCPU</Platforms>
+		<ProvisioningType>automatic</ProvisioningType>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<MauiIcon Include="Resources\smalllogoblack.svg" ForegroundFile="Resources\appiconfg.svg" />
+
+		<!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\appiconfg.svg" Color="#512BD4" BaseSize="128,128" />
+
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+	</ItemGroup>
+
+	<ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
+		<!-- Required - WinUI does not yet have buildTransitive for everything -->
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.1" />
+		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.0.30" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Remove="Resources\Images\logo_stockdrops_small.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="appsettings.json" />
+	  <None Remove="Resources\Images\default_user.svg" />
+	  <None Remove="Resources\Images\default_user_dark.svg" />
+	  <None Remove="Resources\Images\discord_logo_color.svg" />
+	  <None Remove="Resources\Images\discord_logo_dark.svg" />
+	  <None Remove="Resources\Images\discord_logo_light.svg" />
+	  <None Remove="Resources\Images\edit_notifications.svg" />
+	  <None Remove="Resources\Images\icons\edit_notifications_dark.svg" />
+	  <None Remove="Resources\Images\icons\notifications.svg" />
+	  <None Remove="Resources\Images\icons\notifications_dark.svg" />
+	  <None Remove="Resources\Images\icons\settings.svg" />
+	  <None Remove="Resources\Images\icons\settings_dark.svg" />
+	  <None Remove="Resources\Images\logo_stockdrops_dark.svg" />
+	  <None Remove="Resources\Images\logo_stockdrops_small.svg" />
+	  <None Remove="Resources\Images\patreon_logo_dark.svg" />
+	  <None Remove="Resources\Images\patreon_logo_light.svg" />
+	  <None Remove="Resources\Images\twitter_logo_blue.svg" />
+	  <None Remove="Resources\Images\twitter_logo_dark.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="appsettings.json">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Pages\Alerts\ActiveNotificationsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Alerts\AlertSettingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Alerts\NotificationsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\DesktopShell.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\MobileShell.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\Labels.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\Theme.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\_Thickness.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Styles\Labels.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Styles\Theme.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Styles\Themes\HC.Dark.Blue.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Styles\Themes\HC.Light.Blue.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Styles\_FontSizes.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Styles\_Thickness.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ConnectionIndicatorView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ModelOptionsView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SocialButtons.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Include="Resources\Images\icons\edit_notifications.svg" />
+	  <MauiImage Include="Resources\Images\icons\edit_notifications_dark.svg" />
+	  <MauiImage Include="Resources\Images\icons\notifications.svg" />
+	  <MauiImage Include="Resources\Images\icons\notifications_dark.svg" />
+	  <MauiImage Include="Resources\Images\icons\settings.svg" />
+	  <MauiImage Include="Resources\Images\icons\settings_dark.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-pre8" />
+	  <PackageReference Include="EFCoreSecondLevelCacheInterceptor" Version="3.4.0" />
+	  <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+	  <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.19.6" />
+	  <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
+	  <PackageReference Include="OpenStockApi.Core" Version="2.0.0" />
+	  <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\OpenStockApp.Core.Maui\OpenStockApp.Core.Maui.csproj" />
+	  <ProjectReference Include="..\OpenStockApp.Core\OpenStockApp.Core.csproj" />
+	  <ProjectReference Include="..\OpenStockApp.Discord\OpenStockApp.Discord.csproj" />
+	  <ProjectReference Include="..\OpenStockApp.Ef\OpenStockApp.Ef.csproj" />
+	  <ProjectReference Include="..\OpenStockApp.Email\OpenStockApp.Email.csproj" />
+	  <ProjectReference Include="..\OpenStockApp.LegacyApi\OpenStockApp.LegacyApi.csproj" />
+	  <ProjectReference Include="..\OpenStockdApp.SignalR\OpenStockApp.SignalR.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Resources\Strings\DiscordResources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>DiscordResources.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\Strings\Resources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resources.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\Strings\DiscordResources.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>DiscordResources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Strings\Resources.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Contracts\Services\" />
+	</ItemGroup>
+
+	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
+		<OutputType>WinExe</OutputType>
+		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041|AnyCPU'">
+	  <Optimize>True</Optimize>
+	</PropertyGroup>
+	
+</Project>

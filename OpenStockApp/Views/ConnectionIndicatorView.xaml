@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:main="clr-namespace:OpenStockApp"
+             x:Class="OpenStockApp.ConnectionIndicatorView"
+             x:DataType="main:ConnectionIndicatorView"
+             x:Name="view"
+             >
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <mct:BoolToObjectConverter x:Key="BoolToObjectConverter" FalseObject="Not Connected" TrueObject="Connected">
+                
+            </mct:BoolToObjectConverter>
+            <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <StackLayout Orientation="Horizontal" Margin="4,4,0,4">
+            <Border>
+                <Label Text="{Binding IsConnected, Converter={StaticResource BoolToObjectConverter}, Mode=OneWay}" VerticalOptions="Center" Margin="0,0,5,0" />
+            </Border>
+            <Button Text="Connect"  IsEnabled="{Binding IsConnected, Converter={StaticResource InvertedBoolConverter}}" Command="{Binding ConnectCommand}" />
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

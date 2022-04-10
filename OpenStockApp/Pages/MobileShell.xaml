@@ -1,0 +1,72 @@
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:OpenStockApp.Pages.Alerts"
+             xmlns:settings="clr-namespace:OpenStockApp.Pages.Settings"
+             xmlns:vm="clr-namespace:OpenStockApp.ViewModels"
+             x:Class="OpenStockApp.Pages.MobileShell"
+             x:DataType="vm:ShellViewModel"
+             
+             >
+    <!--<Shell.Style>
+        <Style TargetType="Element">
+            <Setter Property="Shell.BackgroundColor"
+                        Value="{StaticResource Primary}" />
+            <Setter Property="Shell.ForegroundColor"
+                        Value="White" />
+            <Setter Property="Shell.TitleColor"
+                        Value="Black" />
+            <Setter Property="Shell.DisabledColor"
+                        Value="#B4FFFFFF" />
+            <Setter Property="Shell.UnselectedColor"
+                        Value="Black" />
+            <Setter Property="Shell.TabBarBackgroundColor"
+                        Value="{StaticResource Primary}" />
+            <Setter Property="Shell.TabBarForegroundColor"
+                        Value="White" />
+            <Setter Property="Shell.TabBarUnselectedColor"
+                        Value="#95FFFFFF" />
+            <Setter Property="Shell.TabBarTitleColor"
+                        Value="White" />
+        </Style>
+    </Shell.Style>-->
+    <TabBar>
+        <!--<TabBar.Style>
+            <Style TargetType="TabBar">
+                <Setter Property="Shell.TabBarBackgroundColor"
+            Value="CornflowerBlue" />
+                <Setter Property="Shell.TabBarTitleColor"
+            Value="Black" />
+                <Setter Property="Shell.TabBarUnselectedColor"
+            Value="AntiqueWhite" />
+            </Style>
+        </TabBar.Style>-->
+        <Tab Title="{Binding Notifications.Title}"
+             Icon="{AppThemeBinding Light=notifications.png, Dark=notifications_dark.png}">
+            <ShellContent ContentTemplate="{DataTemplate pages:NotificationsPage}" />
+        </Tab>
+        <Tab Title="{Binding AlertSettings.Title}"
+             Icon="{AppThemeBinding Light=edit_notifications.png, Dark=edit_notifications_dark.png}">
+            <ShellContent ContentTemplate="{DataTemplate pages:AlertSettingsPage}" />
+        </Tab>
+        <!--<Tab Title="{Binding ListenLater.Title}"
+             Icon="{Binding ListenLater.Icon}">
+            <ShellContent ContentTemplate="{DataTemplate pages:ListenLaterPage}" />
+        </Tab>
+        <Tab Title="{Binding ListenTogether.Title}"
+             Icon="{Binding ListenTogether.Icon}"
+             IsVisible="{x:Static root:Config.ListenTogetherIsVisible}">
+            <ShellContent 
+                ContentTemplate="{DataTemplate pages:ListenTogetherPage}" />
+        </Tab>-->
+        <Tab Title="{Binding Settings.Title}"
+             Icon="{AppThemeBinding Light=settings.png, Dark=settings_dark.png}"
+             >
+            <ShellContent Title="{Binding PersonalizationSettings.Title}"
+                          ContentTemplate="{DataTemplate settings:PersonalizationSettingsPage}"/>
+            <ShellContent Title="{Binding IntegrationSettings.Title}"
+                          ContentTemplate="{DataTemplate settings:IntegrationsSettingsPage}" />
+            <ShellContent Title="{Binding AboutSettings.Title}"
+                          ContentTemplate="{DataTemplate settings:AboutSettingsPage}" />
+        </Tab>
+    </TabBar>
+</Shell>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mctconverters="clr-namespace:CommunityToolkit.Maui.Converters;assembly=CommunityToolkit.Maui"
+             x:Class="OpenStockApp.Views.Settings.EmailSocialLoginButtonsView"
+             HorizontalOptions="Fill">
+    <ContentView.Resources>
+        <mctconverters:BoolToObjectConverter FalseObject="Red" TrueObject="Green" x:Key="BoolToObjectConverter" />
+        <mctconverters:BoolToObjectConverter FalseObject="False" TrueObject="True" x:Key="LogInOutGmailConverter"/>
+        <mctconverters:BoolToObjectConverter FalseObject="Log In Microsoft Email" TrueObject="Log Out Microsoft Email" x:Key="LogInOutMicrosoftConverter" />
+        <mctconverters:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+    </ContentView.Resources>
+    <Grid>
+        <FlexLayout BindableLayout.ItemsSource="{Binding SocialButtons}"
+                    Wrap="Wrap"
+                       Direction="Row"
+                       JustifyContent="Start"
+                       AlignItems="Start"
+                       AlignContent="Start">
+            <BindableLayout.ItemTemplate>
+                
+                <DataTemplate>
+                    
+                    
+
+                        <Button Text="{Binding Name}"
+                            Grid.Column="1"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="Start"
+                        IsVisible="{Binding IsNotLoggedIn2}"
+                        Command="{Binding LoginCommand}"
+                        Style="{StaticResource LeftSideButton}"/>
+                        
+
+                   
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </FlexLayout>
+    </Grid>
+    
+</ContentView>
