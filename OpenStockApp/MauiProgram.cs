@@ -32,6 +32,9 @@ using OpenStockApp.Core.Contracts.Services.Hubs;
 using OpenStockApp.Core.Maui.Services.Notifications;
 using OpenStockApp.Core.Maui.Contracts.Services;
 
+#if MACCATALYST
+using OpenStockApp.Core.Maui.Platforms.MacCatalyst.Notifications;
+#endif
 
 
 #if WINDOWS
@@ -267,7 +270,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<INotificationService, NotificationActionService>();
 #if WINDOWS
         builder.Services.AddSingleton<INotificationService, WindowsNotificationService>();
-
+#elif MACCATALYST
+        builder.Services.AddSingleton<INotificationService, MacOsNotificationService>();
 #endif
         //configure
         builder.Services.Configure<AppConfig>(builder.Configuration.GetSection(nameof(AppConfig)));
