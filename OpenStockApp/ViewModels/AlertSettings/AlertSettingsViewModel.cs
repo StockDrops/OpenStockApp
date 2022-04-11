@@ -123,9 +123,10 @@ namespace OpenStockApp.ViewModels.AlertSettings
         }
         public async Task OnLoadProducts(CancellationToken token = default)
         {
+            LoadActions();
             await LoadAllCountries();
             await LoadAllProducts();
-            LoadActions();
+            
         }
         public void LoadActions()
         {

@@ -19,16 +19,15 @@ namespace OpenStockApp.Core.Maui.Services.Settings
 
         public async Task<IList<GroupedObversableModelOptions>> GetGroupedObversableModelOptionsAsync(Product product, CancellationToken cancellationToken)
         {
-            var stopwatch = new Stopwatch();
-            
+
             var observableModelOptions = await GetObservableModelOptions(product, cancellationToken);
-            stopwatch.Start();
+            
             var models = observableModelOptions
                 .GroupBy(m => m.Model.BrandId)
                 .OrderBy(g => g.First().Model?.Brand?.Name)
                 .Select(x => new GroupedObversableModelOptions(x.First().Model?.Brand?.Name ?? "Null", x.ToList()))
                 .ToList();
-            stopwatch.Stop();
+
             return models;
         }
 
