@@ -47,7 +47,12 @@ namespace OpenStockApp.ViewModels.AlertSettings
         #endregion
 
         #region Properties
-        public bool IsLoggedIn => identityService.IsLoggedIn();
+        public BindableProperty IsLoggedInProperty = BindableProperty.Create(nameof(IsLoggedIn), typeof(bool), typeof(AlertSettingsViewModel));
+        public bool IsLoggedIn
+        {
+            get => (bool)GetValue(IsLoggedInProperty);
+            set => SetValue(IsLoggedInProperty, value);
+        }
         public Product SelectedProduct { get; set; } = new Product();
         public Country SelectedCountry { get; set; } = new Country();
         #endregion
@@ -91,22 +96,36 @@ namespace OpenStockApp.ViewModels.AlertSettings
             LoadModels = new AsyncRelayCommand(OnProductSelected);
             SaveModelOptions = new AsyncRelayCommand(OnSaveModelOptions);
             PerformSearch = new AsyncRelayCommand<string>(OnPerformSearch);
-            LogIn = new AsyncRelayCommand(OnLoggedIn);
+            LogIn = new AsyncRelayCommand(OnLoggedInRequest);
             #endregion
+            IsLoggedIn = identityService.IsLoggedIn();
             RegisterEvents();
         }
         public void RegisterEvents()
         {
             retailerOptionsDisplayService.DisplayRetailerOptions += OnDisplayRetailerOptions;
+            identityService.LoggedIn += OnLoggedIn;
+            identityService.LoggedOut += OnLoggedOut;
         }
+
+
         public void OnDisplayRetailerOptions(object? sender, RetailerOptions retailerOptions)
         {
             Retailers.Add(retailerOptions);
         }
+        public void OnLoggedIn(object? sender, EventArgs e)
+        {
+            IsLoggedIn = true;
+        }
+        public void OnLoggedOut(object? sender, EventArgs e)
+        {
+            IsLoggedIn = false;
+        }
 
-        public async Task OnLoggedIn(CancellationToken cancellationToken = default)
+        public async Task OnLoggedInRequest(CancellationToken cancellationToken = default)
         {
             await identityService.LoginAsync();
+
         }
         /// <summary>
         /// When a product is selected we load all the models.
@@ -123,9 +142,10 @@ namespace OpenStockApp.ViewModels.AlertSettings
         }
         public async Task OnLoadProducts(CancellationToken token = default)
         {
+            LoadActions();
             await LoadAllCountries();
             await LoadAllProducts();
-            LoadActions();
+            
         }
         public void LoadActions()
         {

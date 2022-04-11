@@ -34,13 +34,16 @@
     
     <FlyoutItem Title="{Binding AlertSettings.Title}"
                 Icon="{AppThemeBinding Light=edit_notifications.png, Dark=edit_notifications_dark.png}">
-        <Tab Title="{x:Static strings:Resources.ShellAlertSettings}">
+        <Tab Title="{x:Static strings:Resources.ShellAlertSettings}" >
+            
             <ShellContent Title="{Binding AlertSettings.Title}"
                           Icon="{AppThemeBinding Light=edit_notifications.png, Dark=edit_notifications_dark.png}"
                           ContentTemplate="{DataTemplate alerts:AlertSettingsPage}"
                   />
             <ShellContent Title="Active Notifications"
+                          
                           ContentTemplate="{DataTemplate alerts:ActiveNotificationsPage}"/>
+            
         </Tab>
     </FlyoutItem>
     

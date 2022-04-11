@@ -197,6 +197,7 @@
                 Grid.Row="2"/>
         <Button Text="Log In"
                 Grid.Row="2"
+                Command="{Binding LogIn}"
                 IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}}" />
     </Grid>
 
