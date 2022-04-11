@@ -81,6 +81,14 @@ public static class MauiProgram
                        
                    });
                 });
+#elif MACCATALYST || IOS
+            lifecycle.AddiOS(configure =>
+            {
+                configure.OnActivated(application =>
+                {
+                    BackgroundServicesContainer.StartApp();
+                });
+            });
 #endif
         });
         //configuration:
