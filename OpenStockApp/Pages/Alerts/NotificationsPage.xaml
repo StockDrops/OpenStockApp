@@ -51,18 +51,22 @@
             </Grid>
         </StackLayout>
         <Frame CornerRadius="5" Grid.Row="1">
-            <StackLayout Grid.Row="1" Orientation="Horizontal">
-                <Label Text="Apply your alert settings" 
+            <StackLayout>
+                <StackLayout Grid.Row="1" Orientation="Horizontal">
+                    <Label Text="Apply your alert settings" 
                        VerticalOptions="Center"
-                       Margin="10,0,10,0"/>
-                <Switch IsToggled="{Binding HasToApplyFilterSettings}">
-                    <Switch.Behaviors>
-                        <mct:EventToCommandBehavior EventName="Toggled"
+                       Margin="{OnPlatform Default='10,0,10,0', Android='5,0,5,0'} "/>
+                    <Switch IsToggled="{Binding HasToApplyFilterSettings}">
+                        <Switch.Behaviors>
+                            <mct:EventToCommandBehavior EventName="Toggled"
                                                     Command="{Binding ApplyFilterSettings}"/>
-                    </Switch.Behaviors>
-                </Switch>
-                <views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0"   />
+                        </Switch.Behaviors>
+                    </Switch>
+                    <views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='True', Android='False'}"  />
+                </StackLayout>
+                <views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='False', Android='True'}"  />
             </StackLayout>
+            
         </Frame>
         
         <Grid Grid.Row="2"

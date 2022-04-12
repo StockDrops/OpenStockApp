@@ -5,11 +5,16 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
 using Microsoft.Identity.Client.Extensions.Msal;
+using Microsoft.Maui.Dispatching;
 using OpenStockApp.Core.Contracts.Services.Users;
 using OpenStockApp.Core.Maui.Helpers;
 using OpenStockApp.Core.Maui.Models.Configurations;
 using OpenStockApp.Core.Maui.Models.Users;
 using OpenStockApp.Core.Models.Users;
+
+#if ANDROID
+using Android.App;
+#endif
 
 namespace OpenStockApp.Core.Maui.Services.Users;
 
@@ -98,6 +103,11 @@ public class IdentityService : IIdentityService
             throw new ArgumentNullException(nameof(options.Value.RedirectUrl));
         if (azureClientConfiguration.ClientId == null)
             throw new ArgumentNullException(nameof(options.Value.ClientId));
+
+#if ANDROID || IOS
+        azureClientConfiguration.RedirectUrl = $"msal{azureClientConfiguration.ClientId}://auth"; 
+#endif
+
 
         switch (azureClientConfiguration.AzureAdType)
         {
@@ -559,7 +569,9 @@ public class IdentityService : IIdentityService
 #endif
 
     }
-
+#if ANDROID
+    private Activity MainActivity => Platform.CurrentActivity;
+#endif
     private IPublicClientApplication InitializeWithAadAndPersonalMsAccounts(string clientId, string? redirectUri = null)
     {
 
@@ -575,9 +587,9 @@ public class IdentityService : IIdentityService
 
         return PublicClientApplicationBuilder.Create(clientId)
                                                 .WithB2CAuthority(authority)
-//#if ANDROID
-//                                                .WithParentActivityOrWindow(activityFunc)
-//#endif
+#if ANDROID
+                                                .WithParentActivityOrWindow(() => MainActivity)
+#endif
                                                 .WithRedirectUri(redirectUri)
                                                 .Build();
     }
