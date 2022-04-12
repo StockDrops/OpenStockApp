@@ -42,7 +42,7 @@
         </TabBar.Style>-->
         <Tab Title="{Binding Notifications.Title}"
              Icon="{AppThemeBinding Light=notifications.png, Dark=notifications_dark.png}">
-            <ShellContent ContentTemplate="{DataTemplate pages:NotificationsPage}" />
+            <ShellContent ContentTemplate="{DataTemplate pages:NotificationPageMobile}" />
         </Tab>
         <Tab Title="{Binding AlertSettings.Title}"
              Icon="{AppThemeBinding Light=edit_notifications.png, Dark=edit_notifications_dark.png}">

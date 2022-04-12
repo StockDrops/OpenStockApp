@@ -76,7 +76,7 @@ public static class MauiProgram
                     configure.OnApplicationCreating(activity =>
                    {
                        Platform.Init(activity);
-                       BackgroundServicesContainer.StartBackgroundTasks();
+                       BackgroundServicesContainer.StartApp();
                        
                    });
                 });
@@ -305,7 +305,9 @@ public static class MauiProgram
         builder.Services.AddTransient<ActiveNotificationsPage>();
         builder.Services.AddTransient<AboutSettingsPage>();
         builder.Services.AddTransient<NotificationsPage>();
-
+#if ANDROID || IOS
+        builder.Services.AddTransient<NotificationPageMobile>();
+#endif
         var app = builder.Build();
         app.MigrateDatabase<AppDbContext>();
         app.MigrateDatabase<EmailDbContext>();

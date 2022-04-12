@@ -92,6 +92,10 @@
 	  <MauiXaml Update="Pages\Alerts\AlertSettingsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Alerts\NotificationsPageMobile.xaml">
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Alerts\NotificationsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -171,6 +175,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\Alerts\NotificationsPageMobile.xaml.cs">
+	    <DependentUpon>NotificationsPageMobile.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Resources\Strings\DiscordResources.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
