@@ -37,8 +37,11 @@ namespace OpenStockApp.Extensions
                 }
                 catch (Exception ex)
                 {
-                    var logger = services.GetRequiredService<ILogger>();
-                    logger.LogError(ex, "An error occurred while migrating the database.");
+
+                    Console.WriteLine($"{ex}");
+
+                    //var logger = services.GetRequiredService<ILogger>();
+                    //logger.LogError(ex, "An error occurred while migrating the database.");
                 }
             }
             return app;

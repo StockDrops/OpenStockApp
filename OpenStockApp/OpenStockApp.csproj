@@ -57,7 +57,6 @@
 	<ItemGroup>
 	  <MauiImage Remove="Resources\Images\logo_stockdrops_small.svg" />
 	</ItemGroup>
-
 	<ItemGroup>
 	  <None Remove="appsettings.json" />
 	  <None Remove="Resources\Images\default_user.svg" />

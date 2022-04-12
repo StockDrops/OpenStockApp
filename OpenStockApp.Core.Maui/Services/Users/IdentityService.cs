@@ -538,7 +538,7 @@ public class IdentityService : IIdentityService
     /// <returns></returns>
     private async Task ConfigureCache()
     {
-#if WINDOWS || MACCATALYST
+#if WINDOWS
         try
         {
             var folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "StockDrops\\Cache");
@@ -547,6 +547,7 @@ public class IdentityService : IIdentityService
                          folder)
                      .WithMacKeyChain("stockdrops_msal_service", "stockdrops_msal_account")
                      .Build();
+            var platform = Environment.OSVersion.Platform;
             var cacheHelper = await MsalCacheHelper.CreateAsync(storageProperties);
 
             cacheHelper.RegisterCache(client.UserTokenCache);
