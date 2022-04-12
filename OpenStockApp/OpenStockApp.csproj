@@ -19,7 +19,7 @@
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.1.0</ApplicationDisplayVersion>
-		<ApplicationVersion>1.1.0</ApplicationVersion>
+		<ApplicationVersion>2</ApplicationVersion>
 		<Version>1.1.0</Version>
 
 		<!-- Required for C# Hot Reload -->
@@ -31,12 +31,11 @@
 		<SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</TargetPlatformMinVersion>
 		<Nullable>enable</Nullable>
-		<Platforms>AnyCPU</Platforms>
 		<ProvisioningType>automatic</ProvisioningType>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<MauiIcon Include="Resources\smalllogoblack.svg" ForegroundFile="Resources\appiconfg.svg" />
+		<MauiIcon Include="Resources\appicon.svg" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\appiconfg.svg" Color="#512BD4" BaseSize="128,128" />
@@ -195,6 +194,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Contracts\Services\" />
+	  <Folder Include="Platforms\iOS\Resources\" />
 	</ItemGroup>
 
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
