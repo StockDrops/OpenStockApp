@@ -31,6 +31,7 @@ using CommunityToolkit.Maui;
 using OpenStockApp.Core.Contracts.Services.Hubs;
 using OpenStockApp.Core.Maui.Services.Notifications;
 using OpenStockApp.Core.Maui.Contracts.Services;
+using Microsoft.Extensions.Logging;
 
 
 
@@ -48,6 +49,7 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiCommunityToolkit()
+            
             .UseMauiApp<App>();
 			//.ConfigureFonts(fonts =>
 			//{
@@ -93,6 +95,22 @@ public static class MauiProgram
         //Load configuration file from the stream gotten above.
         using var stream = assembly.GetManifestResourceStream(ConfigFile);
         builder.Configuration.AddJsonStream(stream);
+
+        builder.Services.AddLogging(loggingBuilder =>
+        {
+            
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "StockDrops\\logs\\applog.txt");
+            loggingBuilder.AddFile(path, fileLoggerOptions =>
+            {
+                fileLoggerOptions.FileSizeLimitBytes = 5000000;
+                fileLoggerOptions.MaxRollingFiles = 4;
+                fileLoggerOptions.MinLevel = LogLevel.Information;
+                fileLoggerOptions.Append = false;
+                fileLoggerOptions.UseUtcTimestamp = true;
+            });
+            loggingBuilder.AddFilter("Microsoft", LogLevel.Error);
+        });
+        
             //config.AddJsonFile(ConfigFile, optional: false, reloadOnChange: true);
         
         //database
@@ -124,6 +142,8 @@ public static class MauiProgram
 
 
         builder.Services.AddSingleton<ApplicationHostService>();
+
+        
 
         builder.Services.AddDbContext<AppDbContext>();
         builder.Services.AddDbContextFactory<AppDbContext>();
