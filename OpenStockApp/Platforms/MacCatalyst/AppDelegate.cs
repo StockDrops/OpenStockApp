@@ -11,7 +11,7 @@ public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterD
 
     public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
     {
-        base.FinishedLaunching(application, launchOptions);
+        
         UNUserNotificationCenter center = UNUserNotificationCenter.Current;
         var options = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Sound ;
         center.RequestAuthorization(options, (bool success, NSError error) =>
@@ -31,7 +31,7 @@ public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterD
             var set = new NSSet<UNNotificationCategory>(openUrlCategory);
             center.SetNotificationCategories(set);
         });
-
+        return base.FinishedLaunching(application, launchOptions);
     }
 
     [Export("userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")]
