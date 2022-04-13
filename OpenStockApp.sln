@@ -23,8 +23,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenStockApp.LegacyApi", "O
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E2C704B4-D6FC-4FB7-9C75-D46872F72BBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLib", "TestLib\TestLib.csproj", "{3BF38415-433B-4F7D-8763-7E6446268029}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,10 +63,6 @@ Global
 		{2637BAB7-A745-4860-97F8-25ADAEF71A83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2637BAB7-A745-4860-97F8-25ADAEF71A83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2637BAB7-A745-4860-97F8-25ADAEF71A83}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3BF38415-433B-4F7D-8763-7E6446268029}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3BF38415-433B-4F7D-8763-7E6446268029}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3BF38415-433B-4F7D-8763-7E6446268029}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3BF38415-433B-4F7D-8763-7E6446268029}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,7 +74,6 @@ Global
 		{ECC32467-CC91-45BB-BFC2-5F429D51E072} = {81FA3CB6-67F7-4132-B91B-BCEB05D35105}
 		{77DE3244-A8EA-42A9-AE16-50B2F8F265CC} = {81FA3CB6-67F7-4132-B91B-BCEB05D35105}
 		{2637BAB7-A745-4860-97F8-25ADAEF71A83} = {81FA3CB6-67F7-4132-B91B-BCEB05D35105}
-		{3BF38415-433B-4F7D-8763-7E6446268029} = {81FA3CB6-67F7-4132-B91B-BCEB05D35105}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {61F7FB11-1E47-470C-91E2-47F8143E1572}
