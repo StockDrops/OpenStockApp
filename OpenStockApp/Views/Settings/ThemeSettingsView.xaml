@@ -4,7 +4,7 @@
              xmlns:strings="clr-namespace:OpenStockApp.Resources.Strings"
              xmlns:vsettings="clr-namespace:OpenStockApp.Views.Settings"
              xmlns:vms="clr-namespace:OpenStockApp.ViewModels.Settings"
-             xmlns:essentials="clr-namespace:Microsoft.Maui.Essentials;assembly=Microsoft.Maui.Essentials"
+             xmlns:appmodel="clr-namespace:Microsoft.Maui.ApplicationModel;assembly=Microsoft.Maui.Essentials"
              xmlns:converters="clr-namespace:OpenStockApp.Converters"
              x:Class="OpenStockApp.Views.Settings.ThemeSettingsView"
              
@@ -13,7 +13,7 @@
     <!--BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark}, Light={StaticResource BackgroundColor}}"-->
     <!--x:DataType="vms:ThemeViewModel"-->
     <ContentView.Resources>
-        <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" EnumType="{x:Type essentials:AppTheme}" />
+        <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" EnumType="{x:Type appmodel:AppTheme}" />
     </ContentView.Resources>
     <ScrollView>
         <Grid>

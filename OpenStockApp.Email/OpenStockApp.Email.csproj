@@ -8,11 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="EntityFrameworkCore.DataEncryption" Version="3.0.1" />
-    <PackageReference Include="Google.Apis.Gmail.v1" Version="1.56.0.2622" />
-    <PackageReference Include="MailKit" Version="3.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.3" />
-    <PackageReference Include="Microsoft.Graph" Version="4.22.0" />
+    <PackageReference Include="Google.Apis.Gmail.v1" Version="1.57.0.2650" />
+    <PackageReference Include="MailKit" Version="3.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.4" />
+    <PackageReference Include="Microsoft.Graph" Version="4.25.0" />
     <PackageReference Include="OpenStockApi.Core" Version="2.0.0" />
   </ItemGroup>
 

@@ -9,13 +9,13 @@
              xmlns:converters="clr-namespace:OpenStockApp.Converters"
              
              xmlns:mctbehaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
-             xmlns:essentials="clr-namespace:Microsoft.Maui.Essentials;assembly=Microsoft.Maui.Essentials"
+             xmlns:appmodel="clr-namespace:Microsoft.Maui.ApplicationModel;assembly=Microsoft.Maui.Essentials"
              x:Class="OpenStockApp.Views.Settings.UserSettingsView"
              x:Name="ParentView"
              >
     <!--x:DataType="viewmodels:UserSettingsViewModel"-->
     <ContentView.Resources>
-        <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" EnumType="{x:Type essentials:AppTheme}" />
+        <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" EnumType="{x:Type appmodel:AppTheme}" />
     </ContentView.Resources>
     <ContentView.Behaviors>
         <mctbehaviors:EventToCommandBehavior EventName="ParentChanged"
