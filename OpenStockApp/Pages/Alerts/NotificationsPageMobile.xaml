@@ -8,7 +8,7 @@
              xmlns:views="clr-namespace:OpenStockApp.Views"
              xmlns:main="clr-namespace:OpenStockApp"
              x:DataType="vm:NotificationsPageViewModel"
-             x:Class="OpenStockApp.Pages.Alerts.NotificationsPage"
+             x:Class="OpenStockApp.Pages.Alerts.NotificationPageMobile"
              x:Name="page"
              Title="Notifications Hub"
              >
@@ -28,6 +28,7 @@
             <RowDefinition Height="120"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <!--<RowDefinition Height="80"/>-->
         </Grid.RowDefinitions>
         <StackLayout Grid.Row="0">
             <main:ConnectionIndicatorView IsConnected="{Binding BindingContext.IsConnected, Source={x:Reference page}}"
@@ -130,36 +131,35 @@
 
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-                <CollectionView.Footer>
-
-                    <StackLayout>
-                        <Button Margin="0,20,0,20"
+            </CollectionView>
+            <StackLayout Grid.Row="2" ZIndex="50"
+                         VerticalOptions="End"
+                         HorizontalOptions="End"
+                         Margin="5">
+                <Button Margin="0,20,0,20"
                                     Text="Load More?"
-                                    MinimumWidthRequest="300"
+                                    MinimumWidthRequest="{OnPlatform Android=100, iOS=100, UWP=300}"
                                     HorizontalOptions="Center"
                                     FontSize="Medium"
                                     FontAttributes="Bold"
                                     IsVisible="{Binding EndReached, Converter={StaticResource InvertedBoolConverter}}"
                                     Command="{Binding LoadMoreCommand}"/>
-                        <!--<Button Margin="0,20,0,20"
+                <!--<Button Margin="0,20,0,20"
                                     Text="Go to Top"
                                     MinimumWidthRequest="300"
                                     HorizontalOptions="Center"
                                     FontSize="Medium"
                                     FontAttributes="Bold"
                                     Command="{Binding GoToTopCommand}"/>-->
-                        <Button Margin="0,20,0,20"
-                                    MinimumWidthRequest="300"
+                <Button Margin="0,20,0,20"
+                                    MinimumWidthRequest="{OnPlatform Android=100, iOS=100, UWP=300}"
                                     HorizontalOptions="Center"
                                     FontSize="Medium"
                                     FontAttributes="Bold"
                                     IsEnabled="False"
                                     Text="End Reached"
                                     IsVisible="{Binding EndReached}"/>
-                    </StackLayout>
-
-                </CollectionView.Footer>
-            </CollectionView>
+            </StackLayout>
             <!--</RefreshView>-->
         </Grid>
     </Grid>

@@ -1,6 +1,8 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Microsoft.Identity.Client;
 
 namespace OpenStockApp;
 
@@ -12,8 +14,12 @@ public class MainActivity : MauiAppCompatActivity
 		base.OnCreate(savedInstanceState);
 		Platform.Init(this, savedInstanceState);
 	}
-
-	public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+    protected override void OnActivityResult(int requestCode, Result resultCode, Intent? data)
+    {
+        base.OnActivityResult(requestCode, resultCode, data);
+		AuthenticationContinuationHelper.SetAuthenticationContinuationEventArgs(requestCode, resultCode, data);
+	}
+    public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
 	{
 		Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
