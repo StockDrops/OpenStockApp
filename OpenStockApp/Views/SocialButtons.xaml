@@ -7,16 +7,17 @@
     <ContentView.Content>
         <Grid HeightRequest="50">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="{OnPlatform Default=50, UWP=150}" />
                 <ColumnDefinition Width="50" />
                 <ColumnDefinition Width="50" />
                 <ColumnDefinition Width="50" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
                 <RowDefinition Height="50" />
             </Grid.RowDefinitions>
-
-            <Label Text="Checkout our social media by clicking the images:" Grid.Column="0" VerticalOptions="Center"/>
+            <Label Text="Our Social Media:" Grid.Row="0" Grid.ColumnSpan="4" />
+            <!--<Label Text="Checkout our social media by clicking the images:" Grid.Column="0" VerticalOptions="Center" IsVisible="{OnPlatform Default=False, UWP=True}"/>-->
             <!--<ImageButton Source="patreon_logo_light.png"
                          Aspect="Fill"
                          WidthRequest="100"
@@ -24,26 +25,28 @@
                          BackgroundColor="Red"
                          />-->
 
-            <views:HyperlinkImage Grid.Column="1" Grid.Row="0"
+            <views:HyperlinkImage Grid.Column="{OnPlatform Default=0, UWP=1}" Grid.Row="1"
                                   Margin="5,0,5,0"
                          HeightRequest="50"
                          WidthRequest="50"
                          Url="https://patreon.com/stockdrops"
                          Source="{AppThemeBinding Dark=patreon_logo_dark.png, Light=patreon_logo_light.png, Default=patreon_logo_dark.png}" Aspect="AspectFit" />
-            <views:HyperlinkImage Grid.Column="2"
+            <views:HyperlinkImage Grid.Row="1"
+                                  Grid.Column="{OnPlatform Default=1, UWP=2}"
                                    HeightRequest="50"
                                    WidthRequest="50"
                                   Margin="5,0,5,0"
                                    Url="https://discord.gg/stockdrops"
                                    Aspect="AspectFit"
                                    Source="{AppThemeBinding Dark=discord_logo_dark.png, Light=discord_logo_light.png, Default=discord_logo_dark.png}"/>
-            <views:HyperlinkImage Grid.Column="3"
+            <views:HyperlinkImage Grid.Row="1"
+                                  Grid.Column="{OnPlatform Default=2, UWP=3}"
                                    HeightRequest="50"
                                    WidthRequest="50"
                                     Margin="15,0,5,0"
                                    Url="https://twitter.com/stock_drops"
                                    Aspect="AspectFit"
-                                   Source="{AppThemeBinding Dark=twitter_logo_dark.png, Light=twitter_logo_light.png, Default=twitter_logo_dark.png}"/>
+                                   Source="{AppThemeBinding Dark=twitter_logo_dark.png, Light=twitter_logo_blue.png, Default=twitter_logo_dark.png}"/>
 
 
         </Grid>

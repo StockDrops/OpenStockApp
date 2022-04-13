@@ -8,5 +8,6 @@
     <Application.Resources>
         <ResourceDictionary Source="Resources/Styles/Theme.xaml" />
         <ResourceDictionary Source="Resources/Styles/Labels.xaml" />
+        <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
     </Application.Resources>
 </Application>

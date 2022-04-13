@@ -19,7 +19,16 @@
 
     <Color x:Key="PrimaryColorDark">#12005e</Color>
     <Color x:Key="SecondaryColorDark">#000051</Color>
-    
+
+    <Color x:Key="TPrimary">#512BD4</Color>
+    <Color x:Key="TLight">#DFD8F7</Color>
+    <Color x:Key="TDark">#2B0B98</Color>
+    <Color x:Key="TWhite">White</Color>
+    <Color x:Key="TBlack">Black</Color>
+    <Color x:Key="TLightGray">#E5E5E1</Color>
+    <Color x:Key="TMidGray">#969696</Color>
+    <Color x:Key="TDarkGray">#505050</Color>
+
     <Style TargetType="Label">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={DynamicResource BackgroundColor},Light={DynamicResource BackgroundColorDark}}" />
         <Setter Property="FontFamily" Value="OpenSansRegular" />
@@ -67,13 +76,42 @@
         <Setter Property="HorizontalOptions" Value="Start"/>
         <Setter Property="Margin" Value="{StaticResource SmallTopBottomRightMargin}" />
     </Style>
-    
+
     <Style TargetType="Entry" x:Key="BaseEntry">
-        <Setter Property="TextColor" Value="{AppThemeBinding Dark={DynamicResource SecondaryColorDark}, Light={DynamicResource SecondaryColor}}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TDark}, Dark={StaticResource TLight}}" />
+        <Setter Property="FontFamily" Value="OpenSansRegular"/>
+        <Setter Property="FontSize" Value="14" />
+        
         <Setter Property="MaximumWidthRequest" Value="1500" />
         <Setter Property="MinimumWidthRequest" Value="{OnPlatform Default=20, UWP=400}" />
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource TDark}, Dark={StaticResource TLight}}" />
+       
+        
         <Setter Property="HorizontalOptions" Value="{OnPlatform Default=Fill, UWP=StartAndExpand}" />
+        
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TBlack}, Dark={StaticResource TWhite}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TLightGray}, Dark={StaticResource TDarkGray}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
     </Style>
+
+    <!--<Style TargetType="Entry" >
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={DynamicResource SecondaryColorDark}, Light={DynamicResource SecondaryColor}}" />
+        
+        
+    </Style>-->
     <Style TargetType="Entry" x:Key="InvalidEntry" BasedOn="{StaticResource BaseEntry}">
         <Setter Property="TextColor" Value="Red"/>
     </Style>

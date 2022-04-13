@@ -46,7 +46,10 @@
         </Tab>
         <Tab Title="{Binding AlertSettings.Title}"
              Icon="{AppThemeBinding Light=edit_notifications.png, Dark=edit_notifications_dark.png}">
-            <ShellContent ContentTemplate="{DataTemplate pages:AlertSettingsPage}" />
+            <ShellContent Title="{Binding AlertSettings.Title}"
+                          ContentTemplate="{DataTemplate pages:AlertSettingsPage}" />
+            <ShellContent Title="Active Notifications"
+                          ContentTemplate="{DataTemplate pages:ActiveNotificationsPage}"/>
         </Tab>
         <!--<Tab Title="{Binding ListenLater.Title}"
              Icon="{Binding ListenLater.Icon}">

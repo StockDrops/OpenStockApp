@@ -16,7 +16,7 @@
         <ScrollView>
             <StackLayout Grid.Row="0" >
                 <vs:UserSettingsView/>
-                <!--<vs:ThemeSettingsView/>-->
+                <vs:ThemeSettingsView IsVisible="{OnPlatform Android=True, UWP=False, Default=True}"/>
                 <views:SocialButtons />
 
             </StackLayout>

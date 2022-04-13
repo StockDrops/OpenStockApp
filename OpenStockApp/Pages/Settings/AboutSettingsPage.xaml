@@ -35,7 +35,7 @@
                    />
 
                 <views:HyperlinkButton 
-                    Margin="{StaticResource XSmallTopMargin}"
+                    Margin="0,5,0,5"
                     
                          x:Name="settingsPrivacyStatement"
                          Text="{x:Static strings:Resources.SettingsPagePrivacyStatementText}"
@@ -44,20 +44,22 @@
 
                 <views:HyperlinkButton Text="{x:Static strings:Resources.SettingsPageLicenseAgreementText}"
                                       HorizontalOptions="Start"
+                                       Margin="0,0,0,5"
                                       Url="{Binding LicenseAgreementUrl}"/>
                 <views:HyperlinkButton Text="{x:Static strings:Resources.SettingsAboutUserPortalLinkText}"
                                        HorizontalOptions="Start"
+                                       Margin="0,0,0,5"
                                        Url="{Binding UserPortalUrl}"/>
 
                 <!--ImageSource="{AppThemeBinding Dark='arrow_clockwise_dark.png', Light='arrow_clockwise.png'}"-->
                 <Button      Text="{x:Static strings:Resources.SettingsUpdateButtonText}"
-                             Margin="{StaticResource SmallTopMargin}"
+                             Margin="0,0,0,5"
                              HorizontalOptions="Start"
                              x:Name="updatesButton"/>
                 <views:SocialButtons />
                 <Label Text="Debug Info" Style="{StaticResource SubtitleTextStyle}" Margin="0,10,0,10"/>
                 <Label Text="Connection Id" Margin="0,10,0,10" />
-                <Entry Text="{Binding ConnectionId}" IsReadOnly="True" ClearButtonVisibility="Never"/>
+                <Entry Text="{Binding ConnectionId}" IsReadOnly="True" ClearButtonVisibility="Never" />
                 <Button Text="Refresh Connection Id" Command="{Binding RefreshConnectionIdCommand}" 
                         Margin="{StaticResource SmallTopMargin}"
                              HorizontalOptions="Start"/>

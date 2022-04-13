@@ -4,7 +4,7 @@
              xmlns:strings="clr-namespace:OpenStockApp.Resources.Strings"
              xmlns:vsettings="clr-namespace:OpenStockApp.Views.Settings"
              xmlns:vms="clr-namespace:OpenStockApp.ViewModels.Settings"
-             xmlns:appmodel="clr-namespace:Microsoft.Maui.ApplicationModel;assembly=Microsoft.Maui.Essentials"
+             xmlns:appmodel="clr-namespace:Microsoft.Maui.Essentials;assembly=Microsoft.Maui.Essentials"
              xmlns:converters="clr-namespace:OpenStockApp.Converters"
              x:Class="OpenStockApp.Views.Settings.ThemeSettingsView"
              
@@ -27,29 +27,51 @@
                        Style="{StaticResource SubtitleTextStyle}"
                        Text="{x:Static strings:Resources.SettingsPageChooseThemeText}" />
                 <StackLayout Margin="{StaticResource XSmallTopMargin}" Grid.Row="1">
+                <Frame CornerRadius="5"
+                       Padding="2"
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource DarkGray}, Default={StaticResource White}}"
+                       Margin="0,5,5,0">
                     <RadioButton
                             GroupName="AppTheme"
                             Content="{x:Static strings:Resources.SettingsPageRadioButtonLightTheme}"
                             FontSize="Small"
                             VerticalOptions="Center"
+                            
+                            BackgroundColor="{AppThemeBinding Dark={StaticResource DarkGray}, Default={StaticResource White}}"
                             TextColor="{AppThemeBinding Dark={StaticResource BackgroundColor},Light={StaticResource BackgroundColorDark}}"
                             IsChecked="{Binding Theme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light}" >
                     </RadioButton>
+                </Frame>
+                <Frame CornerRadius="5"
+                       Padding="2"
+                       
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource DarkGray}, Default={StaticResource White}}"
+                       Margin="0,5,5,0">
                     <RadioButton
                             GroupName="AppTheme"
+                        VerticalOptions="Center"
                             Content="{x:Static strings:Resources.SettingsPageRadioButtonDarkTheme}"
-                            Margin="{StaticResource XSmallTopMargin}"
+                            BackgroundColor="{AppThemeBinding Dark={StaticResource DarkGray}, Default={StaticResource White}}"
+
                             FontSize="Small"
                             TextColor="{AppThemeBinding Dark={StaticResource BackgroundColor},Light={StaticResource BackgroundColorDark}}"
                             IsChecked="{Binding Theme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark}" />
+                </Frame>
+                <Frame CornerRadius="5"
+                       Padding="2"
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource DarkGray}, Default={StaticResource White}}"
+                       Margin="0,5,5,15">
                     <RadioButton
                             GroupName="AppTheme"
+                        VerticalOptions="Center"
                             Content="{x:Static strings:Resources.SettingsPageRadioButtonWindowsDefaultTheme}"
-                            Margin="{StaticResource XSmallTopMargin}"
+                            
+                            BackgroundColor="{AppThemeBinding Dark={StaticResource DarkGray}, Default={StaticResource White}}"
                             FontSize="Small"
                             TextColor="{AppThemeBinding Dark={StaticResource BackgroundColor},Light={StaticResource BackgroundColorDark}}"    
                             IsChecked="{Binding Theme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Unspecified}" />
-                </StackLayout>
+                </Frame>
+            </StackLayout>
         </Grid>
     </ScrollView>
 </ContentView>

@@ -25,53 +25,67 @@
     </ContentPage.Behaviors>-->
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="120"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <!--<RowDefinition Height="80"/>-->
         </Grid.RowDefinitions>
-        <StackLayout Grid.Row="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="175" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <StackLayout Grid.Row="0" Grid.Column="0">
             <main:ConnectionIndicatorView IsConnected="{Binding BindingContext.IsConnected, Source={x:Reference page}}"
                                           ConnectCommand="{Binding BindingContext.ConnectCommand, Source={x:Reference page}}"
                                           />
-            <Button Text="{Binding IsRefreshing, Converter={StaticResource BoolToObjectConverter}}" 
+            <!--<Button Text="{Binding IsRefreshing, Converter={StaticResource BoolToObjectConverter}}" 
                     IsVisible="{OnPlatform Android='False', iOS='False', Default='True'}" 
                     IsEnabled="{Binding IsRefreshing, Converter={StaticResource InvertedBoolConverter}}"
                     Command="{Binding NavigateToPage}"
-                    Margin="0,5,0,5"/>
-            <Button Text="Send Test Notification" 
-                    Command="{Binding TestNotificationCommand}"
-                    Margin="0,5,0,5"/>
+                    Margin="0,5,0,5"/>-->
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.45*"/>
                     <ColumnDefinition Width="0.1*"/>
                     <ColumnDefinition Width="0.45*"/>
                 </Grid.ColumnDefinitions>
-                <ActivityIndicator Grid.Column="1" IsRunning="{Binding IsRefreshing}" HorizontalOptions="Center" Margin="10"/>
+                <ActivityIndicator Grid.Column="1" IsRunning="{Binding IsRefreshing}" HorizontalOptions="Center" Margin="10" IsVisible="{OnPlatform Default=False, MacCatalyst=True, UWP=True}"/>
             </Grid>
         </StackLayout>
-        <Frame CornerRadius="5" Grid.Row="1">
-            <StackLayout>
-                <StackLayout Grid.Row="1" Orientation="Horizontal">
-                    <Label Text="Apply your alert settings" 
+        <Button Grid.Row="0"
+                Grid.Column="1"
+                VerticalOptions="Start"
+                HorizontalOptions="Center"
+                    Text="Send Test Notification" 
+                    Command="{Binding TestNotificationCommand}"
+                
+                    Margin="0,5,0,5"/>
+        <Frame CornerRadius="5" Grid.Row="1" Grid.ColumnSpan="2" Margin="2" BackgroundColor="{AppThemeBinding Dark={StaticResource SecondaryColor}, Light={StaticResource BackgroundColor}}">
+            <StackLayout Grid.Row="1" Orientation="Horizontal">
+                <StackLayout Orientation="Vertical">
+                    <Label Text="Enable alert settings" 
                        VerticalOptions="Center"
-                       Margin="{OnPlatform Default='10,0,10,0', Android='5,0,5,0'} "/>
-                    <Switch IsToggled="{Binding HasToApplyFilterSettings}">
+                       Margin="{OnPlatform Default='10,0,10,0', Android='0,0,0,0'} "/>
+                    <Switch IsToggled="{Binding HasToApplyFilterSettings}"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center">
                         <Switch.Behaviors>
                             <mct:EventToCommandBehavior EventName="Toggled"
                                                     Command="{Binding ApplyFilterSettings}"/>
                         </Switch.Behaviors>
                     </Switch>
-                    <views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='True', Android='False'}"  />
+                    <!--<views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='False', Android='True'}"  />-->
+                    <!--<views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='True', Android='False'}"  />-->
                 </StackLayout>
-                <views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='False', Android='True'}"  />
+                <StackLayout>
+                    <views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='False', Android='True'}"  />
+                </StackLayout>
             </StackLayout>
             
         </Frame>
         
         <Grid Grid.Row="2"
-              
+              Grid.ColumnSpan="2"
               >
             
             <!--IsPullToRefreshEnabled="true"
@@ -79,12 +93,14 @@
                       RefreshCommand="{Binding NavigateToPage}"
                       LoadMoreCommand="{Binding LoadMoreCommand}"-->
             <!--There's an issue with this not working as it should: https://github.com/dotnet/maui/issues/4116 ItemsUpdatingScrollMode="KeepLastItemInView" -->
-            <!--<RefreshView Command="{Binding NavigateToPage}"
-                         IsRefreshing="{Binding IsRefreshing}">-->
-            <CollectionView ItemsSource="{Binding Results}"
+            <RefreshView Command="{Binding NavigateToPage}"
+                         IsRefreshing="{Binding IsRefreshing}">
+                <CollectionView ItemsSource="{Binding Results}"
+                                ItemsUpdatingScrollMode="KeepItemsInView"
+                            
                                 RemainingItemsThreshold="1"
                                 RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}"
-                                x:Name="listView">
+                                x:Name="collectionView">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="modelsapi:Result">
 
@@ -95,12 +111,13 @@
                                 <RowDefinition Height="100"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="300"/>
-                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="1*" />
                             </Grid.ColumnDefinitions>
                             <StackLayout Grid.Column="0" Grid.Row="0" Margin="25">
                                 <Label Text="{Binding Sku.Model.Name}" 
                                    Style="{StaticResource ListTitleStyle}" 
+                                       VerticalOptions="Center"
                                    LineBreakMode="WordWrap"
                                    TextTransform="Uppercase"/>
                                 <Label Text="{Binding Sku.Retailer.Name}" Margin="0,4,0,4" />
@@ -108,11 +125,16 @@
                                 <Label Text="{Binding DateTimeFound, StringFormat='{0:g}'}"/>
 
                             </StackLayout>
-                            <StackLayout Grid.Column="1" Grid.Row="0" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Margin="25">
-                                <Image Source="{Binding ThumbnailUrl}" Aspect="AspectFit"  IsVisible="{Binding ThumbnailUrl, Converter={StaticResource IsNotNullOrEmptyConverter}}" />
-                                <Label Text="{Binding Id, StringFormat='Id: {0}'}"
-                                           Margin="0,10,0,10"/>
-                            </StackLayout>
+                            <StackLayout Grid.Column="1" Grid.Row="0"  Margin="{OnPlatform Default='4,25,8,0', UWP=25}">
+                                    
+                                    <Image Source="{Binding ThumbnailUrl}" 
+                                           MaximumHeightRequest="{OnPlatform Default=80, Android=50}"
+                                           Aspect="AspectFit"  IsVisible="{Binding ThumbnailUrl, Converter={StaticResource IsNotNullOrEmptyConverter}}" Margin="0"  />
+                                    <Label Text="{Binding Id, StringFormat='Id: {0}'}"
+                                       VerticalOptions="Start"
+                                           Margin="{OnPlatform Default='0,1,0,1', UWP='0,10,0,10'}"/>
+
+                                </StackLayout>
                             <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="25">
 
                                 <Image Source="{Binding ImageUrl}" Aspect="AspectFit" HeightRequest="200" Margin="0,25,0,25">
@@ -132,18 +154,19 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            </RefreshView>
             <StackLayout Grid.Row="2" ZIndex="50"
                          VerticalOptions="End"
                          HorizontalOptions="End"
                          Margin="5">
-                <Button Margin="0,20,0,20"
+                <!--<Button Margin="0,20,0,20"
                                     Text="Load More?"
                                     MinimumWidthRequest="{OnPlatform Android=100, iOS=100, UWP=300}"
                                     HorizontalOptions="Center"
                                     FontSize="Medium"
                                     FontAttributes="Bold"
                                     IsVisible="{Binding EndReached, Converter={StaticResource InvertedBoolConverter}}"
-                                    Command="{Binding LoadMoreCommand}"/>
+                                    Command="{Binding LoadMoreCommand}"/>-->
                 <!--<Button Margin="0,20,0,20"
                                     Text="Go to Top"
                                     MinimumWidthRequest="300"
@@ -160,7 +183,7 @@
                                     Text="End Reached"
                                     IsVisible="{Binding EndReached}"/>
             </StackLayout>
-            <!--</RefreshView>-->
+           
         </Grid>
     </Grid>
 
