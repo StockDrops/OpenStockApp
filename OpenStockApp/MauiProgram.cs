@@ -32,6 +32,7 @@ using OpenStockApp.Core.Contracts.Services.Hubs;
 using OpenStockApp.Core.Maui.Services.Notifications;
 using OpenStockApp.Core.Maui.Contracts.Services;
 using Microsoft.Extensions.Logging;
+using OpenStockApp.Services.Users;
 
 
 
