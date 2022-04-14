@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net6.0;net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
@@ -25,6 +25,12 @@
 	<ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.2" />
 	</ItemGroup>
+	<ItemGroup Condition="$(TargetFramework.Contains('-android'))">
+		<PackageReference Include="Xamarin.Google.Dagger" Version="2.39.1" />
+		<PackageReference Include="Xamarin.Firebase.Messaging" Version="122.0.0.2" />
+		<PackageReference Include="Xamarin.GooglePlayServices.Base" Version="117.6.0.2" />
+		<PackageReference Include="Xamarin.GooglePlayServices.Basement" Version="117.6.0.6"/>
+	</ItemGroup>
 
 	<ItemGroup>
 	  <Compile Update="Resources\Strings\NotificationResources.Designer.cs">
@@ -49,5 +55,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\OpenStockApp.Core\OpenStockApp.Core.csproj" />
 	</ItemGroup>
+
+	
 
 </Project>

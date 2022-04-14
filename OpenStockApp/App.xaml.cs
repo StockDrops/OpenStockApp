@@ -18,6 +18,19 @@ public partial class App : Application
         Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("LightUnderline", (h, v) =>
         {
             h.PlatformView.BackgroundTintList = ColorStateList.ValueOf(Colors.LightGray.ToPlatform());
+
+        });
+        
+        Microsoft.Maui.Handlers.SearchBarHandler.Mapper.AppendToMapping("LightSearch", (h, v) =>
+        {
+            //h.PlatformView.SetBackgroundColor(Colors.LightGray.ToPlatform());
+            //h.PlatformView.BackgroundTintList = ColorStateList.ValueOf(Colors.Blue.ToPlatform());
+            //h.PlatformView.ForegroundTintList = ColorStateList.ValueOf(Colors.Blue.ToPlatform());
+
+            
+            h.PlatformView.SetOutlineAmbientShadowColor(Colors.Violet.ToPlatform());
+            h.PlatformView.SetOutlineSpotShadowColor(Colors.DarkGoldenrod.ToPlatform());
+            //h.PlatformView.BackgroundTintList = ColorStateList.ValueOf(Colors.LightGray.ToPlatform());
         });
 #endif
 

@@ -39,7 +39,7 @@
 		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.1" />
 	</ItemGroup>
 	<ItemGroup>
-		<MauiIcon Include="Resources\appicon.svg" ForegroundFile="Resources\appiconfg.svg" />
+		<MauiIcon Include="Resources\appicon.svg" Color="#512BD4" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\appiconfg.svg" Color="#512BD4" BaseSize="128,128" />
@@ -57,6 +57,8 @@
 
 	<ItemGroup>
 	  <None Remove="appsettings.json" />
+	  <None Remove="Platforms\Android\google-services.json" />
+	  <None Remove="Platforms\Android\proguard.cfg" />
 	  <None Remove="Resources\Images\default_user.svg" />
 	  <None Remove="Resources\Images\default_user_dark.svg" />
 	  <None Remove="Resources\Images\discord_logo_color.svg" />
@@ -74,6 +76,16 @@
 	  <None Remove="Resources\Images\patreon_logo_light.svg" />
 	  <None Remove="Resources\Images\twitter_logo_blue.svg" />
 	  <None Remove="Resources\Images\twitter_logo_dark.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProguardConfiguration Include="Platforms\Android\proguard.cfg" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <GoogleServicesJson Include="Platforms\Android\google-services.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </GoogleServicesJson>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -203,8 +215,14 @@
 
 	<ItemGroup>
 	  <Folder Include="Contracts\Services\" />
+	  <Folder Include="Platforms\Android\Services\" />
 	</ItemGroup>
-
+	<ItemGroup Condition="$(TargetFramework.Contains('-android'))">
+		<PackageReference Include="Xamarin.Google.Dagger" Version="2.39.1" />
+		<PackageReference Include="Xamarin.Firebase.Messaging" Version="122.0.0.2" />
+		<PackageReference Include="Xamarin.GooglePlayServices.Base" Version="117.6.0.2" />
+		<PackageReference Include="Xamarin.GooglePlayServices.Basement" Version="117.6.0.6"/>
+		</ItemGroup>
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<OutputType>WinExe</OutputType>
 		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
