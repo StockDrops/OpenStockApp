@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.4" />
     <PackageReference Include="Microsoft.Toolkit.Diagnostics" Version="7.1.2" />
-    <PackageReference Include="OpenStockApi.Core" Version="2.2.0" />
+    <PackageReference Include="OpenStockApi.Core" Version="2.4.0" />
     <PackageReference Include="Polly" Version="7.2.3" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
   </ItemGroup>

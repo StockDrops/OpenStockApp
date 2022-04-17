@@ -37,15 +37,16 @@ namespace OpenStockApp.Platforms.Android
         {
            await SendNotificationAsync(remoteMessage);
         }
-        private int notificationId = 0;
         public Task SendNotificationAsync(Result result)
         {
             var notification = androidNotificationBuilder.CreateNotification(result);
             try
             {
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.From(Platform.AppContext);
-                notificationManager.Notify(notificationId, notification);
-                notificationId++;
+                if(notification != null)
+                {
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.From(Platform.AppContext);
+                    notificationManager.Notify(unchecked((int)result.Id), notification);
+                }
             }
             catch (Exception ex)
             {

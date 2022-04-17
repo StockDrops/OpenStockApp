@@ -8,6 +8,8 @@ using Firebase.Messaging;
 using OpenStockApp;
 using OpenStockApp.Platforms;
 using OpenStockApp.Platforms.Android;
+using System.IO.Compression;
+using System.Text;
 using System.Text.Json;
 
 #endif
@@ -43,8 +45,13 @@ namespace OpenStockApp.Platforms.Android
 
             if (remoteMessage.Data.Any())
             {
-                if (remoteMessage.Data.TryGetValue("json", out string? rawJson) && remoteMessage.Data.TryGetValue("type", out string? type))
+                if (remoteMessage.Data.TryGetValue("json", out string? rawBytes) && remoteMessage.Data.TryGetValue("type", out string? type) && remoteMessage.Data.TryGetValue("encoding", out var encoding))
                 {
+                    var rawJson = UncompressMessage(rawBytes, encoding);
+
+                    if (rawJson is null)
+                        return;
+
                     switch (type)
                     {
                         case nameof(Result):
@@ -60,6 +67,28 @@ namespace OpenStockApp.Platforms.Android
             }
 
             
+        }
+
+        private string? UncompressMessage(string base64string, string encoding)
+        {
+            var bytes = Convert.FromBase64String(base64string);
+            switch (encoding)
+            {
+                case "br":
+                    return UncompressBrotli(bytes);
+                default:
+                    throw new ArgumentException("Unkwnown encoding");
+            }
+        }
+
+        private string? UncompressBrotli(Span<byte> bytes)
+        {
+            var span = new Span<byte>(new byte[4 * bytes.Length]);
+            if(BrotliDecoder.TryDecompress(bytes, span, out int bytesWritten))
+            {
+                return Encoding.UTF8.GetString(span.Slice(0, bytesWritten));
+            }
+            return null;
         }
 
     }

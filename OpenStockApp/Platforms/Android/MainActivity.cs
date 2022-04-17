@@ -3,15 +3,18 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Gms.Common;
 using Android.Gms.Extensions;
+using Android.Gms.Tasks;
 using Android.OS;
 using Firebase.Installations;
+using Firebase.Messaging;
 using Microsoft.Identity.Client;
+using OpenStockApi.Core.Models.Firebase;
 //using Plugin.FirebasePushNotification;
 
 namespace OpenStockApp;
 
 [Activity(Theme = "@style/Maui.SplashTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
-public class MainActivity : MauiAppCompatActivity
+public class MainActivity : MauiAppCompatActivity, IOnCompleteListener
 {
 	protected override void OnCreate(Bundle savedInstanceState)
 	{
@@ -23,6 +26,8 @@ public class MainActivity : MauiAppCompatActivity
         {
             CreateNotificationChannel(this);
         }
+        FirebaseMessaging.Instance.SubscribeToTopic(Topics.StockAlerts)
+                                  .AddOnCompleteListener(this);
         //var token = FirebaseInstallations.Instance.GetToken(forceRefresh: false).AsAsync<InstallationTokenResult>().Result;
         //Console.WriteLine("got it");
 
@@ -90,10 +95,18 @@ public class MainActivity : MauiAppCompatActivity
 
             notificationManager.CreateNotificationChannel(channel);
         }
-
+       
 #pragma warning restore CA1416 // Validate platform compatibility
 #else
             return;
 #endif
+    }
+
+    public void OnComplete(Android.Gms.Tasks.Task task)
+    {
+        if (task.IsSuccessful)
+        {
+
+        }
     }
 }
