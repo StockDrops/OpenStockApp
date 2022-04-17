@@ -39,10 +39,10 @@
 		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.1" />
 	</ItemGroup>
 	<ItemGroup>
-		<MauiIcon Include="Resources\appicon.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\appicon.svg" ForegroundFile="Resources\appicon.svg" Color="#512BD4" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\appiconfg.svg" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\appiconfg.svg" Color="#512BD4" BaseSize="256,256" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -77,6 +77,7 @@
 	  <None Remove="Resources\Images\twitter_logo_blue.svg" />
 	  <None Remove="Resources\Images\twitter_logo_dark.svg" />
 	</ItemGroup>
+
 
 	<ItemGroup>
 	  <ProguardConfiguration Include="Platforms\Android\proguard.cfg" />
@@ -221,8 +222,19 @@
 		<PackageReference Include="Xamarin.Google.Dagger" Version="2.39.1" />
 		<PackageReference Include="Xamarin.Firebase.Messaging" Version="122.0.0.2" />
 		<PackageReference Include="Xamarin.GooglePlayServices.Base" Version="117.6.0.2" />
-		<PackageReference Include="Xamarin.GooglePlayServices.Basement" Version="117.6.0.6"/>
+		<PackageReference Include="Xamarin.GooglePlayServices.Basement" Version="117.6.0.6" />
 		</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
+	  <PackageReference Include="Xamarin.Firebase.Analytics">
+	    <Version>119.0.1.5</Version>
+	  </PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+	  <MauiImage Update="Resources\Images\sdlogo.svg">
+	    <Color>#512BD4</Color>
+	    <ForegroundFile>Resources\appiconfg.svg</ForegroundFile>
+	  </MauiImage>
+	</ItemGroup>
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<OutputType>WinExe</OutputType>
 		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>

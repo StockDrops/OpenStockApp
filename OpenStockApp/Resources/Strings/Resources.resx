@@ -323,4 +323,13 @@ You can make changes to them and save them by clicking the button at the bottom 
   <data name="ShellAddNotifications" xml:space="preserve">
     <value>Add Notifications</value>
   </data>
+  <data name="AtcUrlButtonText" xml:space="preserve">
+    <value>Open Add to Cart Url</value>
+  </data>
+  <data name="DoNothingActionText" xml:space="preserve">
+    <value>Do Nothing (except sending a ping)</value>
+  </data>
+  <data name="ProductUrlButtonText" xml:space="preserve">
+    <value>Open Product Url</value>
+  </data>
 </root>

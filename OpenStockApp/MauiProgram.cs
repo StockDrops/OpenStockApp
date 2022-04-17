@@ -33,6 +33,7 @@ using OpenStockApp.Core.Maui.Services.Notifications;
 using OpenStockApp.Core.Maui.Contracts.Services;
 using Microsoft.Extensions.Logging;
 using OpenStockApp.Services.Users;
+using OpenStockApp.Maui.Platforms.Android;
 
 
 
@@ -288,7 +289,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<INotificationService, NotificationActionService>();
 #if WINDOWS
         builder.Services.AddSingleton<INotificationService, WindowsNotificationService>();
-
+#elif ANDROID
+        builder.Services.AddSingleton<INotificationService, AndroidNotificationService>();
 #endif
         //configure
         builder.Services.Configure<AppConfig>(builder.Configuration.GetSection(nameof(AppConfig)));

@@ -152,6 +152,15 @@ namespace OpenStockApp.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open Add to Cart Url.
+        /// </summary>
+        public static string AtcUrlButtonText {
+            get {
+                return ResourceManager.GetString("AtcUrlButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ContentGrid.
         /// </summary>
         public static string ContentGridPageTitle {
@@ -206,6 +215,15 @@ namespace OpenStockApp.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do Nothing (except sending a ping).
+        /// </summary>
+        public static string DoNothingActionText {
+            get {
+                return ResourceManager.GetString("DoNothingActionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notifications.
         /// </summary>
         public static string MainPageTitle {
@@ -229,6 +247,15 @@ namespace OpenStockApp.Resources.Strings {
         public static string OpenProductUrl {
             get {
                 return ResourceManager.GetString("OpenProductUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Product Url.
+        /// </summary>
+        public static string ProductUrlButtonText {
+            get {
+                return ResourceManager.GetString("ProductUrlButtonText", resourceCulture);
             }
         }
         

@@ -29,7 +29,7 @@
 		<PackageReference Include="Xamarin.Google.Dagger" Version="2.39.1" />
 		<PackageReference Include="Xamarin.Firebase.Messaging" Version="122.0.0.2" />
 		<PackageReference Include="Xamarin.GooglePlayServices.Base" Version="117.6.0.2" />
-		<PackageReference Include="Xamarin.GooglePlayServices.Basement" Version="117.6.0.6"/>
+		<PackageReference Include="Xamarin.GooglePlayServices.Basement" Version="117.6.0.6" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -49,11 +49,18 @@
 
 	<ItemGroup>
 	  <Folder Include="Models\Users\" />
+	  <Folder Include="Platforms\Android\Notifications\" />
 	  <Folder Include="Platforms\Windows\Users\" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\OpenStockApp.Core\OpenStockApp.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
+	  <PackageReference Include="Xamarin.Firebase.Analytics">
+	    <Version>119.0.1.5</Version>
+	  </PackageReference>
 	</ItemGroup>
 
 	

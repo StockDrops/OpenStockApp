@@ -15,7 +15,7 @@ namespace OpenStockApp.Platforms.Android
 
 
 #if ANDROID
-    [Service(DirectBootAware = true, Exported = false, Enabled = true)]
+    [Service(Name = "OpenStockApp.Platforms.Android.FirebaseService", DirectBootAware = true, Exported = false, Enabled = true)]
     [IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT" })]
     [IntentFilter(new[] { "com.google.firebase.INSTANCE_ID_EVENT" })]
     public class FirebaseService : FirebaseMessagingService
@@ -24,6 +24,7 @@ namespace OpenStockApp.Platforms.Android
         {
             Console.WriteLine("Created");
         }
+        
         public FirebaseService() : base()
         {
             Console.WriteLine("Created");

@@ -61,6 +61,11 @@ namespace OpenStockApp.ViewModels.AlertSettings
                 Action = NotificationAction.OpenAddToCartUrl,
                 Description = Resources.Strings.Resources.OpenAddToCartUrl
             });
+            NotificationActions.Add(new DisplayedNotificationActions
+            {
+                Action = NotificationAction.DoNothing,
+                Description = Resources.Strings.Resources.DoNothingActionText
+            });
         }
         public async Task OnSaveModelOptions(CancellationToken cancellationToken = default)
         {
