@@ -25,18 +25,12 @@ namespace OpenStockApp.Platforms.Android
         {
             this.androidNotificationBuilder = androidNotificationBuilder;
             this.logger = logger;
-
-            MessagingCenter.Subscribe<FirebaseService, Result>(this, "NotificationReceived", async (sender, args) =>
-            {
-                await OnNotificationReceived(sender, args);
-            });
-
         }
 
-        private async Task OnNotificationReceived(FirebaseService sender, Result remoteMessage)
-        {
-           await SendNotificationAsync(remoteMessage);
-        }
+        //private async Task OnNotificationReceived(FirebaseService sender, Result remoteMessage)
+        //{
+        //   await SendNotificationAsync(remoteMessage);
+        //}
         public Task SendNotificationAsync(Result result)
         {
             var notification = androidNotificationBuilder.CreateNotification(result);

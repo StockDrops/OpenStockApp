@@ -1,7 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
+using OpenStockApp.Core.Contracts.Services;
 using OpenStockApp.Core.Contracts.Services.Hubs;
 using OpenStockApp.Core.Contracts.Services.Settings;
 using OpenStockApp.Core.Contracts.Services.Users;
+#if ANDROID
+using OpenStockApp.Platforms.Android;
+#endif
 using OpenStockApp.SignalR.Services;
 using System;
 using System.Collections.Generic;
@@ -9,6 +13,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Result = OpenStockApi.Core.Models.Searches.Result;
 
 namespace OpenStockApp.Services
 {
@@ -21,6 +26,7 @@ namespace OpenStockApp.Services
         private readonly IEnumerable<IBaseHubClient> hubClients;
         private readonly IUserOptionsService userOptionsService;
         private readonly ILogger<ApplicationHostService> logger;
+        private readonly INotificationHubService notificationHubService;
         /// <summary>
         /// Default constructor with all the dependencies.
         /// </summary>
@@ -28,14 +34,28 @@ namespace OpenStockApp.Services
         public ApplicationHostService(IIdentityService identityService,
             IUserOptionsService userOptionsService, 
             ILogger<ApplicationHostService> logger,
-            IEnumerable<IBaseHubClient> hubClients
+            IEnumerable<IBaseHubClient> hubClients,
+            INotificationHubService notificationHubService
             )
         {
             this.identityService = identityService;
             this.hubClients = hubClients;
             this.userOptionsService = userOptionsService;
+            this.notificationHubService = notificationHubService;
             this.logger = logger;
+#if ANDROID
+            MessagingCenter.Subscribe<FirebaseService, Result>(this, "NotificationReceived", async (sender, args) =>
+            {
+                await OnNotificationReceived(sender, args);
+            });
+#endif
         }
+
+        private async Task OnNotificationReceived(FirebaseService sender, Result remoteMessage)
+        {
+            await notificationHubService.ForwardNotificationReceived(remoteMessage);
+        }
+
 
         /// <summary>
         /// Starts the services as required.
