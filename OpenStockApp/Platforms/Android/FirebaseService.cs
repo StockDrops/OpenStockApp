@@ -8,7 +8,10 @@ using Firebase.Messaging;
 using OpenStockApp;
 using OpenStockApp.Platforms;
 using OpenStockApp.Platforms.Android;
+using System.Text.Json;
+
 #endif
+using Result = OpenStockApi.Core.Models.Searches.Result;
 
 namespace OpenStockApp.Platforms.Android
 {
@@ -34,9 +37,29 @@ namespace OpenStockApp.Platforms.Android
         {
             base.OnNewToken(p0);
         }
-        public override void OnMessageReceived(RemoteMessage p0)
+        public override void OnMessageReceived(RemoteMessage remoteMessage)
         {
-            base.OnMessageReceived(p0);
+            base.OnMessageReceived(remoteMessage);
+
+            if (remoteMessage.Data.Any())
+            {
+                if (remoteMessage.Data.TryGetValue("json", out string? rawJson) && remoteMessage.Data.TryGetValue("type", out string? type))
+                {
+                    switch (type)
+                    {
+                        case nameof(Result):
+                            var result = JsonSerializer.Deserialize<Result>(rawJson);
+                            if (result != null)
+                                MessagingCenter.Send<FirebaseService, Result>(this, "NotificationReceived", result);
+                            break;
+                        default:
+                            break;
+
+                    }
+                }
+            }
+
+            
         }
 
     }
