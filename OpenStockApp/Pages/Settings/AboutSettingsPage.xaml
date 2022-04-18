@@ -65,6 +65,7 @@
                              HorizontalOptions="Start"/>
                 <Label Text="User Id" Margin="0,10,0,10" />
                 <Entry Text="{Binding UserId}" IsReadOnly="True" ClearButtonVisibility="Never" />
+                <Button Text="Share Log File" IsVisible="{OnPlatform Android=True, Default=True}" Command="{Binding ShareLog}" />
             </StackLayout>
         </Grid>
     </ScrollView>

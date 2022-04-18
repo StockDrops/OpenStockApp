@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using Microsoft.Toolkit.Mvvm.Input;
 using OpenStockApp.Core.Contracts.Services.Hubs;
 using OpenStockApp.Core.Contracts.Services.Users;
 using OpenStockApp.Models;
@@ -33,6 +34,7 @@ namespace OpenStockApp.ViewModels.Settings
         {
             ConnectionId = _notificationsHubClient.ConnectionId;
         }
+        public AsyncRelayCommand ShareLog { get; set; }
 
 
         private readonly AppConfig _appConfig;
@@ -43,12 +45,23 @@ namespace OpenStockApp.ViewModels.Settings
             _appConfig = appConfig.Value;
             _notificationsHubClient = notificationsHubClient;
             RefreshConnectionIdCommand = new Command(() => RefreshConnectionId());
+            ShareLog = new AsyncRelayCommand(OnShareLog);
             this.identityService = identityService;
 
             UserId = identityService.GetUniqueId();
 
             identityService.LoggedIn += OnLoggedIn;
             identityService.LoggedOut += OnLoggedOut;
+        }
+
+        public async Task OnShareLog(CancellationToken cancellationToken = default)
+        {
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "StockDrops\\logs\\applog.txt");
+            await Share.RequestAsync(new ShareFileRequest
+            {
+                Title = Title,
+                File = new ShareFile(path)
+            });
         }
 
         private void OnLoggedIn(object? sender, EventArgs eventArgs)

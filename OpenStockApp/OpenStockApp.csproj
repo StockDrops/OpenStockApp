@@ -9,6 +9,8 @@
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
+
+		<AndroidPackageFormat>apk</AndroidPackageFormat>
     
 		<!-- Display name -->
 		<ApplicationTitle>StockDrops OpenStock App</ApplicationTitle>
