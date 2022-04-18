@@ -51,11 +51,12 @@ namespace OpenStockApp.Services
 #endif
         }
 
+#if ANDROID
         private async Task OnNotificationReceived(FirebaseService sender, Result remoteMessage)
         {
             await notificationHubService.ForwardNotificationReceived(remoteMessage);
         }
-
+#endif
 
         /// <summary>
         /// Starts the services as required.
