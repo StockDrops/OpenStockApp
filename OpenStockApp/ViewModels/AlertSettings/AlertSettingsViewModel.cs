@@ -172,13 +172,15 @@ namespace OpenStockApp.ViewModels.AlertSettings
             try
             {
                 await userOptionsService.SaveCurrentUserOptionsAsync(cancellationToken);
+                IsBusy = false;
                 MessagingCenter.Send<AlertSettingsViewModel, Exception?>(this, "saved", null);
             }
             catch (HubNotConnected ex)
             {
+                IsBusy = false;
                 MessagingCenter.Send<AlertSettingsViewModel, Exception?>(this, "saved", ex);
             }
-            IsBusy = false;
+            
         }
         /// <summary>
         /// 
