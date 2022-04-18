@@ -1,6 +1,7 @@
 using System.Windows.Input;
 
 namespace OpenStockApp;
+
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class ConnectionIndicatorView : ContentView
 {

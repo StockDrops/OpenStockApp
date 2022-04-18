@@ -11,6 +11,11 @@
 		<EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
 
 		<AndroidPackageFormat>apk</AndroidPackageFormat>
+		<!-- We cannot using linking with EF CORE. It just breaks. -->
+		<AndroidLinkMode>None</AndroidLinkMode>
+		
+		<!--<DebugSymbols>True</DebugSymbols>
+		<DebugType>Full</DebugType>-->
     
 		<!-- Display name -->
 		<ApplicationTitle>StockDrops OpenStock App</ApplicationTitle>
@@ -241,9 +246,15 @@
 		<OutputType>WinExe</OutputType>
 		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
 	</PropertyGroup>
+	
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041|AnyCPU'">
 	  <Optimize>True</Optimize>
 	</PropertyGroup>
+	
+
+	<!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
+	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+	</PropertyGroup>-->
 	
 </Project>

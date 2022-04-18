@@ -6,6 +6,7 @@
              x:Class="OpenStockApp.ConnectionIndicatorView"
              x:DataType="main:ConnectionIndicatorView"
              x:Name="view"
+             IsVisible="{OnPlatform Android=False, Default=True}"
              >
     <ContentView.Resources>
         <ResourceDictionary>

@@ -35,9 +35,12 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <StackLayout Grid.Row="0" Grid.Column="0">
-            <main:ConnectionIndicatorView IsConnected="{Binding BindingContext.IsConnected, Source={x:Reference page}}"
-                                          ConnectCommand="{Binding BindingContext.ConnectCommand, Source={x:Reference page}}"
+            <main:ConnectionIndicatorView IsConnected="{Binding IsConnected}"
+                                          ConnectCommand="{Binding ConnectCommand}"
+                                          
                                           />
+            <!--IsConnected="{Binding BindingContext.IsConnected, Source={x:Reference page}}"
+                                          ConnectCommand="{Binding BindingContext.ConnectCommand, Source={x:Reference page}}"-->
             <!--<Button Text="{Binding IsRefreshing, Converter={StaticResource BoolToObjectConverter}}" 
                     IsVisible="{OnPlatform Android='False', iOS='False', Default='True'}" 
                     IsEnabled="{Binding IsRefreshing, Converter={StaticResource InvertedBoolConverter}}"
@@ -155,11 +158,12 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
             </RefreshView>
-            <StackLayout Grid.Row="2" ZIndex="50"
+            <StackLayout Grid.Row="2" 
                          VerticalOptions="End"
                          HorizontalOptions="End"
                          Margin="5">
                 <!--<Button Margin="0,20,0,20"
+                ZIndex="50"
                                     Text="Load More?"
                                     MinimumWidthRequest="{OnPlatform Android=100, iOS=100, UWP=300}"
                                     HorizontalOptions="Center"
