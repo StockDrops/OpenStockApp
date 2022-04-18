@@ -32,7 +32,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="80" />
+            <RowDefinition Height="{OnPlatform Android=40, Default=80}" />
         </Grid.RowDefinitions>
         <main:ConnectionIndicatorView IsConnected="{Binding BindingContext.IsConnected, Source={x:Reference page}}"
                                       ConnectCommand="{Binding BindingContext.ConnectCommand, Source={x:Reference page}}"
@@ -145,7 +145,7 @@
                         <Grid HeightRequest="350"
                               WidthRequest="400">
                                 <Grid.Behaviors>
-                                    <mct:MultiValidationBehavior  />
+                                    
                                 </Grid.Behaviors>
                             <StackLayout>
                                     <Label Text="{Binding Model.Name}"

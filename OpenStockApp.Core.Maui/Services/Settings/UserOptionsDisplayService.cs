@@ -38,12 +38,14 @@ namespace OpenStockApp.Core.Maui.Services.Settings
         {
             var models = await userOptionsHubClient.GetModels(product, cancellationToken);
             var observableModels = new List<ObservableModelOptions>();
-            
+            var options = userOptionsService.UserOptions;
+
+
             foreach (var model in models)
             {
-                var modelOption = userOptionsService.UserOptions?.ModelOptions?.Where(m => m.ModelId == model.Id).FirstOrDefault();
+                var modelOption = options?.ModelOptions?.Where(m => m.ModelId == model.Id).FirstOrDefault();
 
-                if (userOptionsService.UserOptions != null && modelOption != null)
+                if (options != null && modelOption != null)
                 {
                     observableModels.Add(new ObservableModelOptions(model, modelOption));
                 }
@@ -54,7 +56,7 @@ namespace OpenStockApp.Core.Maui.Services.Settings
                         ModelId = model.Id
 
                     };
-                    userOptionsService.UserOptions?.ModelOptions.Add(modelOption);
+                    options?.ModelOptions.Add(modelOption);
                     observableModels.Add(new ObservableModelOptions(model, modelOption));
                 }
             }

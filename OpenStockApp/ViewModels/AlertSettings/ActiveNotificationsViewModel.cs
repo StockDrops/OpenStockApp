@@ -7,6 +7,7 @@ using OpenStockApp.Core.Contracts.Services.Settings;
 using OpenStockApp.Core.Contracts.Services.Users;
 using OpenStockApp.Core.Maui.Models;
 using OpenStockApp.Models.Users;
+using OpenStockApp.Pages.Alerts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,7 +24,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
         public ObservableCollection<Product> Products { get; set; } = new ObservableCollection<Product>();
         public ObservableCollection<DisplayedNotificationActions> NotificationActions { get; set; } = new ObservableCollection<DisplayedNotificationActions>();
         public Product SelectedProduct { get; set; } = new Product();
-        public AsyncRelayCommand NavigatedToCommand { get; set; }
+        public Command NavigatedToCommand { get; set; }
         public AsyncRelayCommand ItemSelected { get; set; }
         public AsyncRelayCommand ReloadModels { get; set; }
         public AsyncRelayCommand SaveModelOptions { get; set; }
@@ -35,14 +36,16 @@ namespace OpenStockApp.ViewModels.AlertSettings
             IIdentityService identityService) : base(baseHubClient)
         {
             this.userOptionsService = userOptionsService;
-            NavigatedToCommand = new AsyncRelayCommand(OnNavigatedTo);
+            NavigatedToCommand = new Command(() => OnNavigatedTo());
             ItemSelected = new AsyncRelayCommand(OnProductSelected);
             ReloadModels = new AsyncRelayCommand(OnReloadSource);
             SaveModelOptions = new AsyncRelayCommand(OnSaveModelOptions);
             this.identityService = identityService;
-
+#if ANDROID
+            MessagingCenter.Subscribe<ActiveNotificationsPage>(this, "NavigatedTo", (sender) => Dispatcher.Dispatch(() => OnNavigatedTo()));
+#endif
         }
-        public async Task OnNavigatedTo(CancellationToken cancellationToken = default)
+        public void OnNavigatedTo()
         {
             GroupedModelOptions.Clear();
             LoadProducts();
