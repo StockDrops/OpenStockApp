@@ -148,13 +148,14 @@ namespace OpenStockApp.ViewModels.AlertSettings
             try
             {
                 await userOptionsService.SaveCurrentUserOptionsAsync(cancellationToken);
+                IsBusy = false;
                 MessagingCenter.Send<RetailerOptionsViewModel, Exception?>(this, "saved", null);
             }
             catch (HubNotConnected ex)
             {
+                IsBusy = false;
                 MessagingCenter.Send<RetailerOptionsViewModel, Exception?>(this, "saved", ex);
             }
-            IsBusy = false;
         }
         private async Task LoadAllCountries(CancellationToken token = default)
         {

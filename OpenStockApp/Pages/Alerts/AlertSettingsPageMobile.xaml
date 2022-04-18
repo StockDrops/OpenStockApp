@@ -31,7 +31,6 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            
             <RowDefinition Height="*"/>
             <RowDefinition Height="{OnPlatform Android=40, Default=80}" />
         </Grid.RowDefinitions>

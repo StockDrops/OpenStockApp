@@ -25,7 +25,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="{OnPlatform Android=40, Default=80}"/>
         </Grid.RowDefinitions>
-        <StackLayout Margin="30" Grid.Row="0">
+        <StackLayout Margin="15" Grid.Row="0">
             <StackLayout IsVisible="{OnPlatform Android=False, Default=True}">
                 <Label Text="{x:Static strings:Resources.ActiveNotificationsExplanationTitle}" LineBreakMode="WordWrap" Style="{StaticResource ListTitleStyle}" Margin="0,10,0,10" />
                 <Label Text="{x:Static strings:Resources.ActiveNotificationsExplanation}" LineBreakMode="CharacterWrap" Style="{StaticResource BodyTextStyle}" HorizontalOptions="Start" MaximumWidthRequest="{OnPlatform Android=350, UWP=1400, MacCatalyst=1400}" Margin="0,10,0,10"/>
