@@ -9,6 +9,7 @@
              xmlns:users="clr-namespace:OpenStockApi.Core.Models.Users;assembly=OpenStockApi.Core"
              xmlns:strings="clr-namespace:OpenStockApp.Resources.Strings"
              xmlns:converters="clr-namespace:OpenStockApp.Converters"
+             xmlns:views="clr-namespace:OpenStockApp.Views"
              x:Class="OpenStockApp.Pages.Alerts.AlertSettingsPage"
              x:DataType="vm:AlertSettingsViewModel"
              x:Name="page"
@@ -39,8 +40,11 @@
                                       Grid.Row="0"/>
         <ScrollView Grid.Row="1">
             <StackLayout Margin="{OnPlatform iOS='30,60,30,30', Default='30'}" IsVisible="{Binding IsLoggedIn}">
-                <Label Text="{x:Static strings:Resources.AddNotificationsExplanationTitle}" LineBreakMode="WordWrap" Style="{StaticResource ListTitleStyle}" Margin="0,10,0,10" />
-                <Label Text="{x:Static strings:Resources.AddNotificationsExplanation}" LineBreakMode="CharacterWrap" Style="{StaticResource BodyTextStyle}" HorizontalOptions="Start" MaximumWidthRequest="1400" Margin="0,10,0,10"/>
+                <StackLayout IsVisible="{OnPlatform Android=False, Default=True}">
+                    <Label Text="{x:Static strings:Resources.AddNotificationsExplanationTitle}" LineBreakMode="WordWrap" Style="{StaticResource ListTitleStyle}" Margin="0,10,0,10" />
+                    <Label Text="{x:Static strings:Resources.AddNotificationsExplanation}" LineBreakMode="CharacterWrap" Style="{StaticResource BodyTextStyle}" HorizontalOptions="Start" MaximumWidthRequest="{OnPlatform Android=350, UWP=1400, MacCatalyst=1400}" Margin="0,10,0,10"/>
+                </StackLayout>
+                <Button Text="Help" Command="{Binding DisplayHelp, Source={x:Reference page}}" HeightRequest="40"/>
                 <Label Text="Retailer Options" Style="{StaticResource ListTitleStyle}" Margin="0,10,0,10"/>
                 <StackLayout>
 
@@ -92,7 +96,14 @@
                     <mct:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding LoadModels}" />
                 </Picker.Behaviors>
             </Picker>
-                <SearchBar x:Name="searchBar"
+                <views:ModelOptionsView ItemSource="{Binding Models}"
+                                NotificationActions="{Binding NotificationActions}"
+                                IsBusy="{Binding IsBusy}"
+                                IsLoggedIn="{Binding IsLoggedIn}"
+                                ReloadSourceCommand="{Binding LoadModels}"
+                                SaveModelOptionsCommand="{Binding SaveModelOptions}"
+                                VerticalOptions="StartAndExpand"/>
+                <!--<SearchBar x:Name="searchBar"
                            IsTextPredictionEnabled="True"
                            Placeholder="Search for a model"
                            SearchCommand="{Binding PerformSearch}"
@@ -186,7 +197,7 @@
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-            </CollectionView>
+            </CollectionView>-->
             
         </StackLayout>
     </ScrollView>

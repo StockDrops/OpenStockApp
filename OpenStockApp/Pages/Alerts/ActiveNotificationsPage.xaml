@@ -11,37 +11,55 @@
              x:Name="page"
              x:DataType="viewmodels:ActiveNotificationsViewModel"
              >
+    <ContentPage.Resources>
+        <mct:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueObject="Busy... Please wait..." FalseObject="Save Alert Settings" />
+        <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+    </ContentPage.Resources>
     <ContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="NavigatedTo"
                                     Command="{Binding NavigatedToCommand}"/>
         
     </ContentPage.Behaviors>
-    <StackLayout Margin="30">
-        <StackLayout IsVisible="{OnPlatform Android=False, Default=True}">
-            <Label Text="{x:Static strings:Resources.ActiveNotificationsExplanationTitle}" LineBreakMode="WordWrap" Style="{StaticResource ListTitleStyle}" Margin="0,10,0,10" />
-            <Label Text="{x:Static strings:Resources.ActiveNotificationsExplanation}" LineBreakMode="CharacterWrap" Style="{StaticResource BodyTextStyle}" HorizontalOptions="Start" MaximumWidthRequest="{OnPlatform Android=350, UWP=1400, MacCatalyst=1400}" Margin="0,10,0,10"/>
-        </StackLayout>
-        <Button Text="Help" Command="{Binding DisplayHelp, Source={x:Reference page}}" HeightRequest="40"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="{OnPlatform Android=40, Default=80}"/>
+        </Grid.RowDefinitions>
+        <StackLayout Margin="30" Grid.Row="0">
+            <StackLayout IsVisible="{OnPlatform Android=False, Default=True}">
+                <Label Text="{x:Static strings:Resources.ActiveNotificationsExplanationTitle}" LineBreakMode="WordWrap" Style="{StaticResource ListTitleStyle}" Margin="0,10,0,10" />
+                <Label Text="{x:Static strings:Resources.ActiveNotificationsExplanation}" LineBreakMode="CharacterWrap" Style="{StaticResource BodyTextStyle}" HorizontalOptions="Start" MaximumWidthRequest="{OnPlatform Android=350, UWP=1400, MacCatalyst=1400}" Margin="0,10,0,10"/>
+            </StackLayout>
+            <Button Text="Help" Command="{Binding DisplayHelp, Source={x:Reference page}}" HeightRequest="40"/>
 
-        <Label Text="{OnPlatform Default='Products Options', Android='Select an actively tracked product'}" Style="{StaticResource ListTitleStyle}"/>
-        <Picker Title="Select an actively tracked product"
+            <Label Text="{OnPlatform Default='Products Options', Android='Select an actively tracked product'}" Style="{StaticResource ListTitleStyle}"/>
+            <Picker Title="Select an actively tracked product"
                 ItemsSource="{Binding Products}"
                 ItemDisplayBinding="{Binding Name}"
                 SelectedItem="{Binding SelectedProduct}"
                 Margin="{OnPlatform Default='0,10,0,10', Android='0,2,0,2'}">
-            <Picker.Behaviors>
-                <mct:EventToCommandBehavior EventName="SelectedIndexChanged"
+                <Picker.Behaviors>
+                    <mct:EventToCommandBehavior EventName="SelectedIndexChanged"
                                             Command="{Binding ItemSelected}"/>
-            </Picker.Behaviors>
-        </Picker>
+                </Picker.Behaviors>
+            </Picker>
 
-        <views:ModelOptionsView ItemSource="{Binding GroupedModelOptions}"
+            <views:ModelOptionsView ItemSource="{Binding GroupedModelOptions}"
                                 NotificationActions="{Binding NotificationActions}"
                                 IsBusy="{Binding IsBusy}"
                                 IsLoggedIn="{Binding IsLoggedIn}"
                                 ReloadSourceCommand="{Binding ReloadModels}"
                                 SaveModelOptionsCommand="{Binding SaveModelOptions}"
                                 VerticalOptions="StartAndExpand"/>
-        
-    </StackLayout>
+        </StackLayout>
+        <Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
+                    Command="{Binding SaveModelOptions}" 
+                    IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                     IsVisible="{Binding IsLoggedIn}"
+                    Grid.Row="1"/>
+        <Button Text="Log In"
+                Grid.Row="1"
+                IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}}" />
+    </Grid>
+    
 </ContentPage>

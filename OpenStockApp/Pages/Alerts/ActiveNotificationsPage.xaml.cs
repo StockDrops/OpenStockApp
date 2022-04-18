@@ -23,10 +23,6 @@ public partial class ActiveNotificationsPage : ContentPage
 		
 	}
 	public ICommand DisplayHelp { get; set; }
-	public void OnNavigatedTo(object? sender, EventArgs e)
-    {
-		Console.WriteLine("here");
-    }
 	public void OnDisplayHelp()
     {
 		DisplayAlert(StringResources.ActiveNotificationsExplanationTitle, StringResources.ActiveNotificationsExplanation, "Ok");

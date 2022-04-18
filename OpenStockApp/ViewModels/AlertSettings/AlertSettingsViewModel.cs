@@ -211,14 +211,14 @@ namespace OpenStockApp.ViewModels.AlertSettings
             Models.Clear();
             _ = Task.Run(async () =>
             {
-                await Task.Delay(1000);
+                //await Task.Delay(1000);
                 var groupedOptions = await userOptionsDisplayService.GetGroupedObversableModelOptionsAsync(SelectedProduct, cancellationToken);
 
                 foreach (var options in groupedOptions)
                 {
                     
                     Dispatcher.Dispatch( () => Models.Add(options));
-                    await Task.Delay(200);
+                    //await Task.Delay(200);
                 }
                 Dispatcher.Dispatch(() => IsBusy = false);
             });

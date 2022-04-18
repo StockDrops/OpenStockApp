@@ -75,7 +75,7 @@
                 </CollectionView.GroupHeaderTemplate>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:ObservableModelOptions">
-                        <Grid HeightRequest="400">
+                        <Grid HeightRequest="{OnPlatform Default=400, Android=250}">
                             <Grid.Behaviors>
                                 <mct:MultiValidationBehavior  />
                             </Grid.Behaviors>
@@ -113,7 +113,7 @@
                                         </Entry.Behaviors>
                                     </Entry>
                                 </StackLayout>
-                                <StackLayout Orientation="{OnPlatform Android='Horizontal', Default='Vertical'}">
+                                <StackLayout Orientation="{OnPlatform Android='Vertical', Default='Vertical'}">
                                     <Label Text="Action:" Margin="0,10,0,10" />
                                     <Picker ItemDisplayBinding="{Binding Description}"
                                         SelectedIndex="{Binding ModelOptions.NotificationAction, Mode=TwoWay, Converter={StaticResource EnumToIntConverter}}"
@@ -125,14 +125,15 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
+            
+            <!--<Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
                     Command="{Binding SaveModelOptionsCommand, Source={x:Reference view}}" 
                     IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                      IsVisible="{Binding IsLoggedIn}"
                     Grid.Row="2"/>
             <Button Text="Log In"
                 Grid.Row="2"
-                IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}}" />
+                IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}}" />-->
         </Grid>
     </ContentView.Content>
 </ContentView>
