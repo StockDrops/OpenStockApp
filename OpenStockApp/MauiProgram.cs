@@ -313,6 +313,9 @@ public static class MauiProgram
         builder.Services.AddTransient<NotificationsPage>();
 #if ANDROID || IOS
         builder.Services.AddTransient<NotificationPageMobile>();
+        builder.Services.AddTransient<AlertSettingsPageMobile>();
+        builder.Services.AddTransient<RetailerOptionsPage>();
+        builder.Services.AddTransient<RetailerOptionsViewModel>();
 #endif
         var app = builder.Build();
         app.MigrateDatabase<AppDbContext>();

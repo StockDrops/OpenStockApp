@@ -20,7 +20,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="{OnPlatform Default=80, Android=40}"/>
+                
             </Grid.RowDefinitions>
             <SearchBar x:Name="searchBar"
                        Grid.Row="0"
@@ -50,8 +50,8 @@
                     <DataTemplate x:DataType="models:GroupedObversableModelOptions">
                         <Grid HorizontalOptions="StartAndExpand"
                                   VerticalOptions="StartAndExpand"
-                                  MinimumHeightRequest="{OnPlatform Default=80, Android=40}"
-                                  HeightRequest="{OnPlatform Default=80, Android=40}">
+                                  MinimumHeightRequest="{OnPlatform Default=80, Android=30}"
+                                  HeightRequest="{OnPlatform Default=80, Android=30}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="0.1*"/>
                                 <RowDefinition Height="0.8*"/>

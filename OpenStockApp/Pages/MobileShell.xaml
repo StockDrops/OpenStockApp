@@ -47,7 +47,9 @@
         <Tab Title="{Binding AlertSettings.Title}"
              Icon="{AppThemeBinding Light=edit_notifications.png, Dark=edit_notifications_dark.png}">
             <ShellContent Title="{Binding AlertSettings.Title}"
-                          ContentTemplate="{DataTemplate pages:AlertSettingsPage}" />
+                          ContentTemplate="{DataTemplate pages:AlertSettingsPageMobile}" />
+            <ShellContent Title="Retailer Options"
+                          ContentTemplate="{DataTemplate pages:RetailerOptionsPage}" />
             <ShellContent Title="Active Notifications"
                           ContentTemplate="{DataTemplate pages:ActiveNotificationsPage}"/>
         </Tab>
