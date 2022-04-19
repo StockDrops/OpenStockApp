@@ -42,6 +42,7 @@ namespace OpenStockApp.Platforms.Android
         public override void OnMessageReceived(RemoteMessage remoteMessage)
         {
             base.OnMessageReceived(remoteMessage);
+            
 
             if (remoteMessage.Data.Any())
             {

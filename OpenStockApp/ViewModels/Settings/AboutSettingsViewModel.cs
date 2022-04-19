@@ -1,8 +1,13 @@
-﻿using Microsoft.Extensions.Options;
+﻿
+using Microsoft.Extensions.Options;
 using Microsoft.Toolkit.Mvvm.Input;
 using OpenStockApp.Core.Contracts.Services.Hubs;
 using OpenStockApp.Core.Contracts.Services.Users;
 using OpenStockApp.Models;
+using Android.Gms.Extensions;
+#if ANDROID
+using Firebase.Messaging;
+#endif
 using System.Reflection;
 
 namespace OpenStockApp.ViewModels.Settings
@@ -28,11 +33,24 @@ namespace OpenStockApp.ViewModels.Settings
             get => (string?)GetValue(UserIdProperty);
             set => SetValue(UserIdProperty, value);
         }
+        public static readonly BindableProperty FirebaseTokenProperty = BindableProperty.Create(nameof(FirebaseToken), typeof(string), typeof(AboutSettingsViewModel));
+        public string? FirebaseToken
+        {
+            get => (string?)GetValue(FirebaseTokenProperty);
+            set => SetValue(FirebaseTokenProperty, value);
+        }
 
         public Command RefreshConnectionIdCommand { get; set; }
+        public AsyncRelayCommand RefreshTokenCommand { get; set; }
         private void RefreshConnectionId()
         {
             ConnectionId = _notificationsHubClient.ConnectionId;
+        }
+        private async Task RefreshFirebaseToken(CancellationToken cancellationToken = default)
+        {
+#if ANDROID
+            FirebaseToken = (await FirebaseMessaging.Instance.GetToken().AsAsync<Java.Lang.String>()).ToString();
+#endif
         }
         public AsyncRelayCommand ShareLog { get; set; }
 
@@ -45,6 +63,7 @@ namespace OpenStockApp.ViewModels.Settings
             _appConfig = appConfig.Value;
             _notificationsHubClient = notificationsHubClient;
             RefreshConnectionIdCommand = new Command(() => RefreshConnectionId());
+            RefreshTokenCommand = new AsyncRelayCommand(RefreshFirebaseToken);
             ShareLog = new AsyncRelayCommand(OnShareLog);
             this.identityService = identityService;
 

@@ -48,7 +48,8 @@ public partial class App : Application
     {
         var window = base.CreateWindow(activationState);
 
-        //window.Created += (s, e) => BackgroundServicesContainer.StartApp();
+        window.Resumed += (s, e) => BackgroundServicesContainer.StartApp();
+        window.Stopped += (s, e) => BackgroundServicesContainer.StopApp();
 
         return window;
     }

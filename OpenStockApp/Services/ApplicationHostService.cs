@@ -72,7 +72,7 @@ namespace OpenStockApp.Services
 
                 foreach (var hubClient in hubClients)
                 {
-                    tasks.Add(hubClient.StartAsync(cancellationToken));
+                    tasks.Add(StartHub(hubClient, cancellationToken));
                 }
                 await Task.WhenAll(tasks); //about 3 s
                 await userOptionsService.InitializeAsync(cancellationToken); //hubs need to be initialized first.
@@ -82,6 +82,11 @@ namespace OpenStockApp.Services
                 logger.LogError(ex, "Error while initializing the app.");
             }
             
+        }
+        private async Task StartHub(IBaseHubClient hubClient, CancellationToken cancellationToken = default)
+        {
+            if (hubClient.State != Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Connected)
+                await hubClient.StartAsync(cancellationToken).ConfigureAwait(false);
         }
         public async Task StopAsync(CancellationToken cancellationToken = default)
         {
