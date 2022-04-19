@@ -56,13 +56,13 @@ namespace OpenStockApp.Platforms.Android.Notifications
                 if (!string.IsNullOrEmpty(result.AtcUrl))
                 {
                     Intent addToCartIntent = new Intent(Intent.ActionView, Uri.Parse(result.AtcUrl));
-                    PendingIntent? pendingIntent = PendingIntent.GetActivity(Platform.AppContext, 0, addToCartIntent, PendingIntentFlags.OneShot);
+                    PendingIntent? pendingIntent = PendingIntent.GetActivity(Platform.AppContext, 0, addToCartIntent, PendingIntentFlags.OneShot | PendingIntentFlags.Immutable);
                     notificationBuilder.AddAction(0, Resources.Strings.Resources.AtcUrlButtonText, pendingIntent);
                 }
                 if (!string.IsNullOrEmpty(result.ProductUrl))
                 {
                     Intent productUrlIntent = new Intent(Intent.ActionView, Uri.Parse(result.ProductUrl));
-                    PendingIntent? pendingIntent = PendingIntent.GetActivity(Platform.AppContext, 0, productUrlIntent, PendingIntentFlags.OneShot);
+                    PendingIntent? pendingIntent = PendingIntent.GetActivity(Platform.AppContext, 0, productUrlIntent, PendingIntentFlags.OneShot | PendingIntentFlags.Immutable);
                     notificationBuilder.AddAction(0, Resources.Strings.Resources.ProductUrlButtonText, pendingIntent);
                 }
                 return notificationBuilder.Build();
