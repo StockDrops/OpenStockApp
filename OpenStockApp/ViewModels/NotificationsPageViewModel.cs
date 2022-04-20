@@ -65,18 +65,20 @@ namespace OpenStockApp.ViewModels
         private readonly IResultWindowService resultWindowService;
         private readonly IFilterService filterService;
         private readonly INotificationsHubClient notificationsHubClient;
-
+        private readonly ILogger<NotificationsPageViewModel> logger;
         private const int pageSize = 10;
         public NotificationsPageViewModel(INotificationsHubClient notificationsHubClient,
             IResultWindowService resultWindowService,
             IFilterService filterService,
             INotificationHubService notificationService,
-            IIdentityService identityService) : base(notificationsHubClient, identityService)
+            IIdentityService identityService,
+            ILogger<NotificationsPageViewModel> logger) : base(notificationsHubClient, identityService)
         {
             this.notificationService = notificationService;
             this.resultWindowService = resultWindowService;
             this.filterService = filterService;
             this.notificationsHubClient = notificationsHubClient;
+            this.logger = logger;
 
             NavigateToPage = new AsyncRelayCommand(OnNavigatedTo);
             LoadMoreCommand = new AsyncRelayCommand(OnLoadMore);
@@ -137,11 +139,12 @@ namespace OpenStockApp.ViewModels
                     IsRefreshing = true;
                     EndReached = false;
                     await LoadAndAddResultsAsync(1, HasToApplyFilterSettings, cancellationToken);
+                    IsRefreshing = false;
                 }
             }
             catch(Exception ex)
             {
-                
+                logger.LogError(ex, "");
             }
         }
         protected override void OnLoggedIn(object? sender, EventArgs e)
