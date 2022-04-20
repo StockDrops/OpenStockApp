@@ -14,27 +14,11 @@ using OpenStockApp.Core.Maui.Services.Settings;
 using OpenStockApp.Core.Contracts.Services.Settings;
 using OpenStockApp.Models.Users;
 using OpenStockApp.Services;
+using OpenStockApp.Pages.Alerts;
 
 namespace OpenStockApp.ViewModels.AlertSettings
 {
-    public class ObservableProduct : ObservableObject
-    {
-        private Product product;
-        public ObservableProduct(Product product)
-        {
-            this.product = product;
-        }
-
-        public Product Product
-        {
-            get { return this.product; }
-            set { SetProperty(ref this.product, value); } 
-        }
-
-
-    }
-
-    public class AlertSettingsViewModel : BaseConnectionViewModel
+    public class RetailerOptionsViewModel : BaseConnectionViewModel
     {
         #region Collections
         public ObservableCollection<Product> Products { get; set; } = new ObservableCollection<Product>();
@@ -52,17 +36,14 @@ namespace OpenStockApp.ViewModels.AlertSettings
         #endregion
 
         #region Commands
-        public AsyncRelayCommand LoadProducts { get; set; }
-        public AsyncRelayCommand LoadModels { get; set; }
+        public AsyncRelayCommand OnNavigatedToCommand { get; set; }
         public AsyncRelayCommand LoadRetailers { get; set; }
 
         public AsyncRelayCommand SaveModelOptions { get; set; }
-        public AsyncRelayCommand<string> PerformSearch { get; set; }
         #endregion
         
         #region Services
         private readonly IUserOptionsHubClient userOptionsHub;
-        private readonly IIdentityService identityService;
         private readonly IUserOptionsDisplayService userOptionsDisplayService;
         private readonly IRetailerOptionsDisplayService retailerOptionsDisplayService;
         private readonly IUserOptionsService userOptionsService;
@@ -70,7 +51,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
         //public AsyncRelayCommand SaveUserOptions { get; set; }
 
         //private readonly UserOptionsService userOptionsService;
-        public AlertSettingsViewModel(IUserOptionsHubClient userOptionsHub,
+        public RetailerOptionsViewModel(IUserOptionsHubClient userOptionsHub,
             IUserOptionsService userOptionsService,
             IIdentityService identityService,
             IRetailerOptionsDisplayService retailerOptionsDisplayService,
@@ -81,21 +62,20 @@ namespace OpenStockApp.ViewModels.AlertSettings
             this.userOptionsDisplayService = userOptionsDisplayService;
             this.retailerOptionsDisplayService = retailerOptionsDisplayService;
             this.userOptionsService = userOptionsService;
-            this.identityService = identityService;
             #endregion
             #region Command Assigments
-            LoadProducts = new AsyncRelayCommand(OnLoadProducts);
+            OnNavigatedToCommand = new AsyncRelayCommand(OnNavigatedTo);
             LoadRetailers = new AsyncRelayCommand(OnCountrySelected);
-            LoadModels = new AsyncRelayCommand(OnProductSelected);
             SaveModelOptions = new AsyncRelayCommand(OnSaveModelOptions);
-            PerformSearch = new AsyncRelayCommand<string>(OnPerformSearch);
+
             #endregion
-            IsLoggedIn = identityService.IsLoggedIn();
             RegisterEvents();
         }
         public void RegisterEvents()
         {
             retailerOptionsDisplayService.DisplayRetailerOptions += OnDisplayRetailerOptions;
+
+            MessagingCenter.Subscribe<RetailerOptionsPage>(this, "NavigatedTo", async (sender) => await OnNavigatedTo());
         }
 
 
@@ -103,24 +83,16 @@ namespace OpenStockApp.ViewModels.AlertSettings
         {
             Retailers.Add(retailerOptions);
         }
-        /// <summary>
-        /// When a product is selected we load all the models.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task OnProductSelected(CancellationToken cancellationToken = default)
-        {
-            await LoadModelsFromHub();
-        }
+
         public async Task OnCountrySelected(CancellationToken cancellationToken)
         {
             await LoadCountryRetailers(SelectedCountry, cancellationToken);
         }
-        public async Task OnLoadProducts(CancellationToken token = default)
+        public async Task OnNavigatedTo(CancellationToken token = default)
         {
             LoadActions();
             await LoadAllCountries();
-            await LoadAllProducts();
+            //await LoadAllProducts();
             
         }
         public void LoadActions()
@@ -149,57 +121,13 @@ namespace OpenStockApp.ViewModels.AlertSettings
             {
                 await userOptionsService.SaveCurrentUserOptionsAsync(cancellationToken);
                 IsBusy = false;
-                MessagingCenter.Send<AlertSettingsViewModel, Exception?>(this, "saved", null);
+                MessagingCenter.Send<RetailerOptionsViewModel, Exception?>(this, "saved", null);
             }
             catch (HubNotConnected ex)
             {
                 IsBusy = false;
-                MessagingCenter.Send<AlertSettingsViewModel, Exception?>(this, "saved", ex);
+                MessagingCenter.Send<RetailerOptionsViewModel, Exception?>(this, "saved", ex);
             }
-            
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="query"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task OnPerformSearch(string? query, CancellationToken cancellationToken = default)
-        {
-            if (IsBusy)
-                return;
-
-            if (query == null)
-                return;
-            if (query == string.Empty)
-                await LoadModelsFromHub();
-            if (query.Count() < 3)
-                return;
-
-            foreach (var group in Models)
-            {
-                group.RemoveAll(m => !(m.Model != null && m.Model.Name != null && m.Model.Name.Contains(query, StringComparison.InvariantCultureIgnoreCase)));
-            }
-            Models.RemoveAll(g => g.Count == 0);
-        }
-
-        private async Task LoadModelsFromHub(CancellationToken cancellationToken = default)
-        {
-            IsBusy = true;
-            Models.Clear();
-            _ = Task.Run(async () =>
-            {
-                //await Task.Delay(1000);
-                var groupedOptions = await userOptionsDisplayService.GetGroupedObversableModelOptionsAsync(SelectedProduct, cancellationToken);
-
-                foreach (var options in groupedOptions)
-                {
-                    
-                    Dispatcher.Dispatch( () => Models.Add(options));
-                    //await Task.Delay(200);
-                }
-                Dispatcher.Dispatch(() => IsBusy = false);
-            });
         }
         private async Task LoadAllCountries(CancellationToken token = default)
         {
@@ -217,18 +145,6 @@ namespace OpenStockApp.ViewModels.AlertSettings
             IsBusy = true;
             Retailers.Clear();
             await retailerOptionsDisplayService.LoadAndDisplayRetailers(SelectedCountry, token);
-            IsBusy = false;
-        }
-        private async Task LoadAllProducts(CancellationToken token = default)
-        {
-            IsBusy = true;
-
-            var products = await Task.Run(async () => await userOptionsHub.GetProducts(token));
-            Products.Clear();
-            foreach (var product in products)
-            {
-                Products.Add(product);
-            }
             IsBusy = false;
         }
     }

@@ -34,11 +34,13 @@ namespace OpenStockApp.Extensions
                         //db.Database.EnsureCreated();
                         db.Database.Migrate();
                     }
+                    //throw new Exception("Test");
                 }
                 catch (Exception ex)
                 {
-                    var logger = services.GetRequiredService<ILogger>();
-                    logger.LogError(ex, "An error occurred while migrating the database.");
+                    var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+                    var logger = loggerFactory.CreateLogger("MigrateDatabase");
+                    logger?.LogError(ex, "An error occurred while migrating the database.");
                 }
             }
             return app;

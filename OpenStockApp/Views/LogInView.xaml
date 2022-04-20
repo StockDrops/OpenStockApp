@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Name="view"
+             x:Class="OpenStockApp.Views.LogInView">
+    <ContentView.Resources>
+        <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+    </ContentView.Resources>
+    <ContentView.Content>
+        <Grid IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}, Source={x:Reference view}}" RowDefinitions="*, auto" Padding="{OnIdiom Desktop=200, Default=50}">
+            <Image Source="sdlogo.png" HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+            <StackLayout HorizontalOptions="CenterAndExpand"
+                                         VerticalOptions="CenterAndExpand"
+                                         Grid.Row="1"
+                                         Spacing="20">
+                <Label Text="You aren't logged in yet."
+                            Style="{StaticResource BodyTextStyle}"
+                                       HorizontalOptions="Center" />
+                <Label Text="Log in or create an account below to see the latest alerts."
+                            Style="{StaticResource BodyTextStyle}"
+                                       HorizontalOptions="Center" />
+                <Button Text="Log In"
+                                Command="{Binding LogInCommand, Source={x:Reference view}}"
+                                IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}, Source={x:Reference view}}" />
+
+            </StackLayout>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

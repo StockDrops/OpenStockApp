@@ -7,39 +7,7 @@
              x:DataType="vm:ShellViewModel"
              
              >
-    <!--<Shell.Style>
-        <Style TargetType="Element">
-            <Setter Property="Shell.BackgroundColor"
-                        Value="{StaticResource Primary}" />
-            <Setter Property="Shell.ForegroundColor"
-                        Value="White" />
-            <Setter Property="Shell.TitleColor"
-                        Value="Black" />
-            <Setter Property="Shell.DisabledColor"
-                        Value="#B4FFFFFF" />
-            <Setter Property="Shell.UnselectedColor"
-                        Value="Black" />
-            <Setter Property="Shell.TabBarBackgroundColor"
-                        Value="{StaticResource Primary}" />
-            <Setter Property="Shell.TabBarForegroundColor"
-                        Value="White" />
-            <Setter Property="Shell.TabBarUnselectedColor"
-                        Value="#95FFFFFF" />
-            <Setter Property="Shell.TabBarTitleColor"
-                        Value="White" />
-        </Style>
-    </Shell.Style>-->
     <TabBar>
-        <!--<TabBar.Style>
-            <Style TargetType="TabBar">
-                <Setter Property="Shell.TabBarBackgroundColor"
-            Value="CornflowerBlue" />
-                <Setter Property="Shell.TabBarTitleColor"
-            Value="Black" />
-                <Setter Property="Shell.TabBarUnselectedColor"
-            Value="AntiqueWhite" />
-            </Style>
-        </TabBar.Style>-->
         <Tab Title="{Binding Notifications.Title}"
              Icon="{AppThemeBinding Light=notifications.png, Dark=notifications_dark.png}">
             <ShellContent ContentTemplate="{DataTemplate pages:NotificationPageMobile}" />
@@ -47,7 +15,9 @@
         <Tab Title="{Binding AlertSettings.Title}"
              Icon="{AppThemeBinding Light=edit_notifications.png, Dark=edit_notifications_dark.png}">
             <ShellContent Title="{Binding AlertSettings.Title}"
-                          ContentTemplate="{DataTemplate pages:AlertSettingsPage}" />
+                          ContentTemplate="{DataTemplate pages:AlertSettingsPageMobile}" />
+            <ShellContent Title="Retailer Options"
+                          ContentTemplate="{DataTemplate pages:RetailerOptionsPage}" />
             <ShellContent Title="Active Notifications"
                           ContentTemplate="{DataTemplate pages:ActiveNotificationsPage}"/>
         </Tab>

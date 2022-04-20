@@ -57,14 +57,19 @@
                              HorizontalOptions="Start"
                              x:Name="updatesButton"/>
                 <views:SocialButtons />
-                <Label Text="Debug Info" Style="{StaticResource SubtitleTextStyle}" Margin="0,10,0,10"/>
+                <Label Text="Debug Info" Style="{StaticResource SubtitleTextStyle}" Margin="0,30,0,10"/>
                 <Label Text="Connection Id" Margin="0,10,0,10" />
-                <Entry Text="{Binding ConnectionId}" IsReadOnly="True" ClearButtonVisibility="Never" />
-                <Button Text="Refresh Connection Id" Command="{Binding RefreshConnectionIdCommand}" 
+                <views:TappedCopyableEntry Text="{Binding ConnectionId}" IsReadOnly="True" ClearButtonVisibility="Never" CopiedCommandParameter="Connection Id" />
+                <Button Text="Refresh Connection Id" 
+                        Command="{Binding RefreshConnectionIdCommand}" 
                         Margin="{StaticResource SmallTopMargin}"
                              HorizontalOptions="Start"/>
                 <Label Text="User Id" Margin="0,10,0,10" />
-                <Entry Text="{Binding UserId}" IsReadOnly="True" ClearButtonVisibility="Never" />
+                <views:TappedCopyableEntry Text="{Binding UserId}" IsReadOnly="True" ClearButtonVisibility="Never" CopiedCommandParameter="User Id"/>
+                <Label Text="Firebase Token" Margin="0,10,0,10" IsVisible="{OnPlatform Android=True, Default=False}"/>
+                <views:TappedCopyableEntry Text="{Binding FirebaseToken}" IsReadOnly="True" CopiedCommandParameter="Firebase Token" IsVisible="{OnPlatform Android=True, Default=False}" />
+                <Button Text="Refresh Firebase Token" Command="{Binding RefreshTokenCommand}" Margin="0,10,0,10" HorizontalOptions="Start" IsVisible="{OnPlatform Android=True, Default=False}"/>
+                <Button Text="Share Log File" IsVisible="{OnPlatform Android=True, Default=True}" Command="{Binding ShareLog}" />
             </StackLayout>
         </Grid>
     </ScrollView>

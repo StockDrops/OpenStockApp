@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /OpenStockApp/appsettings.json
 /OpenStockApp/Models/Secrets.cs
+/OpenStockApp/filename.txt

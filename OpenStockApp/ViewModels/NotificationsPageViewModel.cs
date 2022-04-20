@@ -12,6 +12,7 @@ using OpenStockApp.Core.Contracts.Services;
 using OpenStockApp.Core.Contracts.Services.Hubs;
 using OpenStockApp.Core.Maui.Contracts.Services;
 using OpenStockApp.Core.Contracts.Services.Settings;
+using OpenStockApp.Core.Contracts.Services.Users;
 
 namespace OpenStockApp.ViewModels
 {
@@ -52,6 +53,7 @@ namespace OpenStockApp.ViewModels
         public AsyncRelayCommand LoadMoreCommand { get; set; }
         public AsyncRelayCommand ApplyFilterSettings { get;set; }
         public AsyncRelayCommand TestNotificationCommand { get; set; }
+        
 
 
         public Action<Result>? ScrollTo { get; set; }
@@ -68,7 +70,8 @@ namespace OpenStockApp.ViewModels
         public NotificationsPageViewModel(INotificationsHubClient notificationsHubClient,
             IResultWindowService resultWindowService,
             IFilterService filterService,
-            INotificationHubService notificationService) : base(notificationsHubClient)
+            INotificationHubService notificationService,
+            IIdentityService identityService) : base(notificationsHubClient, identityService)
         {
             this.notificationService = notificationService;
             this.resultWindowService = resultWindowService;
@@ -99,11 +102,11 @@ namespace OpenStockApp.ViewModels
             if (HasToApplyFilterSettings)
             {
                 if(filterService.CanShowNotification(result))
-                    Results.Insert(0, result);
+                    Dispatcher.Dispatch(() => Results.Insert(0, result));
             }
             else
             {
-                Results.Insert(0, result);
+                Dispatcher.Dispatch(() => Results.Insert(0, result));
             }
             ScrollTo?.Invoke(result);
         }
@@ -127,9 +130,29 @@ namespace OpenStockApp.ViewModels
         /// <returns></returns>
         public async Task OnNavigatedTo(CancellationToken cancellationToken = default)
         {
-            IsRefreshing = true;
-            EndReached = false;
-            await LoadAndAddResultsAsync(1, HasToApplyFilterSettings, cancellationToken);
+            try
+            {
+                if (IsLoggedIn)
+                {
+                    IsRefreshing = true;
+                    EndReached = false;
+                    await LoadAndAddResultsAsync(1, HasToApplyFilterSettings, cancellationToken);
+                }
+            }
+            catch(Exception ex)
+            {
+                
+            }
+        }
+        protected override void OnLoggedIn(object? sender, EventArgs e)
+        {
+            base.OnLoggedIn(sender, e);
+            _ = Task.Run(async () => await OnNavigatedTo());
+        }
+        protected override void OnLoggedOut(object? sender, EventArgs e)
+        {
+            base.OnLoggedOut(sender, e);
+            Results.Clear();
         }
         private async Task LoadAndAddResultsAsync(int pageNumber, bool filtered, CancellationToken cancellationToken = default)
         {

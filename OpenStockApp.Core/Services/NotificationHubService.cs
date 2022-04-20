@@ -1,4 +1,5 @@
-﻿using OpenStockApi.Core.Models.Searches;
+﻿using Microsoft.Extensions.Caching.Memory;
+using OpenStockApi.Core.Models.Searches;
 using OpenStockApp.Core.Contracts.Services;
 using OpenStockApp.Core.Contracts.Services.Hubs;
 using OpenStockApp.Core.Contracts.Services.Settings;
@@ -15,17 +16,30 @@ namespace OpenStockApp.Core.Services
         public event EventHandler<Result>? NotificationReceived;
         private readonly IEnumerable<INotificationService> notificationServices;
         private readonly IFilterService filterService;
+        public IMemoryCache memoryCache;
 
-        public NotificationHubService(IEnumerable<INotificationService> notificationService, IFilterService filterService)
+        public NotificationHubService(IEnumerable<INotificationService> notificationService,
+                                      IFilterService filterService,
+                                      IMemoryCache memoryCache)
         {
             this.notificationServices = notificationService;
             this.filterService = filterService;
+            this.memoryCache = memoryCache;
         }
 
         public async Task ForwardNotificationReceived(Result? result, CancellationToken cancellationToken = default)
         {
             if (result == null)
                 return;
+            if (memoryCache.TryGetValue(result.Id, out bool _))
+            {
+                return;
+            }
+            else
+            {
+                memoryCache.Set(result.Id, true, TimeSpan.FromMinutes(5));
+            }
+
             if (filterService.CanShowNotification(result))
             {
                 var tasks = new List<Task>();

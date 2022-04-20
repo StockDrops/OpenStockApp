@@ -6,9 +6,9 @@ using System.Windows.Input;
 
 namespace OpenStockApp.Pages.Alerts;
 
-public partial class AlertSettingsPage : ContentPage 
+public partial class AlertSettingsPageMobile : ContentPage 
 {    
-    public AlertSettingsPage(AlertSettingsViewModel alertSettingsViewModel)
+    public AlertSettingsPageMobile(AlertSettingsViewModel alertSettingsViewModel)
     {        
         BindingContext = alertSettingsViewModel;
 #if ANDROID || IOS

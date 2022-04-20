@@ -18,9 +18,9 @@
     <ContentView.Content>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="80"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="80"/>
+                
             </Grid.RowDefinitions>
             <SearchBar x:Name="searchBar"
                        Grid.Row="0"
@@ -28,7 +28,7 @@
                            Placeholder="Search for a model"
                            SearchCommand="{Binding PerformSearchCommand, Source={x:Reference view}}"
                            SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
-                           Margin="0,10,0,10">
+                           Margin="{OnPlatform Default='0,10,0,10', Android='0,2,0,2'}">
                 <SearchBar.Behaviors>
                     <mct:EventToCommandBehavior EventName="TextChanged"
                                                     Command="{Binding PerformSearchCommand, Source={x:Reference view}}"
@@ -38,10 +38,11 @@
             <CollectionView ItemsSource="{Binding ItemSource, Source={x:Reference view}}"
                             Grid.Row="1"
                             IsGrouped="true"
-                            Margin="0,10,0,10">
+                            
+                            Margin="{OnPlatform Default='0,10,0,10', Android='0,1,0,1'}">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical"
-                                     Span="4"
+                                     Span="{OnPlatform Android=1, iOS=1, Default=4}"
                                      VerticalItemSpacing="10"
                                      HorizontalItemSpacing="10"/>
                 </CollectionView.ItemsLayout>
@@ -49,8 +50,8 @@
                     <DataTemplate x:DataType="models:GroupedObversableModelOptions">
                         <Grid HorizontalOptions="StartAndExpand"
                                   VerticalOptions="StartAndExpand"
-                                  MinimumHeightRequest="80"
-                                  HeightRequest="80">
+                                  MinimumHeightRequest="{OnPlatform Default=80, Android=30}"
+                                  HeightRequest="{OnPlatform Default=80, Android=30}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="0.1*"/>
                                 <RowDefinition Height="0.8*"/>
@@ -74,7 +75,7 @@
                 </CollectionView.GroupHeaderTemplate>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:ObservableModelOptions">
-                        <Grid HeightRequest="400">
+                        <Grid HeightRequest="{OnPlatform Default=400, Android=250}">
                             <Grid.Behaviors>
                                 <mct:MultiValidationBehavior  />
                             </Grid.Behaviors>
@@ -83,48 +84,56 @@
                                            LineBreakMode="WordWrap"
                                            FontSize="Small"
                                            FontAttributes="Bold"
-                                           Margin="0,10,0,10"/>
-
-                                <Label Text="Enable" Margin="0,10,0,10" />
-                                <Switch IsToggled="{Binding ModelOptions.IsEnabled}"/>
-                                <Label Text="Max Price" Margin="0,10,0,10"/>
-                                <Entry Keyboard="Numeric" IsTextPredictionEnabled="False" Text="{Binding ModelOptions.MaxPrice}">
-                                    <Entry.Behaviors>
-                                        <mct:NumericValidationBehavior Flags="ValidateOnValueChanged"
+                                           Margin="{OnPlatform Default='0,10,0,10', Android='0,2,0,2'}"/>
+                                <StackLayout Orientation="{OnPlatform Android='Horizontal', Default='Vertical'}">
+                                    <Label Text="Enable" Margin="0,10,0,10" />
+                                    <Switch IsToggled="{Binding ModelOptions.IsEnabled}"/>
+                                </StackLayout>
+                                <StackLayout Orientation="{OnPlatform Android='Horizontal', Default='Vertical'}">
+                                    <Label Text="Max Price:" Margin="0,10,0,10"/>
+                                    <Entry Keyboard="Numeric" IsTextPredictionEnabled="False" Text="{Binding ModelOptions.MaxPrice}" MinimumWidthRequest="100">
+                                        <Entry.Behaviors>
+                                            <mct:NumericValidationBehavior Flags="ValidateOnValueChanged"
                                                                        MaximumDecimalPlaces="2"
                                                                        InvalidStyle="{StaticResource InvalidEntry}"
                                                                        ValidStyle="{StaticResource ValidEntry}"
                                             />
-                                    </Entry.Behaviors>
-                                </Entry>
-                                <Label Text="Min Price" Margin="0,10,0,10"/>
-                                <Entry Text="{Binding ModelOptions.MinPrice}" Keyboard="Numeric" >
-                                    <Entry.Behaviors>
-                                        <mct:NumericValidationBehavior Flags="ValidateOnValueChanged"
+                                        </Entry.Behaviors>
+                                    </Entry>
+                                </StackLayout>
+                                <StackLayout Orientation="{OnPlatform Android='Horizontal', Default='Vertical'}">
+                                    <Label Text="Min Price:" Margin="0,10,0,10"/>
+                                    <Entry Text="{Binding ModelOptions.MinPrice}" Keyboard="Numeric" MinimumWidthRequest="100" >
+                                        <Entry.Behaviors>
+                                            <mct:NumericValidationBehavior Flags="ValidateOnValueChanged"
                                                                        MaximumDecimalPlaces="2"
                                                                        InvalidStyle="{StaticResource InvalidEntry}"
                                                                        ValidStyle="{StaticResource ValidEntry}"                                                                       
                                             />
-                                    </Entry.Behaviors>
-                                </Entry>
-                                <Label Text="Action on Notification" Margin="0,10,0,10" />
-                                <Picker ItemDisplayBinding="{Binding Description}"
+                                        </Entry.Behaviors>
+                                    </Entry>
+                                </StackLayout>
+                                <StackLayout Orientation="{OnPlatform Android='Vertical', Default='Vertical'}">
+                                    <Label Text="Action:" Margin="0,10,0,10" />
+                                    <Picker ItemDisplayBinding="{Binding Description}"
                                         SelectedIndex="{Binding ModelOptions.NotificationAction, Mode=TwoWay, Converter={StaticResource EnumToIntConverter}}"
                                         ItemsSource="{Binding BindingContext.NotificationActions, Source={x:Reference view}}"
                                             />
+                                </StackLayout>
                             </StackLayout>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
+            
+            <!--<Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
                     Command="{Binding SaveModelOptionsCommand, Source={x:Reference view}}" 
                     IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                      IsVisible="{Binding IsLoggedIn}"
                     Grid.Row="2"/>
             <Button Text="Log In"
                 Grid.Row="2"
-                IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}}" />
+                IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}}" />-->
         </Grid>
     </ContentView.Content>
 </ContentView>

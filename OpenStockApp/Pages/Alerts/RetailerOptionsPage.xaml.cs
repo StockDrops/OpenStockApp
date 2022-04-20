@@ -1,28 +1,27 @@
-﻿using OpenStockApp.ViewModels.AlertSettings;
-using CommunityToolkit.Maui.Behaviors;
 using OpenStockApp.Services;
-using StringResources = OpenStockApp.Resources.Strings.Resources;
+using OpenStockApp.ViewModels.AlertSettings;
 using System.Windows.Input;
+using StringResources = OpenStockApp.Resources.Strings.Resources;
 
 namespace OpenStockApp.Pages.Alerts;
 
-public partial class AlertSettingsPage : ContentPage 
-{    
-    public AlertSettingsPage(AlertSettingsViewModel alertSettingsViewModel)
-    {        
-        BindingContext = alertSettingsViewModel;
+public partial class RetailerOptionsPage : ContentPage
+{
+	public RetailerOptionsPage(RetailerOptionsViewModel retailerOptionsViewModel)
+	{
+		BindingContext = retailerOptionsViewModel;
 #if ANDROID || IOS
         DisplayHelp = new Command(() => OnDisplayHelp());
 #endif
         InitializeComponent();
+		MessagingCenter.Send(this, "NavigatedTo");
 
-        Behaviors.Add(new EventToCommandBehavior { EventName = nameof(this.NavigatedTo), Command = alertSettingsViewModel.LoadProducts });
-        MessagingCenter.Subscribe<AlertSettingsViewModel, Exception?>(this, "saved", async (sender, args) =>
+        MessagingCenter.Subscribe<RetailerOptionsViewModel, Exception?>(this, "saved", async (sender, args) =>
         {
             await OnSaved(sender, args);
         });
     }
-    public async Task OnSaved(object sender, object? exception)
+    public async Task OnSaved(object? sender, object? exception)
     {
         if (exception is null)
             await DisplayAlert("Saved", "Alert settings saved", "Ok");

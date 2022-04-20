@@ -55,8 +55,9 @@ namespace OpenStockApp.ViewModels.Settings
             identityService.LoggedIn += OnLoggedIn;
             identityService.LoggedOut += OnLoggedOut;
         }
-        private void OnLoggedIn(object? sender, EventArgs e)
+        private async void OnLoggedIn(object? sender, EventArgs e)
         {
+            await GetUser();
             SetButtonsToLoggedInState();
         }
         private void OnLoggedOut(object? sender, EventArgs e)

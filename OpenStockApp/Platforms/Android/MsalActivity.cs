@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Gms.Common;
 using Android.OS;
 using Microsoft.Identity.Client;
 using OpenStockApp.Models;
@@ -17,5 +18,7 @@ namespace OpenStockApp.Platforms.Android
         {
             base.OnCreate(savedInstanceState);
         }
+
+       
     }
 }

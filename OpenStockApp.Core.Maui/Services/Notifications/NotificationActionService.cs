@@ -41,6 +41,8 @@ namespace OpenStockApp.Core.Maui.Services.Notifications
                 case NotificationAction.OpenAddToCartUrl:
                     await OpenUrl(result.AtcUrl, result.ProductUrl);
                     break;
+                case NotificationAction.DoNothing:
+                    return;
             }
         }
         private async Task OpenUrl(string? url, string? backup = null)

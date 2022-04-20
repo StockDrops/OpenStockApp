@@ -33,6 +33,8 @@ using OpenStockApp.Core.Maui.Services.Notifications;
 using OpenStockApp.Core.Maui.Contracts.Services;
 using Microsoft.Extensions.Logging;
 using OpenStockApp.Services.Users;
+using OpenStockApp.Platforms.Android.Notifications;
+using OpenStockApp.Platforms.Android;
 
 
 
@@ -69,7 +71,7 @@ public static class MauiProgram
                 {
                     ToastNotificationManagerCompat.OnActivated += WindowsNotificationService.OnActivated;
                 });
-               configure.OnClosed((app, args) => BackgroundServicesContainer.StopApp());
+               //configure.OnClosed((app, args) => BackgroundServicesContainer.StopApp());
             });
 #elif ANDROID
                 lifecycle.AddAndroid(configure =>
@@ -80,6 +82,11 @@ public static class MauiProgram
                        BackgroundServicesContainer.StartApp();
                        
                    });
+                    //configure.OnResume(activity =>
+                    //{
+                    //    //Platform.Init(activity);
+                    //    BackgroundServicesContainer.StartApp();
+                    //});
                 });
 #endif
         });
@@ -288,7 +295,10 @@ public static class MauiProgram
         builder.Services.AddSingleton<INotificationService, NotificationActionService>();
 #if WINDOWS
         builder.Services.AddSingleton<INotificationService, WindowsNotificationService>();
-
+#elif ANDROID
+        builder.Services.AddSingleton<AndroidNotificationService>();
+        builder.Services.AddSingleton<INotificationService, AndroidNotificationService>(services => services.GetRequiredService<AndroidNotificationService>()); ;
+        builder.Services.AddSingleton<IAndroidNotificationBuilder, AndroidNotificationBuilder>();
 #endif
         //configure
         builder.Services.Configure<AppConfig>(builder.Configuration.GetSection(nameof(AppConfig)));
@@ -308,6 +318,9 @@ public static class MauiProgram
         builder.Services.AddTransient<NotificationsPage>();
 #if ANDROID || IOS
         builder.Services.AddTransient<NotificationPageMobile>();
+        builder.Services.AddTransient<AlertSettingsPageMobile>();
+        builder.Services.AddTransient<RetailerOptionsPage>();
+        builder.Services.AddTransient<RetailerOptionsViewModel>();
 #endif
         var app = builder.Build();
         app.MigrateDatabase<AppDbContext>();

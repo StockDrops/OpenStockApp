@@ -34,10 +34,13 @@
             <ColumnDefinition Width="175" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <StackLayout Grid.Row="0" Grid.Column="0">
-            <main:ConnectionIndicatorView IsConnected="{Binding BindingContext.IsConnected, Source={x:Reference page}}"
-                                          ConnectCommand="{Binding BindingContext.ConnectCommand, Source={x:Reference page}}"
+        <StackLayout Grid.Row="0" Grid.Column="0" IsVisible="{Binding IsLoggedIn}">
+            <main:ConnectionIndicatorView IsConnected="{Binding IsConnected}"
+                                          ConnectCommand="{Binding ConnectCommand}"
+                                          
                                           />
+            <!--IsConnected="{Binding BindingContext.IsConnected, Source={x:Reference page}}"
+                                          ConnectCommand="{Binding BindingContext.ConnectCommand, Source={x:Reference page}}"-->
             <!--<Button Text="{Binding IsRefreshing, Converter={StaticResource BoolToObjectConverter}}" 
                     IsVisible="{OnPlatform Android='False', iOS='False', Default='True'}" 
                     IsEnabled="{Binding IsRefreshing, Converter={StaticResource InvertedBoolConverter}}"
@@ -58,9 +61,12 @@
                 HorizontalOptions="Center"
                     Text="Send Test Notification" 
                     Command="{Binding TestNotificationCommand}"
-                
+                IsVisible="{Binding IsLoggedIn}"
                     Margin="0,5,0,5"/>
-        <Frame CornerRadius="5" Grid.Row="1" Grid.ColumnSpan="2" Margin="2" BackgroundColor="{AppThemeBinding Dark={StaticResource SecondaryColor}, Light={StaticResource BackgroundColor}}">
+        <Frame CornerRadius="5" Grid.Row="1" 
+               Grid.ColumnSpan="2" Margin="2"
+               BackgroundColor="{AppThemeBinding Dark={StaticResource SecondaryColor}, Light={StaticResource BackgroundColor}}"
+               IsVisible="{Binding IsLoggedIn}">
             <StackLayout Grid.Row="1" Orientation="Horizontal">
                 <StackLayout Orientation="Vertical">
                     <Label Text="Enable alert settings" 
@@ -94,7 +100,8 @@
                       LoadMoreCommand="{Binding LoadMoreCommand}"-->
             <!--There's an issue with this not working as it should: https://github.com/dotnet/maui/issues/4116 ItemsUpdatingScrollMode="KeepLastItemInView" -->
             <RefreshView Command="{Binding NavigateToPage}"
-                         IsRefreshing="{Binding IsRefreshing}">
+                         IsRefreshing="{Binding IsRefreshing}"
+                         IsVisible="{Binding IsLoggedIn}">
                 <CollectionView ItemsSource="{Binding Results}"
                                 ItemsUpdatingScrollMode="KeepItemsInView"
                             
@@ -155,11 +162,12 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
             </RefreshView>
-            <StackLayout Grid.Row="2" ZIndex="50"
+            <StackLayout Grid.Row="2" 
                          VerticalOptions="End"
                          HorizontalOptions="End"
                          Margin="5">
                 <!--<Button Margin="0,20,0,20"
+                ZIndex="50"
                                     Text="Load More?"
                                     MinimumWidthRequest="{OnPlatform Android=100, iOS=100, UWP=300}"
                                     HorizontalOptions="Center"
@@ -182,8 +190,10 @@
                                     IsEnabled="False"
                                     Text="End Reached"
                                     IsVisible="{Binding EndReached}"/>
+                
             </StackLayout>
-           
+            <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
+                            LogInCommand="{Binding LogIn}" />
         </Grid>
     </Grid>
 

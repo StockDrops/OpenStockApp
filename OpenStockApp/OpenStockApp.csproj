@@ -9,6 +9,13 @@
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
+
+		<AndroidPackageFormat>apk</AndroidPackageFormat>
+		<!-- We cannot using linking with EF CORE. It just breaks. -->
+		<AndroidLinkMode>None</AndroidLinkMode>
+		
+		<!--<DebugSymbols>True</DebugSymbols>
+		<DebugType>Full</DebugType>-->
     
 		<!-- Display name -->
 		<ApplicationTitle>StockDrops OpenStock App</ApplicationTitle>
@@ -18,9 +25,9 @@
 		<ApplicationId Condition="$(TargetFramework.Contains('-windows'))">9833150E-67CE-483A-AE72-F712156DC535</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.1.0</ApplicationDisplayVersion>
-		<ApplicationVersion>2</ApplicationVersion>
-		<Version>1.1.0</Version>
+		<ApplicationDisplayVersion>1.1.2</ApplicationDisplayVersion>
+		<ApplicationVersion>3</ApplicationVersion>
+		<Version>1.1.2</Version>
 
 		<!-- Required for C# Hot Reload -->
 		<UseInterpreter Condition="'$(Configuration)' == 'Debug'">True</UseInterpreter>
@@ -39,7 +46,7 @@
 		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.1" />
 	</ItemGroup>
 	<ItemGroup>
-		<MauiIcon Include="Resources\appicon.svg" ForegroundFile="Resources\appiconfg.svg" />
+		<MauiIcon Include="Resources\appicon.svg" ForegroundFile="Resources\appicon.svg" Color="#512BD4" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\appiconfg.svg" Color="#512BD4" BaseSize="128,128" />
@@ -57,6 +64,8 @@
 
 	<ItemGroup>
 	  <None Remove="appsettings.json" />
+	  <None Remove="Platforms\Android\google-services.json" />
+	  <None Remove="Platforms\Android\proguard.cfg" />
 	  <None Remove="Resources\Images\default_user.svg" />
 	  <None Remove="Resources\Images\default_user_dark.svg" />
 	  <None Remove="Resources\Images\discord_logo_color.svg" />
@@ -76,6 +85,17 @@
 	  <None Remove="Resources\Images\twitter_logo_dark.svg" />
 	</ItemGroup>
 
+
+	<ItemGroup>
+	  <ProguardConfiguration Include="Platforms\Android\proguard.cfg" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <GoogleServicesJson Include="Platforms\Android\google-services.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </GoogleServicesJson>
+	</ItemGroup>
+
 	<ItemGroup>
 	  <EmbeddedResource Include="appsettings.json">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -86,6 +106,10 @@
 	  <MauiXaml Update="Pages\Alerts\ActiveNotificationsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Alerts\AlertSettingsPageMobile.xaml">
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Alerts\AlertSettingsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -94,6 +118,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Alerts\NotificationsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Alerts\RetailerOptionsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\DesktopShell.xaml">
@@ -135,6 +162,9 @@
 	  <MauiXaml Update="Views\ConnectionIndicatorView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\LogInView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\ModelOptionsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -160,7 +190,7 @@
 	  <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.19.6" />
 	  <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
 	  <PackageReference Include="NReco.Logging.File" Version="1.1.4" />
-	  <PackageReference Include="OpenStockApi.Core" Version="2.2.0" />
+	  <PackageReference Include="OpenStockApi.Core" Version="2.4.0" />
 	  <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
 	</ItemGroup>
 
@@ -175,6 +205,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\Alerts\AlertSettingsPageMobile.xaml.cs">
+	    <DependentUpon>AlertSettingsPageMobile.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Pages\Alerts\NotificationsPageMobile.xaml.cs">
 	    <DependentUpon>NotificationsPageMobile.xaml</DependentUpon>
 	  </Compile>
@@ -203,15 +236,38 @@
 
 	<ItemGroup>
 	  <Folder Include="Contracts\Services\" />
+	  <Folder Include="Platforms\Android\Services\" />
 	</ItemGroup>
-
+	<ItemGroup Condition="$(TargetFramework.Contains('-android'))">
+		<PackageReference Include="Xamarin.Google.Dagger" Version="2.39.1" />
+		<PackageReference Include="Xamarin.Firebase.Messaging" Version="122.0.0.2" />
+		<PackageReference Include="Xamarin.GooglePlayServices.Base" Version="117.6.0.2" />
+		<PackageReference Include="Xamarin.GooglePlayServices.Basement" Version="117.6.0.6" />
+		</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
+	  <PackageReference Include="Xamarin.Firebase.Analytics">
+	    <Version>119.0.1.5</Version>
+	  </PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+	  <MauiImage Update="Resources\Images\sdlogo.svg">
+	    <Color>#512BD4</Color>
+	    <ForegroundFile>Resources\appiconfg.svg</ForegroundFile>
+	  </MauiImage>
+	</ItemGroup>
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<OutputType>WinExe</OutputType>
 		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
 	</PropertyGroup>
+	
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041|AnyCPU'">
 	  <Optimize>True</Optimize>
 	</PropertyGroup>
+	
+
+	<!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
+	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+	</PropertyGroup>-->
 	
 </Project>

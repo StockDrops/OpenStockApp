@@ -7,6 +7,7 @@ using OpenStockApp.Core.Contracts.Services.Settings;
 using OpenStockApp.Core.Contracts.Services.Users;
 using OpenStockApp.Core.Maui.Models;
 using OpenStockApp.Models.Users;
+using OpenStockApp.Pages.Alerts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,12 +19,11 @@ namespace OpenStockApp.ViewModels.AlertSettings
 {
     public class ActiveNotificationsViewModel : BaseConnectionViewModel
     {
-        public bool IsLoggedIn => identityService.IsLoggedIn();
         public ObservableCollection<GroupedObversableModelOptions> GroupedModelOptions { get; set; } = new ObservableCollection<GroupedObversableModelOptions>();
         public ObservableCollection<Product> Products { get; set; } = new ObservableCollection<Product>();
         public ObservableCollection<DisplayedNotificationActions> NotificationActions { get; set; } = new ObservableCollection<DisplayedNotificationActions>();
         public Product SelectedProduct { get; set; } = new Product();
-        public AsyncRelayCommand NavigatedToCommand { get; set; }
+        public Command NavigatedToCommand { get; set; }
         public AsyncRelayCommand ItemSelected { get; set; }
         public AsyncRelayCommand ReloadModels { get; set; }
         public AsyncRelayCommand SaveModelOptions { get; set; }
@@ -32,17 +32,19 @@ namespace OpenStockApp.ViewModels.AlertSettings
         private readonly IIdentityService identityService;
         public ActiveNotificationsViewModel(IBaseHubClient baseHubClient, 
             IUserOptionsService userOptionsService,
-            IIdentityService identityService) : base(baseHubClient)
+            IIdentityService identityService) : base(baseHubClient, identityService)
         {
             this.userOptionsService = userOptionsService;
-            NavigatedToCommand = new AsyncRelayCommand(OnNavigatedTo);
+            NavigatedToCommand = new Command(() => OnNavigatedTo());
             ItemSelected = new AsyncRelayCommand(OnProductSelected);
             ReloadModels = new AsyncRelayCommand(OnReloadSource);
             SaveModelOptions = new AsyncRelayCommand(OnSaveModelOptions);
             this.identityService = identityService;
-
+#if ANDROID
+            MessagingCenter.Subscribe<ActiveNotificationsPage>(this, "NavigatedTo", (sender) => Dispatcher.Dispatch(() => OnNavigatedTo()));
+#endif
         }
-        public async Task OnNavigatedTo(CancellationToken cancellationToken = default)
+        public void OnNavigatedTo()
         {
             GroupedModelOptions.Clear();
             LoadProducts();
@@ -61,6 +63,11 @@ namespace OpenStockApp.ViewModels.AlertSettings
                 Action = NotificationAction.OpenAddToCartUrl,
                 Description = Resources.Strings.Resources.OpenAddToCartUrl
             });
+            NotificationActions.Add(new DisplayedNotificationActions
+            {
+                Action = NotificationAction.DoNothing,
+                Description = Resources.Strings.Resources.DoNothingActionText
+            });
         }
         public async Task OnSaveModelOptions(CancellationToken cancellationToken = default)
         {
@@ -70,13 +77,16 @@ namespace OpenStockApp.ViewModels.AlertSettings
         }
         private void LoadProducts()
         {
-            var l = userOptionsService.UserOptions?.ModelOptions.Where(m => m.IsEnabled).Select(m => m.Model.Product ).DistinctBy(p => p.Id).ToList();
-            Products.Clear();
-            Guard.IsNotNull(l, "Product List");
-            foreach(var product in l)
+            if (identityService.IsLoggedIn())
             {
-                if(product != null)
-                    Products.Add(product);
+                var l = userOptionsService.UserOptions?.ModelOptions.Where(m => m.IsEnabled).Select(m => m.Model.Product).DistinctBy(p => p.Id).ToList();
+                Products.Clear();
+                Guard.IsNotNull(l, "Product List");
+                foreach (var product in l)
+                {
+                    if (product != null)
+                        Products.Add(product);
+                }
             }
         }
         private async Task OnReloadSource(CancellationToken cancellationToken = default)

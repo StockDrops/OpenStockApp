@@ -259,7 +259,8 @@
     <Style TargetType="SearchBar">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
         <Setter Property="PlaceholderColor" Value="{StaticResource MidGray}" />
-        <Setter Property="CancelButtonColor" Value="{StaticResource MidGray}" />
+        <Setter Property="CancelButtonColor" Value="{StaticResource Primary}" />
+       
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="VisualStateManager.VisualStateGroups">
@@ -431,6 +432,7 @@
         <Setter Property="UnselectedTabColor" Value="{AppThemeBinding Light={StaticResource LightGray}, Dark={StaticResource DarkGray}}" />
         <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource DarkGray}, Dark={StaticResource LightGray}}" />
     </Style>
+
     <!--<Style TargetType=""-->
 
 </ResourceDictionary>
