@@ -33,8 +33,7 @@ using OpenStockApp.Core.Maui.Services.Notifications;
 using OpenStockApp.Core.Maui.Contracts.Services;
 using Microsoft.Extensions.Logging;
 using OpenStockApp.Services.Users;
-using OpenStockApp.Platforms.Android.Notifications;
-using OpenStockApp.Platforms.Android;
+
 
 
 
@@ -42,6 +41,9 @@ using OpenStockApp.Platforms.Android;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.ApplicationModel.Activation;
 using OpenStockApp.Core.Maui.Platforms.Windows;
+#elif ANDROID
+using OpenStockApp.Platforms.Android.Notifications;
+using OpenStockApp.Platforms.Android;
 #endif
 namespace OpenStockApp;
 
@@ -316,12 +318,12 @@ public static class MauiProgram
         builder.Services.AddTransient<ActiveNotificationsPage>();
         builder.Services.AddTransient<AboutSettingsPage>();
         builder.Services.AddTransient<NotificationsPage>();
-#if ANDROID || IOS
+
         builder.Services.AddTransient<NotificationPageMobile>();
         builder.Services.AddTransient<AlertSettingsPageMobile>();
         builder.Services.AddTransient<RetailerOptionsPage>();
         builder.Services.AddTransient<RetailerOptionsViewModel>();
-#endif
+
         var app = builder.Build();
         app.MigrateDatabase<AppDbContext>();
         app.MigrateDatabase<EmailDbContext>();

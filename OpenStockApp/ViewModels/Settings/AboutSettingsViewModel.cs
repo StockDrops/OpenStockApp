@@ -4,9 +4,10 @@ using Microsoft.Toolkit.Mvvm.Input;
 using OpenStockApp.Core.Contracts.Services.Hubs;
 using OpenStockApp.Core.Contracts.Services.Users;
 using OpenStockApp.Models;
-using Android.Gms.Extensions;
+
 #if ANDROID
 using Firebase.Messaging;
+using Android.Gms.Extensions;
 #endif
 using System.Reflection;
 

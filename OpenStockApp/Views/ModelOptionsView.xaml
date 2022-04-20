@@ -36,6 +36,7 @@
                 </SearchBar.Behaviors>
             </SearchBar>
             <CollectionView ItemsSource="{Binding ItemSource, Source={x:Reference view}}"
+                            
                             Grid.Row="1"
                             IsGrouped="true"
                             

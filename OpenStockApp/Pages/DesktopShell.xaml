@@ -27,7 +27,7 @@
         <Tab>
             <ShellContent Title="{Binding Notifications.Title}"
                   Icon="{AppThemeBinding Light=notifications.png, Dark=notifications_dark.png}"
-                  ContentTemplate="{DataTemplate alerts:NotificationsPage}"
+                  ContentTemplate="{DataTemplate alerts:NotificationPageMobile}"
                   />
         </Tab>
     </FlyoutItem>
