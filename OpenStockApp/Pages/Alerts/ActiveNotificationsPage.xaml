@@ -25,7 +25,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="{OnPlatform Android=40, Default=80}"/>
         </Grid.RowDefinitions>
-        <StackLayout Margin="15" Grid.Row="0">
+        <StackLayout Margin="15" Grid.Row="0" IsVisible="{Binding IsLoggedIn}" >
             <StackLayout IsVisible="{OnPlatform Android=False, Default=True}">
                 <Label Text="{x:Static strings:Resources.ActiveNotificationsExplanationTitle}" LineBreakMode="WordWrap" Style="{StaticResource ListTitleStyle}" Margin="0,10,0,10" />
                 <Label Text="{x:Static strings:Resources.ActiveNotificationsExplanation}" LineBreakMode="CharacterWrap" Style="{StaticResource BodyTextStyle}" HorizontalOptions="Start" MaximumWidthRequest="{OnPlatform Android=350, UWP=1400, MacCatalyst=1400}" Margin="0,10,0,10"/>
@@ -57,9 +57,8 @@
                     IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                      IsVisible="{Binding IsLoggedIn}"
                     Grid.Row="1"/>
-        <Button Text="Log In"
-                Grid.Row="1"
-                IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}}" />
+        <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
+                            LogInCommand="{Binding LogIn}" />
     </Grid>
     
 </ContentPage>

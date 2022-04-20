@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:users="clr-namespace:OpenStockApi.Core.Models.Users;assembly=OpenStockApi.Core"
+             xmlns:views="clr-namespace:OpenStockApp.Views"
              x:Class="OpenStockApp.Pages.Alerts.RetailerOptionsPage"
              x:Name="page"
              Title="RetailerOptionsPage"
@@ -22,7 +23,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="{OnPlatform Android=40, Default=80}" />
         </Grid.RowDefinitions>
-        <StackLayout Grid.Row="0" Margin="{OnPlatform iOS='30,60,30,30', Android='5', Default='30'}" >
+        <StackLayout Grid.Row="0" Margin="{OnPlatform iOS='30,60,30,30', Android='5', Default='30'}" IsVisible="{Binding IsLoggedIn}" >
             <Grid HeightRequest="40">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.6*"/>
@@ -71,10 +72,8 @@
             </CollectionView>
 
         </StackLayout>
-        <Button Text="Log In"
-                Grid.Row="1"
-                Command="{Binding LogIn}"
-                IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}}" />
+        <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
+                            LogInCommand="{Binding LogIn}" />
         <Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
                 Command="{Binding SaveModelOptions}" 
                 IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"

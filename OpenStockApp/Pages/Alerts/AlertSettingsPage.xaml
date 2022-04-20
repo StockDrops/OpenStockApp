@@ -206,10 +206,8 @@
                 IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                  IsVisible="{Binding IsLoggedIn}"
                 Grid.Row="2"/>
-        <Button Text="Log In"
-                Grid.Row="2"
-                Command="{Binding LogIn}"
-                IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}}" />
+        <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
+                            LogInCommand="{Binding LogIn}" />
     </Grid>
 
         <!--</ContentPage>

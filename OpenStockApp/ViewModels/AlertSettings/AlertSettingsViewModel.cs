@@ -47,12 +47,6 @@ namespace OpenStockApp.ViewModels.AlertSettings
         #endregion
 
         #region Properties
-        public BindableProperty IsLoggedInProperty = BindableProperty.Create(nameof(IsLoggedIn), typeof(bool), typeof(AlertSettingsViewModel));
-        public bool IsLoggedIn
-        {
-            get => (bool)GetValue(IsLoggedInProperty);
-            set => SetValue(IsLoggedInProperty, value);
-        }
         public Product SelectedProduct { get; set; } = new Product();
         public Country SelectedCountry { get; set; } = new Country();
         #endregion
@@ -64,7 +58,6 @@ namespace OpenStockApp.ViewModels.AlertSettings
 
         public AsyncRelayCommand SaveModelOptions { get; set; }
         public AsyncRelayCommand<string> PerformSearch { get; set; }
-        public AsyncRelayCommand LogIn { get; set; }
         #endregion
         
         #region Services
@@ -81,7 +74,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
             IUserOptionsService userOptionsService,
             IIdentityService identityService,
             IRetailerOptionsDisplayService retailerOptionsDisplayService,
-            IUserOptionsDisplayService userOptionsDisplayService)  : base(baseHubClient: userOptionsHub)
+            IUserOptionsDisplayService userOptionsDisplayService)  : base(baseHubClient: userOptionsHub, identityService)
         {
             #region Service Assignements
             this.userOptionsHub = userOptionsHub;
@@ -96,7 +89,6 @@ namespace OpenStockApp.ViewModels.AlertSettings
             LoadModels = new AsyncRelayCommand(OnProductSelected);
             SaveModelOptions = new AsyncRelayCommand(OnSaveModelOptions);
             PerformSearch = new AsyncRelayCommand<string>(OnPerformSearch);
-            LogIn = new AsyncRelayCommand(OnLoggedInRequest);
             #endregion
             IsLoggedIn = identityService.IsLoggedIn();
             RegisterEvents();
@@ -104,28 +96,12 @@ namespace OpenStockApp.ViewModels.AlertSettings
         public void RegisterEvents()
         {
             retailerOptionsDisplayService.DisplayRetailerOptions += OnDisplayRetailerOptions;
-            identityService.LoggedIn += OnLoggedIn;
-            identityService.LoggedOut += OnLoggedOut;
         }
 
 
         public void OnDisplayRetailerOptions(object? sender, RetailerOptions retailerOptions)
         {
             Retailers.Add(retailerOptions);
-        }
-        public void OnLoggedIn(object? sender, EventArgs e)
-        {
-            IsLoggedIn = true;
-        }
-        public void OnLoggedOut(object? sender, EventArgs e)
-        {
-            IsLoggedIn = false;
-        }
-
-        public async Task OnLoggedInRequest(CancellationToken cancellationToken = default)
-        {
-            await identityService.LoginAsync();
-
         }
         /// <summary>
         /// When a product is selected we load all the models.

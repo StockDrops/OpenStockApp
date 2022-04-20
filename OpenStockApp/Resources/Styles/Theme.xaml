@@ -64,6 +64,16 @@
             </VisualStateGroup>
         </VisualStateGroupList>
     </Setter>-->
+    
+    <!--<Style TargetType="Label"
+           x:Key="BodySLabelStyle">
+        <Setter Property="FontSize"
+                Value="14" />
+        --><!--<Setter Property="FontFamily"
+                Value="SegoeUiRegular" />--><!--
+        <Setter Property="TextColor"
+                Value="{AppThemeBinding Light={StaticResource Dark}, Dark={StaticResource TLightGray}}" />
+    </Style>-->
 
     <Style x:Key="BaseButton" TargetType="Button">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource TextOnPrimaryColor}, Light={StaticResource TextOnPrimaryColor}}" />

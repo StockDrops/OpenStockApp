@@ -19,7 +19,6 @@ namespace OpenStockApp.ViewModels.AlertSettings
 {
     public class ActiveNotificationsViewModel : BaseConnectionViewModel
     {
-        public bool IsLoggedIn => identityService.IsLoggedIn();
         public ObservableCollection<GroupedObversableModelOptions> GroupedModelOptions { get; set; } = new ObservableCollection<GroupedObversableModelOptions>();
         public ObservableCollection<Product> Products { get; set; } = new ObservableCollection<Product>();
         public ObservableCollection<DisplayedNotificationActions> NotificationActions { get; set; } = new ObservableCollection<DisplayedNotificationActions>();
@@ -33,7 +32,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
         private readonly IIdentityService identityService;
         public ActiveNotificationsViewModel(IBaseHubClient baseHubClient, 
             IUserOptionsService userOptionsService,
-            IIdentityService identityService) : base(baseHubClient)
+            IIdentityService identityService) : base(baseHubClient, identityService)
         {
             this.userOptionsService = userOptionsService;
             NavigatedToCommand = new Command(() => OnNavigatedTo());
@@ -78,13 +77,16 @@ namespace OpenStockApp.ViewModels.AlertSettings
         }
         private void LoadProducts()
         {
-            var l = userOptionsService.UserOptions?.ModelOptions.Where(m => m.IsEnabled).Select(m => m.Model.Product ).DistinctBy(p => p.Id).ToList();
-            Products.Clear();
-            Guard.IsNotNull(l, "Product List");
-            foreach(var product in l)
+            if (identityService.IsLoggedIn())
             {
-                if(product != null)
-                    Products.Add(product);
+                var l = userOptionsService.UserOptions?.ModelOptions.Where(m => m.IsEnabled).Select(m => m.Model.Product).DistinctBy(p => p.Id).ToList();
+                Products.Clear();
+                Guard.IsNotNull(l, "Product List");
+                foreach (var product in l)
+                {
+                    if (product != null)
+                        Products.Add(product);
+                }
             }
         }
         private async Task OnReloadSource(CancellationToken cancellationToken = default)

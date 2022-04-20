@@ -31,12 +31,6 @@ namespace OpenStockApp.ViewModels.AlertSettings
         #endregion
 
         #region Properties
-        public BindableProperty IsLoggedInProperty = BindableProperty.Create(nameof(IsLoggedIn), typeof(bool), typeof(AlertSettingsViewModel));
-        public bool IsLoggedIn
-        {
-            get => (bool)GetValue(IsLoggedInProperty);
-            set => SetValue(IsLoggedInProperty, value);
-        }
         public Product SelectedProduct { get; set; } = new Product();
         public Country SelectedCountry { get; set; } = new Country();
         #endregion
@@ -46,12 +40,10 @@ namespace OpenStockApp.ViewModels.AlertSettings
         public AsyncRelayCommand LoadRetailers { get; set; }
 
         public AsyncRelayCommand SaveModelOptions { get; set; }
-        public AsyncRelayCommand LogIn { get; set; }
         #endregion
         
         #region Services
         private readonly IUserOptionsHubClient userOptionsHub;
-        private readonly IIdentityService identityService;
         private readonly IUserOptionsDisplayService userOptionsDisplayService;
         private readonly IRetailerOptionsDisplayService retailerOptionsDisplayService;
         private readonly IUserOptionsService userOptionsService;
@@ -63,32 +55,25 @@ namespace OpenStockApp.ViewModels.AlertSettings
             IUserOptionsService userOptionsService,
             IIdentityService identityService,
             IRetailerOptionsDisplayService retailerOptionsDisplayService,
-            IUserOptionsDisplayService userOptionsDisplayService)  : base(baseHubClient: userOptionsHub)
+            IUserOptionsDisplayService userOptionsDisplayService)  : base(baseHubClient: userOptionsHub, identityService)
         {
             #region Service Assignements
             this.userOptionsHub = userOptionsHub;
             this.userOptionsDisplayService = userOptionsDisplayService;
             this.retailerOptionsDisplayService = retailerOptionsDisplayService;
             this.userOptionsService = userOptionsService;
-            this.identityService = identityService;
             #endregion
             #region Command Assigments
             OnNavigatedToCommand = new AsyncRelayCommand(OnNavigatedTo);
             LoadRetailers = new AsyncRelayCommand(OnCountrySelected);
             SaveModelOptions = new AsyncRelayCommand(OnSaveModelOptions);
-            LogIn = new AsyncRelayCommand(OnLoggedInRequest);
-
-            
 
             #endregion
-            IsLoggedIn = identityService.IsLoggedIn();
             RegisterEvents();
         }
         public void RegisterEvents()
         {
             retailerOptionsDisplayService.DisplayRetailerOptions += OnDisplayRetailerOptions;
-            identityService.LoggedIn += OnLoggedIn;
-            identityService.LoggedOut += OnLoggedOut;
 
             MessagingCenter.Subscribe<RetailerOptionsPage>(this, "NavigatedTo", async (sender) => await OnNavigatedTo());
         }
@@ -98,20 +83,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
         {
             Retailers.Add(retailerOptions);
         }
-        public void OnLoggedIn(object? sender, EventArgs e)
-        {
-            IsLoggedIn = true;
-        }
-        public void OnLoggedOut(object? sender, EventArgs e)
-        {
-            IsLoggedIn = false;
-        }
 
-        public async Task OnLoggedInRequest(CancellationToken cancellationToken = default)
-        {
-            await identityService.LoginAsync();
-
-        }
         public async Task OnCountrySelected(CancellationToken cancellationToken)
         {
             await LoadCountryRetailers(SelectedCountry, cancellationToken);
