@@ -77,9 +77,6 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:ObservableModelOptions">
                         <Grid HeightRequest="{OnPlatform Default=400, Android=250}">
-                            <Grid.Behaviors>
-                                <mct:MultiValidationBehavior  />
-                            </Grid.Behaviors>
                             <StackLayout>
                                 <Label Text="{Binding Model.Name}"
                                            LineBreakMode="WordWrap"
@@ -88,30 +85,33 @@
                                            Margin="{OnPlatform Default='0,10,0,10', Android='0,2,0,2'}"/>
                                 <StackLayout Orientation="{OnPlatform Android='Horizontal', Default='Vertical'}">
                                     <Label Text="Enable" Margin="0,10,0,10" />
+                                    <Label Text="{Binding ModelOptions.Id, StringFormat='ModelOptions ID: {0}'}" />
+                                    <Label Text="{Binding ModelOptions.IsEnabled}" />
                                     <Switch IsToggled="{Binding ModelOptions.IsEnabled}"/>
+                                    <Switch IsToggled="{Binding ModelOptions.IsEnabled, Mode=OneWay}"/>
                                 </StackLayout>
                                 <StackLayout Orientation="{OnPlatform Android='Horizontal', Default='Vertical'}">
                                     <Label Text="Max Price:" Margin="0,10,0,10"/>
-                                    <Entry Keyboard="Numeric" IsTextPredictionEnabled="False" Text="{Binding ModelOptions.MaxPrice}" MinimumWidthRequest="100">
-                                        <Entry.Behaviors>
+                                    <Entry Keyboard="Numeric" IsTextPredictionEnabled="False" Text="{Binding ModelOptions.MaxPrice, Mode=TwoWay}" MinimumWidthRequest="100">
+                                        <!--<Entry.Behaviors>
                                             <mct:NumericValidationBehavior Flags="ValidateOnValueChanged"
                                                                        MaximumDecimalPlaces="2"
                                                                        InvalidStyle="{StaticResource InvalidEntry}"
                                                                        ValidStyle="{StaticResource ValidEntry}"
                                             />
-                                        </Entry.Behaviors>
+                                        </Entry.Behaviors>-->
                                     </Entry>
                                 </StackLayout>
                                 <StackLayout Orientation="{OnPlatform Android='Horizontal', Default='Vertical'}">
                                     <Label Text="Min Price:" Margin="0,10,0,10"/>
-                                    <Entry Text="{Binding ModelOptions.MinPrice}" Keyboard="Numeric" MinimumWidthRequest="100" >
-                                        <Entry.Behaviors>
+                                    <Entry Text="{Binding ModelOptions.MinPrice, Mode=TwoWay}" Keyboard="Numeric" MinimumWidthRequest="100" >
+                                        <!--<Entry.Behaviors>
                                             <mct:NumericValidationBehavior Flags="ValidateOnValueChanged"
                                                                        MaximumDecimalPlaces="2"
                                                                        InvalidStyle="{StaticResource InvalidEntry}"
                                                                        ValidStyle="{StaticResource ValidEntry}"                                                                       
                                             />
-                                        </Entry.Behaviors>
+                                        </Entry.Behaviors>-->
                                     </Entry>
                                 </StackLayout>
                                 <StackLayout Orientation="{OnPlatform Android='Vertical', Default='Vertical'}">
