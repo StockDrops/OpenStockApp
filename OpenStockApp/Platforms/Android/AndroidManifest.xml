@@ -22,6 +22,25 @@
 	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="android.permission.INTERNET" />
+	<!-- Required for API Level 30 to make sure the app can detect browsers and other apps where communication is needed.-->
+	<!--https://developer.android.com/training/basics/intents/package-visibility-use-cases-->
+	<queries>
+		<package android:name="com.azure.authenticator" />
+		<package android:name="com.stockdrops.stockdropsopenstockapp" />
+		<package android:name="com.microsoft.windowsintune.companyportal" />
+		<!-- Required for API Level 30 to make sure the app detect browsers
+      (that don't support custom tabs) -->
+		<intent>
+			<action android:name="android.intent.action.VIEW" />
+			<category android:name="android.intent.category.BROWSABLE" />
+			<data android:scheme="https" />
+		</intent>
+		<!-- Required for API Level 30 to make sure the app can detect browsers that support custom tabs -->
+		<!-- https://developers.google.com/web/updates/2020/07/custom-tabs-android-11#detecting_browsers_that_support_custom_tabs -->
+		<intent>
+			<action android:name="android.support.customtabs.action.CustomTabsService" />
+		</intent>
+	</queries>
 	<meta-data
 		android:name="com.google.firebase.messaging.default_notification_channel_id"
 		android:value="my_notification_channel" />

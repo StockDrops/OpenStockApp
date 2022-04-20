@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Gms.Common;
 using Android.OS;
+using Android.Runtime;
 using Microsoft.Identity.Client;
 using OpenStockApp.Models;
 
@@ -18,7 +19,11 @@ namespace OpenStockApp.Platforms.Android
         {
             base.OnCreate(savedInstanceState);
         }
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent? data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            AuthenticationContinuationHelper.SetAuthenticationContinuationEventArgs(requestCode, resultCode, data);
+        }
 
-       
     }
 }

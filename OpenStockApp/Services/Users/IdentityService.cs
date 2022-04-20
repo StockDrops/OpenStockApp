@@ -162,6 +162,12 @@ namespace OpenStockApp.Services.Users
 #if WINDOWS
             if (Environment.OSVersion.Version < new Version("10.0"))
                 embeddedView = false;
+#elif ANDROID
+            embeddedView = false;
+            var options = new SystemWebViewOptions()
+            {
+                OpenBrowserAsync = SystemWebViewOptions.OpenWithChromeEdgeBrowserAsync
+            };
 #else
             embeddedView = false;
 #endif
@@ -174,9 +180,10 @@ namespace OpenStockApp.Services.Users
 
                 _authenticationResult = await client.AcquireTokenInteractive(Scopes)
                                             .WithUseEmbeddedWebView(embeddedView)
-                                                            //#if ANDROID
-                                                            //                                                       .WithParentActivityOrWindow(Activity as Android.App.Activity)
-                                                            //#endif
+#if ANDROID
+                                            .WithSystemWebViewOptions(options)
+                                                                                                                   .WithParentActivityOrWindow(Platform.CurrentActivity)
+#endif
                                                             .ExecuteAsync(cancellationToken);
                 UpdateLatestIdentifierUsedInteractively();
 
