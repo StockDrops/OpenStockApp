@@ -175,11 +175,11 @@
         <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
                             LogInCommand="{Binding LogIn}" />
         
-        <!--<Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
+        <Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
                 Command="{Binding SaveModelOptions}" 
                 IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                  IsVisible="{Binding IsLoggedIn}"
-                Grid.Row="1"/>-->
+                Grid.Row="1"/>
     </Grid>
 
         <!--</ContentPage>
