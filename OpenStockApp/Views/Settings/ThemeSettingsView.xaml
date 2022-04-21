@@ -4,7 +4,7 @@
              xmlns:strings="clr-namespace:OpenStockApp.Resources.Strings"
              xmlns:vsettings="clr-namespace:OpenStockApp.Views.Settings"
              xmlns:vms="clr-namespace:OpenStockApp.ViewModels.Settings"
-             xmlns:appmodel="clr-namespace:Microsoft.Maui.Essentials;assembly=Microsoft.Maui.Essentials"
+             xmlns:appmodel="clr-namespace:Microsoft.Maui.ApplicationModel;assembly=Microsoft.Maui.Essentials"
              xmlns:converters="clr-namespace:OpenStockApp.Converters"
              x:Class="OpenStockApp.Views.Settings.ThemeSettingsView"
              

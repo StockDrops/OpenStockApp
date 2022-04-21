@@ -9,7 +9,7 @@
              xmlns:converters="clr-namespace:OpenStockApp.Converters"
              
              xmlns:mctbehaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
-             xmlns:appmodel="clr-namespace:Microsoft.Maui.Essentials;assembly=Microsoft.Maui.Essentials"
+             xmlns:appmodel="clr-namespace:Microsoft.Maui.ApplicationModel;assembly=Microsoft.Maui.Essentials"
              x:Class="OpenStockApp.Views.Settings.UserSettingsView"
              x:Name="ParentView"
              >
