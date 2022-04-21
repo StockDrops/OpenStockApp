@@ -5,6 +5,7 @@
              xmlns:converters="clr-namespace:OpenStockApp.Converters"
              xmlns:models="clr-namespace:OpenStockApp.Core.Maui.Models;assembly=OpenStockApp.Core.Maui"
              xmlns:views="clr-namespace:OpenStockApp.Views"
+             xmlns:validators="clr-namespace:OpenStockApp.Core.Maui.Behaviors;assembly=OpenStockApp.Core.Maui"
              x:Class="OpenStockApp.Views.ModelOptionsView"
              x:DataType="views:ModelOptionsView"
              x:Name="view"
@@ -88,16 +89,16 @@
                                            Margin="{OnPlatform Default='0,10,0,10', Android='0,2,0,2'}"/>
                                 <StackLayout Orientation="{OnPlatform Android='Horizontal', Default='Vertical'}">
                                     <Label Text="Enable" Margin="0,10,0,10" />
-                                    <Switch IsToggled="{Binding ModelOptions.IsEnabled}"/>
+                                    <CheckBox IsChecked="{Binding ModelOptions.IsEnabled}"/>
                                 </StackLayout>
                                 <StackLayout Orientation="{OnPlatform Android='Horizontal', Default='Vertical'}">
                                     <Label Text="Max Price:" Margin="0,10,0,10"/>
                                     <Entry Keyboard="Numeric" IsTextPredictionEnabled="False" Text="{Binding ModelOptions.MaxPrice}" MinimumWidthRequest="100">
                                         <Entry.Behaviors>
-                                            <mct:NumericValidationBehavior Flags="ValidateOnValueChanged"
+                                            <validators:NumericValidationBehavior Flags="ValidateOnValueChanged"
                                                                        MaximumDecimalPlaces="2"
                                                                        InvalidStyle="{StaticResource InvalidEntry}"
-                                                                       ValidStyle="{StaticResource ValidEntry}"
+                                                                       ValidStyle="{StaticResource ValidEntry}"                                                                       
                                             />
                                         </Entry.Behaviors>
                                     </Entry>
@@ -106,7 +107,7 @@
                                     <Label Text="Min Price:" Margin="0,10,0,10"/>
                                     <Entry Text="{Binding ModelOptions.MinPrice}" Keyboard="Numeric" MinimumWidthRequest="100" >
                                         <Entry.Behaviors>
-                                            <mct:NumericValidationBehavior Flags="ValidateOnValueChanged"
+                                            <validators:NumericValidationBehavior Flags="ValidateOnValueChanged"
                                                                        MaximumDecimalPlaces="2"
                                                                        InvalidStyle="{StaticResource InvalidEntry}"
                                                                        ValidStyle="{StaticResource ValidEntry}"                                                                       
