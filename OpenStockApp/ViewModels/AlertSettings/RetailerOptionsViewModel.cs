@@ -74,8 +74,9 @@ namespace OpenStockApp.ViewModels.AlertSettings
         public void RegisterEvents()
         {
             retailerOptionsDisplayService.DisplayRetailerOptions += OnDisplayRetailerOptions;
-
+#if ANDROID
             MessagingCenter.Subscribe<RetailerOptionsPage>(this, "NavigatedTo", async (sender) => await OnNavigatedTo());
+#endif
         }
 
 

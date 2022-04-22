@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Alerts;
+using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -26,10 +27,10 @@ namespace OpenStockApp.Views
 
         public TappedCopyableEntry() : base()
         {
-            GestureRecognizers.Add(new TapGestureRecognizer
+            GestureRecognizers.Add(new TapGestureRecognizer 
             {
 
-                Command = new Command(async () =>
+                Command = new Command(() =>
                 {
                     if (!string.IsNullOrEmpty(Text))
                         Dispatcher.Dispatch(async () =>
@@ -40,8 +41,22 @@ namespace OpenStockApp.Views
                         });
                 })
             });
-            
+#if WINDOWS
+            GestureRecognizers.Add(new ClickGestureRecognizer
+            {
+                Command = new Command(() =>
+                {
+                    if (!string.IsNullOrEmpty(Text))
+                        Dispatcher.Dispatch(async () =>
+                        {
+                            await Clipboard.SetTextAsync(Text);
+                            if (CopiedCommand?.CanExecute(CopiedCommandParameter) == true)
+                                CopiedCommand.Execute(CopiedCommandParameter);
+                        });
+                })
+            });
             SetDefaultCopiedCommand();
+#endif
         }
         protected void SetDefaultCopiedCommand()
         {

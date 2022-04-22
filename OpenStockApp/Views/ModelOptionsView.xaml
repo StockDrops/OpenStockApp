@@ -6,6 +6,7 @@
              xmlns:models="clr-namespace:OpenStockApp.Core.Maui.Models;assembly=OpenStockApp.Core.Maui"
              xmlns:views="clr-namespace:OpenStockApp.Views"
              xmlns:validators="clr-namespace:OpenStockApp.Core.Maui.Behaviors;assembly=OpenStockApp.Core.Maui"
+             xmlns:converterscore="clr-namespace:OpenStockApp.Core.Maui.Converters;assembly=OpenStockApp.Core.Maui"
              xmlns:users="clr-namespace:OpenStockApi.Core.Models.Users;assembly=OpenStockApi.Core"
              x:Class="OpenStockApp.Views.ModelOptionsView"
              x:DataType="views:ModelOptionsView"
@@ -14,7 +15,7 @@
     <ContentView.Resources>
         <mct:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueObject="Busy... Please wait..." FalseObject="Save Alert Settings" />
         <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
-        <mct:EnumToIntConverter x:Key="EnumToIntConverter" />
+        <converterscore:EnumToIntConverter x:Key="EnumToIntConverter" />
 
     </ContentView.Resources>
     <ContentView.Content>
