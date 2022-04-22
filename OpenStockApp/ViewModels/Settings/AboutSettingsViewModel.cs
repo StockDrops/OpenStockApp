@@ -18,6 +18,7 @@ namespace OpenStockApp.ViewModels.Settings
     {
         public string? PrivacyStatementUrl => _appConfig?.PrivacyStatement;
         public string? LicenseAgreementUrl => _appConfig?.LicenseAgreement;
+        public string? CurrentYear => DateTime.Now.Year.ToString();
         public string? UserPortalUrl => _appConfig?.UserPortal;
         public string? VersionDescription => Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString();
 

@@ -182,7 +182,7 @@
 	  <MauiImage Include="Resources\Images\icons\settings_dark.svg" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-pre9" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-rc1" />
 	  <PackageReference Include="EFCoreSecondLevelCacheInterceptor" Version="3.4.0" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
 	  <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />

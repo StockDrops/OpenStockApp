@@ -9,8 +9,9 @@ namespace OpenStockApp.Views;
 
 public partial class ModelOptionsView : ContentView
 {
-    public static readonly BindableProperty ItemSourceProperty = BindableProperty.Create(nameof(ItemSource), typeof(ObservableCollection<GroupedObversableModelOptions>), typeof(ModelOptionsView), new ObservableCollection<GroupedObversableModelOptions>(), propertyChanged:
-        (b, o, s) => OnListChanged(b, o, s));
+    public static readonly BindableProperty ItemSourceProperty = BindableProperty.Create(nameof(ItemSource), typeof(ObservableCollection<GroupedObversableModelOptions>), typeof(ModelOptionsView), new ObservableCollection<GroupedObversableModelOptions>());
+        //, propertyChanged:
+        //(b, o, s) => OnListChanged(b, o, s));
 
     public ObservableCollection<GroupedObversableModelOptions> ItemSource
     {
@@ -19,7 +20,7 @@ public partial class ModelOptionsView : ContentView
 
     }
     public static readonly BindableProperty NotificationActionsProperty = BindableProperty.Create(nameof(NotificationActions),
-        typeof(ObservableCollection<DisplayedNotificationActions>), typeof(ModelOptionsView), new ObservableCollection<DisplayedNotificationActions>(), propertyChanged: (b, o, n) => OnNotificationActionsChanged(b, o, n));
+        typeof(ObservableCollection<DisplayedNotificationActions>), typeof(ModelOptionsView), new ObservableCollection<DisplayedNotificationActions>()); // , propertyChanged: (b, o, n) => OnNotificationActionsChanged(b, o, n));
 	public ObservableCollection<DisplayedNotificationActions> NotificationActions
     {
 		get => (ObservableCollection<DisplayedNotificationActions>)GetValue(NotificationActionsProperty);
@@ -87,6 +88,7 @@ public partial class ModelOptionsView : ContentView
             });
         InitializeComponent();
     }
+
     private static void OnListChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if(oldValue is ObservableCollection<GroupedObversableModelOptions> list && newValue is ObservableCollection<GroupedObversableModelOptions> newList)

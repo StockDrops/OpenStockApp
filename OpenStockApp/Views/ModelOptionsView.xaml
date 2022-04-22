@@ -6,6 +6,7 @@
              xmlns:models="clr-namespace:OpenStockApp.Core.Maui.Models;assembly=OpenStockApp.Core.Maui"
              xmlns:views="clr-namespace:OpenStockApp.Views"
              xmlns:validators="clr-namespace:OpenStockApp.Core.Maui.Behaviors;assembly=OpenStockApp.Core.Maui"
+             xmlns:users="clr-namespace:OpenStockApi.Core.Models.Users;assembly=OpenStockApi.Core"
              x:Class="OpenStockApp.Views.ModelOptionsView"
              x:DataType="views:ModelOptionsView"
              x:Name="view"
@@ -19,8 +20,8 @@
     <ContentView.Content>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="{OnPlatform Android=40, Default=50}"/>
+                <RowDefinition Height="*"/>
                 
             </Grid.RowDefinitions>
             <SearchBar x:Name="searchBar"
@@ -29,22 +30,24 @@
                            Placeholder="Search for a model"
                            SearchCommand="{Binding PerformSearchCommand, Source={x:Reference view}}"
                            SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
-                           Margin="{OnPlatform Default='0,10,0,10', Android='0,2,0,2'}">
+                           Margin="{OnPlatform Default='30,10,30,10', Android='0,2,0,2'}">
                 <SearchBar.Behaviors>
                     <mct:EventToCommandBehavior EventName="TextChanged"
                                                     Command="{Binding PerformSearchCommand, Source={x:Reference view}}"
                                                     CommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
                 </SearchBar.Behaviors>
             </SearchBar>
+
+
             <CollectionView ItemsSource="{Binding ItemSource, Source={x:Reference view}}"
                             
                             Grid.Row="1"
                             IsGrouped="true"
                             
-                            Margin="{OnPlatform Default='0,10,0,10', Android='0,1,0,1'}">
+                            Margin="{OnPlatform Default='30,10,30,10', Android='0,1,0,1'}">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical"
-                                     Span="{OnPlatform Android=1, iOS=1, Default=4}"
+                                     Span="{OnPlatform Android=1, iOS=1, Default=1}"
                                      VerticalItemSpacing="10"
                                      HorizontalItemSpacing="10"/>
                 </CollectionView.ItemsLayout>
@@ -78,9 +81,6 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:ObservableModelOptions">
                         <Grid HeightRequest="{OnPlatform Default=400, Android=250}">
-                            <Grid.Behaviors>
-                                <mct:MultiValidationBehavior  />
-                            </Grid.Behaviors>
                             <StackLayout>
                                 <Label Text="{Binding Model.Name}"
                                            LineBreakMode="WordWrap"
@@ -118,7 +118,7 @@
                                 <StackLayout Orientation="{OnPlatform Android='Vertical', Default='Vertical'}">
                                     <Label Text="Action:" Margin="0,10,0,10" />
                                     <Picker ItemDisplayBinding="{Binding Description}"
-                                        SelectedIndex="{Binding ModelOptions.NotificationAction, Mode=TwoWay, Converter={StaticResource EnumToIntConverter}}"
+                                        SelectedIndex="{Binding ModelOptions.NotificationAction, Mode=TwoWay, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type users:NotificationAction}}"
                                         ItemsSource="{Binding BindingContext.NotificationActions, Source={x:Reference view}}"
                                             />
                                 </StackLayout>
@@ -127,7 +127,6 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            
             <!--<Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
                     Command="{Binding SaveModelOptionsCommand, Source={x:Reference view}}" 
                     IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"

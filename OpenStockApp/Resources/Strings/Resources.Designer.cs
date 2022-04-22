@@ -305,7 +305,7 @@ namespace OpenStockApp.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to StockDrops App. Copyright StockDrops, 2021..
+        ///   Looks up a localized string similar to StockDrops App. Copyright StockDrops, {0}..
         /// </summary>
         public static string SettingsPageAboutText {
             get {

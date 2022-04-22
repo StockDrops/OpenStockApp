@@ -31,7 +31,7 @@
                 <Label
                     Margin="{StaticResource XSmallTopMargin}"
                     Style="{StaticResource BodyTextStyle}"
-                    Text="{x:Static strings:Resources.SettingsPageAboutText}" 
+                    Text="{Binding CurrentYear, StringFormat={x:Static strings:Resources.SettingsPageAboutText}}" 
                    />
 
                 <views:HyperlinkButton 

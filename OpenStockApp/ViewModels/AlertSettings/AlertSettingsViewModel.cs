@@ -14,6 +14,7 @@ using OpenStockApp.Core.Maui.Services.Settings;
 using OpenStockApp.Core.Contracts.Services.Settings;
 using OpenStockApp.Models.Users;
 using OpenStockApp.Services;
+using System.Windows.Input;
 
 namespace OpenStockApp.ViewModels.AlertSettings
 {
@@ -97,7 +98,6 @@ namespace OpenStockApp.ViewModels.AlertSettings
         {
             retailerOptionsDisplayService.DisplayRetailerOptions += OnDisplayRetailerOptions;
         }
-
 
         public void OnDisplayRetailerOptions(object? sender, RetailerOptions retailerOptions)
         {

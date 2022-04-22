@@ -8,7 +8,7 @@
         xmlns:strings="clr-namespace:OpenStockApp.Resources.Strings"
         x:DataType="vm:ShellViewModel"
         FlyoutBackground="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}"
-        
+        FlyoutBehavior="Locked"
         FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}"
         >
     <Shell.FlyoutHeader>
@@ -27,7 +27,7 @@
         <Tab>
             <ShellContent Title="{Binding Notifications.Title}"
                   Icon="{AppThemeBinding Light=notifications.png, Dark=notifications_dark.png}"
-                  ContentTemplate="{DataTemplate alerts:NotificationPageMobile}"
+                  ContentTemplate="{DataTemplate alerts:NotificationsPage}"
                   />
         </Tab>
     </FlyoutItem>
@@ -35,15 +35,25 @@
     <FlyoutItem Title="{Binding AlertSettings.Title}"
                 Icon="{AppThemeBinding Light=edit_notifications.png, Dark=edit_notifications_dark.png}">
         <Tab Title="{x:Static strings:Resources.ShellAlertSettings}" >
-            
+
             <ShellContent Title="{Binding AlertSettings.Title}"
                           Icon="{AppThemeBinding Light=edit_notifications.png, Dark=edit_notifications_dark.png}"
-                          ContentTemplate="{DataTemplate alerts:AlertSettingsPage}"
+                          ContentTemplate="{DataTemplate alerts:AlertSettingsPageMobile}"
                   />
+            <!--<ShellContent Title="Retailer Options"
+                          ContentTemplate="{DataTemplate alerts:RetailerOptionsPage}" />
+            <ShellContent Title="Active Notifications"
+                          
+                          ContentTemplate="{DataTemplate alerts:ActiveNotificationsPage}"/>-->
+        </Tab>
+        <Tab Title="Retailer Options">
+            <ShellContent Title="Retailer Options"
+                          ContentTemplate="{DataTemplate alerts:RetailerOptionsPage}" />
+        </Tab>
+        <Tab Title="Active Notifications">
             <ShellContent Title="Active Notifications"
                           
                           ContentTemplate="{DataTemplate alerts:ActiveNotificationsPage}"/>
-            
         </Tab>
     </FlyoutItem>
     
@@ -55,8 +65,12 @@
             <ShellContent Title="{Binding PersonalizationSettings.Title}"
                   ContentTemplate="{DataTemplate settings:PersonalizationSettingsPage}"
                   />
+        </Tab>
+        <Tab Title="{Binding IntegrationSettings.Title}">
             <ShellContent Title="{Binding IntegrationSettings.Title}"
                       ContentTemplate="{DataTemplate settings:IntegrationsSettingsPage}"/>
+        </Tab>
+        <Tab Title="{Binding AboutSettings.Title}">
             <ShellContent Title="{Binding AboutSettings.Title}"
                       ContentTemplate="{DataTemplate settings:AboutSettingsPage}"/>
         </Tab>

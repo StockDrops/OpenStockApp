@@ -10,16 +10,19 @@ public partial class RetailerOptionsPage : ContentPage
 	public RetailerOptionsPage(RetailerOptionsViewModel retailerOptionsViewModel)
 	{
 		BindingContext = retailerOptionsViewModel;
-#if ANDROID || IOS
+#if ANDROID || IOS || WINDOWS
         DisplayHelp = new Command(() => OnDisplayHelp());
 #endif
         InitializeComponent();
-		MessagingCenter.Send(this, "NavigatedTo");
 
+#if ANDROID
+        MessagingCenter.Send(this, "NavigatedTo");
+#endif
         MessagingCenter.Subscribe<RetailerOptionsViewModel, Exception?>(this, "saved", async (sender, args) =>
         {
             await OnSaved(sender, args);
         });
+
     }
     public async Task OnSaved(object? sender, object? exception)
     {
