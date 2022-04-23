@@ -48,8 +48,19 @@ public partial class App : Application
     {
         var window = base.CreateWindow(activationState);
 
-        window.Resumed += (s, e) => BackgroundServicesContainer.StartApp();
-        window.Stopped += (s, e) => BackgroundServicesContainer.StopApp();
+        window.Resumed += (s, e) =>
+        {
+#if ANDROID || IOS
+            BackgroundServicesContainer.StartApp();
+#endif
+        };
+        window.Stopped += (s, e) =>
+        {
+#if ANDROID || IOS
+            BackgroundServicesContainer.StopApp();
+#endif
+        };
+        
 
         return window;
     }

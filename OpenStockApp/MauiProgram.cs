@@ -37,10 +37,12 @@ using OpenStockApp.Services.Users;
 
 
 
+
 #if WINDOWS
 using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.ApplicationModel.Activation;
 using OpenStockApp.Core.Maui.Platforms.Windows;
+using Microsoft.Win32;
 #elif ANDROID
 using OpenStockApp.Platforms.Android.Notifications;
 using OpenStockApp.Platforms.Android;
@@ -68,12 +70,17 @@ public static class MauiProgram
                 configure.OnLaunching((app, args) =>
                 {
                     BackgroundServicesContainer.StartApp();
+                    SystemEvents.PowerModeChanged += BackgroundServicesContainer.OnPowerStateChanged;
                 });
                 configure.OnLaunched((window, args) =>
                 {
                     ToastNotificationManagerCompat.OnActivated += WindowsNotificationService.OnActivated;
                 });
-               //configure.OnClosed((app, args) => BackgroundServicesContainer.StopApp());
+               configure.OnClosed((app, args) => {
+                   BackgroundServicesContainer.StopApp();
+                   SystemEvents.PowerModeChanged -= BackgroundServicesContainer.OnPowerStateChanged;
+               });
+                
             });
 #elif ANDROID
                 lifecycle.AddAndroid(configure =>
