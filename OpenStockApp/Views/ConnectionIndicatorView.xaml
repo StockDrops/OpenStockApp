@@ -18,10 +18,10 @@
     </ContentView.Resources>
     <ContentView.Content>
         <StackLayout Orientation="Horizontal" Margin="4,4,4,4">
-            <Border>
-                <Label Text="{Binding IsConnected, Converter={StaticResource BoolToObjectConverter}, Mode=OneWay}" VerticalOptions="Center" Margin="5" />
-            </Border>
-            <Button Text="Connect"  IsEnabled="{Binding IsConnected, Converter={StaticResource InvertedBoolConverter}}" Command="{Binding ConnectCommand}" IsVisible="{Binding IsConnected, Converter={StaticResource InvertedBoolConverter}}" />
+            
+                <Label Text="{Binding IsConnected, Source={x:Reference view}, Converter={StaticResource BoolToObjectConverter}, Mode=OneWay}" VerticalOptions="Center" Margin="5" />
+
+            <Button Text="Connect"  IsEnabled="{Binding IsConnected, Source={x:Reference view}, Converter={StaticResource InvertedBoolConverter}}" Command="{Binding ConnectCommand}" IsVisible="{Binding IsConnected, Converter={StaticResource InvertedBoolConverter}}" />
         </StackLayout>
     </ContentView.Content>
 </ContentView>
