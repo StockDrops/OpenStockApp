@@ -598,6 +598,8 @@ namespace OpenStockApp.Services.Users
                                                     .WithB2CAuthority(authority)
 #if ANDROID
                                                     .WithParentActivityOrWindow(() => MainActivity)
+#elif IOS || MACCATALYST
+                                                    .WithIosKeychainSecurityGroup("com.stockdrops.msal")
 #endif
                                                     .WithRedirectUri(redirectUri)
                                                     .Build();
