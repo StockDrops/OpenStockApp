@@ -76,7 +76,8 @@ public partial class ModelOptionsView : ContentView
         set => SetValue(PerformSearchCommandProperty, value);
     }
     
-
+    public Command SelectCommand { get; }
+    public Command DeselectCommand { get; }
     public ModelOptionsView()
 	{
         //BindingContext = this;
@@ -86,7 +87,31 @@ public partial class ModelOptionsView : ContentView
             {
                 OnPerformSearch(query);
             });
+        SelectCommand = new Command(() => OnSelectCommand());
+        DeselectCommand = new Command(() => OnDeselectCommand());
         InitializeComponent();
+    }
+
+    private void OnSelectCommand()
+    {
+        SelectDeselectItems(true);
+    }
+    private void SelectDeselectItems(bool select = true)
+    {
+        IsBusy = true;
+        foreach (var group in ItemSource)
+        {
+            foreach (var item in group)
+            {
+                item.ModelOptions.IsEnabled = select;
+            }
+        }
+        IsBusy = false;
+    }
+
+    private void OnDeselectCommand()
+    {
+        SelectDeselectItems(false);
     }
 
     private static void OnListChanged(BindableObject bindable, object oldValue, object newValue)

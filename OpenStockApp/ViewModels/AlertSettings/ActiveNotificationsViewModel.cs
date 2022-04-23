@@ -115,12 +115,12 @@ namespace OpenStockApp.ViewModels.AlertSettings
             if(modelOptionsForProduct is not null)
             {
                 GroupedModelOptions.Clear();
-                var observableModels = new List<ObservableModelOptions>();
+                var observableModels = new List<ShowModel>();
                 foreach (var modelOptions in modelOptionsForProduct)
                 {
                     if(modelOptions != null && modelOptions.Model != null)
                     {
-                        observableModels.Add(new ObservableModelOptions(modelOptions.Model, modelOptions));
+                        observableModels.Add(new ShowModel(modelOptions.Model, modelOptions));
                     }
                 }
                 var l = observableModels.GroupBy(m => m.Model.BrandId)

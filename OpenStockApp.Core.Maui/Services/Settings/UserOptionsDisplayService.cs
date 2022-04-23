@@ -34,10 +34,10 @@ namespace OpenStockApp.Core.Maui.Services.Settings
 
 
 
-        public async Task<IList<ObservableModelOptions>> GetObservableModelOptions(Product product, CancellationToken cancellationToken = default)
+        public async Task<IList<ShowModel>> GetObservableModelOptions(Product product, CancellationToken cancellationToken = default)
         {
             var models = await userOptionsHubClient.GetModels(product, cancellationToken);
-            var observableModels = new List<ObservableModelOptions>();
+            var observableModels = new List<ShowModel>();
             var options = userOptionsService.UserOptions;
 
 
@@ -47,7 +47,7 @@ namespace OpenStockApp.Core.Maui.Services.Settings
 
                 if (options != null && modelOption != null)
                 {
-                    observableModels.Add(new ObservableModelOptions(model, modelOption));
+                    observableModels.Add(new ShowModel(model, modelOption));
                 }
                 else
                 {
@@ -57,7 +57,7 @@ namespace OpenStockApp.Core.Maui.Services.Settings
 
                     };
                     options?.ModelOptions.Add(modelOption);
-                    observableModels.Add(new ObservableModelOptions(model, modelOption));
+                    observableModels.Add(new ShowModel(model, modelOption));
                 }
             }
 

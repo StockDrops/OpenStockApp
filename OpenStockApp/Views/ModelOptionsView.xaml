@@ -21,23 +21,31 @@
     <ContentView.Content>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="{OnPlatform Android=40, Default=50}"/>
+                <RowDefinition Height="{OnPlatform Android=40, Default=100}"/>
                 <RowDefinition Height="*"/>
                 
             </Grid.RowDefinitions>
-            <SearchBar x:Name="searchBar"
-                       Grid.Row="0"
+            <StackLayout Grid.Row="0" Margin="{OnPlatform Default='30,10,30,10', Android='0,2,0,2'}">
+                <SearchBar x:Name="searchBar"
+                       
                            IsTextPredictionEnabled="True"
                            Placeholder="Search for a model"
                            SearchCommand="{Binding PerformSearchCommand, Source={x:Reference view}}"
                            SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
-                           Margin="{OnPlatform Default='30,10,30,10', Android='0,2,0,2'}">
-                <SearchBar.Behaviors>
-                    <mct:EventToCommandBehavior EventName="TextChanged"
+                           Margin="0,0,0,5"
+                           >
+                    <SearchBar.Behaviors>
+                        <mct:EventToCommandBehavior EventName="TextChanged"
                                                     Command="{Binding PerformSearchCommand, Source={x:Reference view}}"
                                                     CommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
-                </SearchBar.Behaviors>
-            </SearchBar>
+                    </SearchBar.Behaviors>
+                </SearchBar>
+                <StackLayout Orientation="Horizontal" Margin="0,5,0,5">
+                    <Button Text="Enable All" Command="{Binding SelectCommand, Source={x:Reference view}}" Margin="0,0,5,0" />
+                    <Button Text="Disable All" Command="{Binding DeselectCommand, Source={x:Reference view}}" Margin="0,0,5,0" />
+                </StackLayout>
+            </StackLayout>
+            
 
 
             <CollectionView ItemsSource="{Binding ItemSource, Source={x:Reference view}}"
@@ -80,7 +88,7 @@
                     </DataTemplate>
                 </CollectionView.GroupHeaderTemplate>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:ObservableModelOptions">
+                    <DataTemplate x:DataType="models:ShowModel">
                         <Grid HeightRequest="{OnPlatform Default=400, Android=250}">
                             <StackLayout>
                                 <Label Text="{Binding Model.Name}"
