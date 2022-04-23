@@ -8,7 +8,7 @@
   IgnorableNamespaces="uap rescap com desktop">
 
 	<Identity Publisher="CN=StockDrops S.A.S."
-			   />
+			  Version="1.1.5.0" />
 
 	<Properties>
 		<PublisherDisplayName>StockDrops</PublisherDisplayName>
