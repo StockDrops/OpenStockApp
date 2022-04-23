@@ -26,9 +26,5 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
-	<key>keychain-access-groups</key>
-  	<array>
-    		<string>$(AppIdentifierPrefix)com.stockdrops.msal</string>
-  	</array>
 </dict>
 </plist>
