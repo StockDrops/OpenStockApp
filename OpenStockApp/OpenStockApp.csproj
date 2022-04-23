@@ -25,9 +25,9 @@
 		<ApplicationId Condition="$(TargetFramework.Contains('-windows'))">9833150E-67CE-483A-AE72-F712156DC535</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.1.4.1</ApplicationDisplayVersion>
+		<ApplicationDisplayVersion>1.1.5</ApplicationDisplayVersion>
 		<ApplicationVersion>5</ApplicationVersion>
-		<Version>1.1.4.1</Version>
+		<Version>1.1.5</Version>
 
 		<!-- Required for C# Hot Reload -->
 		<UseInterpreter Condition="'$(Configuration)' == 'Debug'">True</UseInterpreter>
