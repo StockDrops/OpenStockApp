@@ -22,7 +22,8 @@
 
 		<!-- App Identifier -->
 		<ApplicationId>com.stockdrops.StockDropsOpenStockApp</ApplicationId>
-		<ApplicationId Condition="$(TargetFramework.Contains('-windows'))">9833150E-67CE-483A-AE72-F712156DC535</ApplicationId>
+		<ApplicationId Condition="$(TargetFramework.Contains('-mac')) or $(TargetFramework.Contains('-ios'))">com.stockdrops.openstockapp</ApplicationId>
+		<ApplicationIdGuid>9833150E-67CE-483A-AE72-F712156DC535</ApplicationIdGuid>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.1.4.1</ApplicationDisplayVersion>
@@ -38,8 +39,8 @@
 		<SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</TargetPlatformMinVersion>
 		<Nullable>enable</Nullable>
-		<Platforms>AnyCPU</Platforms>
-		<ProvisioningType>automatic</ProvisioningType>
+		<Platforms>AnyCPU;ARM64</Platforms>
+		<ProvisioningType>manual</ProvisioningType>
 	</PropertyGroup>
 	<!--<ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.1" />
@@ -49,6 +50,14 @@
 		<GenerateAppxPackageOnBuild>true</GenerateAppxPackageOnBuild>
 		<AppxPackageSigningEnabled>true</AppxPackageSigningEnabled>
 		<PackageCertificateThumbprint>f3ffd6400f5121320327716358758aaa55d3b6d6</PackageCertificateThumbprint>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Debug'">
+		 <RuntimeIdentifier>ios-arm64</RuntimeIdentifier> 
+		<!-- Only needed when you have a need for entitlements -->
+		<!--<_LibMonoLinkMode>Static</_LibMonoLinkMode>
+		<_LibXamarinLinkMode>Static</_LibXamarinLinkMode>-->
+		<CodesignEntitlement>Entitlements.plist</CodesignEntitlement>
+		<CodesignProvision>Iphone 8 plus</CodesignProvision>
 	</PropertyGroup>
 	<ItemGroup>
 		<MauiIcon Include="Resources\appicon.svg" ForegroundFile="Resources\appicon.svg" Color="#512BD4" />
@@ -267,6 +276,11 @@
 	
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041|AnyCPU'">
+	  <Optimize>True</Optimize>
+	</PropertyGroup>
+	
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041|ARM64'">
 	  <Optimize>True</Optimize>
 	</PropertyGroup>
 	
