@@ -8,7 +8,7 @@
         xmlns:strings="clr-namespace:OpenStockApp.Resources.Strings"
         x:DataType="vm:ShellViewModel"
         FlyoutBackground="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}"
-        FlyoutBehavior="Locked"
+        FlyoutBehavior="{OnPlatform Default='Locked', MacCatalyst='Flyout', iOS='Flyout'}"
         FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}"
         >
     <Shell.FlyoutHeader>

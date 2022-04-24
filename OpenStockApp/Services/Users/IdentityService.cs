@@ -594,14 +594,14 @@ namespace OpenStockApp.Services.Users
             _integratedAuthAvailable = false;
             UsedAuthority = authority;
 
-            return PublicClientApplicationBuilder.Create(clientId)
-                                                    .WithB2CAuthority(authority)
+            var clientBuilder = PublicClientApplicationBuilder.Create(clientId)
+                                                    .WithB2CAuthority(authority);
 #if ANDROID
-                                                    .WithParentActivityOrWindow(() => MainActivity)
+                                                    clientBuilder.WithParentActivityOrWindow(() => MainActivity);
 #elif IOS || MACCATALYST
-                                                    .WithIosKeychainSecurityGroup("com.stockdrops.msal")
+                                                    clientBuilder.WithIosKeychainSecurityGroup("com.stockdrops.openstockapp");
 #endif
-                                                    .WithRedirectUri(redirectUri)
+           return clientBuilder.WithRedirectUri(redirectUri)
                                                     .Build();
         }
         private IPublicClientApplication InitializeWithAadMultipleOrgs(string clientId, bool integratedAuth = false, string? redirectUri = null)

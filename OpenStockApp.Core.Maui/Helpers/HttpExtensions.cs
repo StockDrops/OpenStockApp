@@ -36,7 +36,7 @@ namespace OpenStockApp.Core.Maui.Helpers
             //        handler.SetClientCertificate(certificate.Export(X509ContentType.Pkcs12, "pass"), "pass".ToCharArray());
             //    }
             //});
-#elif WINDOWS || NET6_0
+#elif WINDOWS
             httpClientBuilder.ConfigureHttpMessageHandlerBuilder(builder =>
             {
                 if (builder.PrimaryHandler is HttpClientHandler handler)
@@ -48,7 +48,6 @@ namespace OpenStockApp.Core.Maui.Helpers
                     throw new InvalidOperationException($"Only {typeof(HttpClientHandler).FullName} handler type is supported. Actual type: {builder.PrimaryHandler.GetType().FullName}");
                 }
             });
-
 #endif
             return httpClientBuilder;
         }

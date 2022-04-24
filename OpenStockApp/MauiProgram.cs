@@ -278,7 +278,9 @@ public static class MauiProgram
             {
                 var httpClientHandler = new HttpClientHandler();
                 httpClientHandler.CookieContainer = new CookieContainer();
+#if !MACCATALYST
                 httpClientHandler.AutomaticDecompression = DecompressionMethods.All;
+#endif
                 httpClientHandler.UseCookies = true;
                 //this SSL check should only happen in non debug code or else we might break when testing with localhost, or debugging with Fiddler.
 //#if !DEBUG
