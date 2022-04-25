@@ -22,7 +22,8 @@ namespace OpenStockApp.Services
             MauiUIApplicationDelegate.Current.Services;
 #elif ANDROID
             MauiApplication.Current.Services;
-        //null;
+#elif IOS
+            MauiUIApplicationDelegate.Current.Services;
 #else
         null;
 #endif

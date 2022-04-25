@@ -45,7 +45,7 @@
                            Text="{Binding WebhookUrl}"
                            Style="{StaticResource BaseEntry}"
                            MaximumWidthRequest="1500"
-                           MinimumWidthRequest="{OnPlatform Android=400, UWP=1200}"
+                           MinimumWidthRequest="{OnPlatform Android=400, UWP=1200, Default=400}"
                            HorizontalOptions="StartAndExpand"
                                >
                         <Entry.Behaviors>

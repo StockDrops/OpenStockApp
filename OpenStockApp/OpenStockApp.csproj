@@ -41,6 +41,7 @@
 		<Nullable>enable</Nullable>
 		<Platforms>AnyCPU;ARM64</Platforms>
 		<ProvisioningType>manual</ProvisioningType>
+		<CodesignKey>iPhone Developer</CodesignKey>
 	</PropertyGroup>
 	<!--<ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.1" />
@@ -56,8 +57,14 @@
 		<!-- Only needed when you have a need for entitlements -->
 		<!--<_LibMonoLinkMode>Static</_LibMonoLinkMode>
 		<_LibXamarinLinkMode>Static</_LibXamarinLinkMode>-->
+		
+		<!--<CodesignProvision>Iphone 8 plus</CodesignProvision>-->
+	</PropertyGroup>
+	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Debug'">
+		<ProvisionType>Automatic</ProvisionType>
 		<CodesignEntitlement>Entitlements.plist</CodesignEntitlement>
-		<CodesignProvision>Iphone 8 plus</CodesignProvision>
+		<CodesignKey>Apple Development: Enrique Morell Salcedo %28C4XYQG8Q4D%29</CodesignKey>
+		<CodesignProvision>VS: WildCard Development</CodesignProvision>
 	</PropertyGroup>
 	<ItemGroup>
 		<MauiIcon Include="Resources\appicon.svg" ForegroundFile="Resources\appicon.svg" Color="#512BD4" />
@@ -277,11 +284,66 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041|AnyCPU'">
 	  <Optimize>True</Optimize>
+	  <EnableSGenConc>True</EnableSGenConc>
+	</PropertyGroup>
+	
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-ios|AnyCPU'">
+	  <MtouchLink>None</MtouchLink>
+	</PropertyGroup>
+	
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-ios|AnyCPU'">
+	  <MtouchLink>None</MtouchLink>
+	  <MtouchUseLlvm>False</MtouchUseLlvm>
+	</PropertyGroup>
+	
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-ios|ARM64'">
+	  <MtouchLink>None</MtouchLink>
+	</PropertyGroup>
+	
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-ios|ARM64'">
+	  <MtouchLink>None</MtouchLink>
+	  <MtouchUseLlvm>False</MtouchUseLlvm>
+	</PropertyGroup>
+	
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-maccatalyst|AnyCPU'">
+	  <MtouchLink>None</MtouchLink>
+	</PropertyGroup>
+	
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-maccatalyst|AnyCPU'">
+	  <MtouchLink>None</MtouchLink>
+	</PropertyGroup>
+	
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-maccatalyst|ARM64'">
+	  <MtouchLink>None</MtouchLink>
+	</PropertyGroup>
+	
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-maccatalyst|ARM64'">
+	  <MtouchLink>None</MtouchLink>
+	</PropertyGroup>
+	
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041|AnyCPU'">
+	  <MtouchLink>None</MtouchLink>
+	  <EnableSGenConc>True</EnableSGenConc>
+	</PropertyGroup>
+	
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041|ARM64'">
+	  <MtouchLink>None</MtouchLink>
+	  <EnableSGenConc>True</EnableSGenConc>
 	</PropertyGroup>
 	
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041|ARM64'">
-	  <Optimize>True</Optimize>
+	  <EnableSGenConc>True</EnableSGenConc>
 	</PropertyGroup>
 	
 

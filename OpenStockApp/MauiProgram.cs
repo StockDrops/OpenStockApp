@@ -278,7 +278,7 @@ public static class MauiProgram
             {
                 var httpClientHandler = new HttpClientHandler();
                 httpClientHandler.CookieContainer = new CookieContainer();
-#if !MACCATALYST
+#if WINDOWS || ANDROID
                 httpClientHandler.AutomaticDecompression = DecompressionMethods.All;
 #endif
                 httpClientHandler.UseCookies = true;
