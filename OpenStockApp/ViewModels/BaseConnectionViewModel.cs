@@ -1,11 +1,12 @@
 ﻿using Microsoft.Toolkit.Mvvm.Input;
 using OpenStockApp.Core.Contracts.Services.Hubs;
 using OpenStockApp.Core.Contracts.Services.Users;
+using OpenStockApp.ViewModels.Notifications;
 using System.Windows.Input;
 
 namespace OpenStockApp.ViewModels
 {
-    public class BaseConnectionViewModel : BaseViewModel, IDisposable
+    public class BaseConnectionViewModel : BaseViewModel, IDisposable, IBaseConnectionViewModel
     {
         static BindableProperty IsConnectedProperty =
             BindableProperty.Create(nameof(IsConnected), typeof(bool), typeof(BaseViewModel), false);
@@ -49,7 +50,7 @@ namespace OpenStockApp.ViewModels
         }
         public async Task OnConnect(CancellationToken cancellationToken = default)
         {
-            if(baseHubClient.State == Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Connected)
+            if (baseHubClient.State == Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Connected)
             {
                 IsConnected = true;
             }
@@ -58,7 +59,7 @@ namespace OpenStockApp.ViewModels
                 await baseHubClient.StartAsync(cancellationToken);
             }
         }
-        public AsyncRelayCommand LogIn { get;  }
+        public ICommand LogIn { get; }
 
         protected readonly IIdentityService identityService;
         public BaseConnectionViewModel(IBaseHubClient baseHubClient, IIdentityService identityService)
@@ -71,7 +72,7 @@ namespace OpenStockApp.ViewModels
 
             LogIn = new AsyncRelayCommand(OnLogIn);
             IsLoggedIn = identityService.IsLoggedIn();
-            
+
             RegisterEvents();
         }
 

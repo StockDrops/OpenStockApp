@@ -35,7 +35,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
 
     }
 
-    public class AlertSettingsViewModel : BaseConnectionViewModel
+    public class AlertSettingsViewModel : BaseConnectionViewModel, IAlertSettingsViewModel
     {
         #region Collections
         public ObservableCollection<Product> Products { get; set; } = new ObservableCollection<Product>();
@@ -60,7 +60,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
         public AsyncRelayCommand SaveModelOptions { get; set; }
         public AsyncRelayCommand<string> PerformSearch { get; set; }
         #endregion
-        
+
         #region Services
         private readonly IUserOptionsHubClient userOptionsHub;
         private readonly IIdentityService identityService;
@@ -75,7 +75,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
             IUserOptionsService userOptionsService,
             IIdentityService identityService,
             IRetailerOptionsDisplayService retailerOptionsDisplayService,
-            IUserOptionsDisplayService userOptionsDisplayService)  : base(baseHubClient: userOptionsHub, identityService)
+            IUserOptionsDisplayService userOptionsDisplayService) : base(baseHubClient: userOptionsHub, identityService)
         {
             #region Service Assignements
             this.userOptionsHub = userOptionsHub;
@@ -121,7 +121,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
             LoadActions();
             await LoadAllCountries();
             await LoadAllProducts();
-            
+
         }
         public void LoadActions()
         {
@@ -156,7 +156,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
                 IsBusy = false;
                 MessagingCenter.Send<AlertSettingsViewModel, Exception?>(this, "saved", ex);
             }
-            
+
         }
         /// <summary>
         /// 
@@ -194,8 +194,8 @@ namespace OpenStockApp.ViewModels.AlertSettings
 
                 foreach (var options in groupedOptions)
                 {
-                    
-                    Dispatcher.Dispatch( () => Models.Add(options));
+
+                    Dispatcher.Dispatch(() => Models.Add(options));
                     //await Task.Delay(200);
                 }
                 Dispatcher.Dispatch(() => IsBusy = false);
@@ -206,7 +206,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
             IsBusy = true;
             var countries = await userOptionsHub.GetCountries(token);
             Countries.Clear();
-            foreach(var country in countries)
+            foreach (var country in countries)
             {
                 Countries.Add(country);
             }

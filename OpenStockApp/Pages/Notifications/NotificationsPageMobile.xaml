@@ -7,7 +7,7 @@
              xmlns:modelsapi="clr-namespace:OpenStockApi.Core.Models.Searches;assembly=OpenStockApi.Core"
              xmlns:views="clr-namespace:OpenStockApp.Views"
              xmlns:main="clr-namespace:OpenStockApp"
-             x:DataType="vm:NotificationsPageViewModel"
+             x:DataType="vm:INotificationsPageViewModel"
              x:Class="OpenStockApp.Pages.Alerts.NotificationPageMobile"
              x:Name="page"
              Title="Notifications Hub"
@@ -26,7 +26,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="{OnPlatform Default='Auto', iOS='120'}"/>
             <RowDefinition Height="*"/>
             <!--<RowDefinition Height="80"/>-->
         </Grid.RowDefinitions>
@@ -34,7 +34,12 @@
             <ColumnDefinition Width="175" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <StackLayout Grid.Row="0" Grid.Column="0" IsVisible="{Binding IsLoggedIn}">
+        <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
+                         Grid.ColumnSpan="2"
+                         Grid.RowSpan="3"
+                            LogInCommand="{Binding LogIn}" />
+        
+        <StackLayout Grid.Row="0" Grid.Column="0" IsVisible="{Binding IsLoggedIn}" HorizontalOptions="CenterAndExpand">
             <main:ConnectionIndicatorView IsConnected="{Binding IsConnected}"
                                           ConnectCommand="{Binding ConnectCommand}"
                                           
@@ -52,17 +57,18 @@
                     <ColumnDefinition Width="0.1*"/>
                     <ColumnDefinition Width="0.45*"/>
                 </Grid.ColumnDefinitions>
-                <ActivityIndicator Grid.Column="1" IsRunning="{Binding IsRefreshing}" HorizontalOptions="Center" Margin="10" IsVisible="{OnPlatform Default=False, MacCatalyst=True, UWP=True}"/>
+                <ActivityIndicator Grid.Column="1" IsRunning="{Binding IsRefreshing}" HorizontalOptions="Center" Margin="10" IsVisible="{OnPlatform Default=False, MacCatalyst=True, UWP=True, iOS=False}"/>
             </Grid>
         </StackLayout>
+        
         <Button Grid.Row="0"
                 Grid.Column="1"
                 VerticalOptions="Start"
                 HorizontalOptions="Center"
-                    Text="Send Test Notification" 
-                    Command="{Binding TestNotificationCommand}"
+                Text="Send Test Notification" 
+                Command="{Binding TestNotificationCommand}"
                 IsVisible="{Binding IsLoggedIn}"
-                    Margin="0,5,0,5"/>
+                Margin="0,5,0,5"/>
         <Frame CornerRadius="5" Grid.Row="1" 
                Grid.ColumnSpan="2" Margin="2"
                BackgroundColor="{AppThemeBinding Dark={StaticResource SecondaryColor}, Light={StaticResource BackgroundColor}}"
@@ -71,7 +77,7 @@
                 <StackLayout Orientation="Vertical">
                     <Label Text="Enable alert settings" 
                        VerticalOptions="Center"
-                       Margin="{OnPlatform Default='10,0,10,0', Android='0,0,0,0'} "/>
+                       Margin="{OnPlatform Default='10,0,10,0', Android='0,0,0,0', iOS='0,0,0,0'} "/>
                     <Switch IsToggled="{Binding HasToApplyFilterSettings}"
                             VerticalOptions="Center"
                             HorizontalOptions="Center">
@@ -84,7 +90,7 @@
                     <!--<views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='True', Android='False'}"  />-->
                 </StackLayout>
                 <StackLayout>
-                    <views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='False', Android='True'}"  />
+                    <views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='False', Android='True', iOS='True'}"  />
                 </StackLayout>
             </StackLayout>
             
@@ -92,6 +98,7 @@
         
         <Grid Grid.Row="2"
               Grid.ColumnSpan="2"
+              Grid.Column="0"
               >
             
             <!--IsPullToRefreshEnabled="true"
@@ -103,7 +110,7 @@
                          IsRefreshing="{Binding IsRefreshing}"
                          IsVisible="{Binding IsLoggedIn}">
                 <CollectionView ItemsSource="{Binding Results}"
-                                ItemsUpdatingScrollMode="KeepItemsInView"
+                                ItemsUpdatingScrollMode="{OnPlatform Default='KeepItemsInView', iOS='KeepScrollOffset'}"
                             
                                 RemainingItemsThreshold="1"
                                 RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}"
@@ -135,11 +142,11 @@
                             <StackLayout Grid.Column="1" Grid.Row="0"  Margin="{OnPlatform Default='4,25,8,0', UWP=25}">
                                     
                                     <Image Source="{Binding ThumbnailUrl}" 
-                                           MaximumHeightRequest="{OnPlatform Default=80, Android=50}"
+                                           MaximumHeightRequest="{OnPlatform Default=80, Android=50, iOS=50}"
                                            Aspect="AspectFit"  IsVisible="{Binding ThumbnailUrl, Converter={StaticResource IsNotNullOrEmptyConverter}}" Margin="0"  />
                                     <Label Text="{Binding Id, StringFormat='Id: {0}'}"
                                        VerticalOptions="Start"
-                                           Margin="{OnPlatform Default='0,1,0,1', UWP='0,10,0,10'}"/>
+                                           Margin="{OnPlatform Default='0,1,0,1', UWP='0,10,0,10', iOS='0,1,0,1'}"/>
 
                                 </StackLayout>
                             <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="25">
@@ -190,10 +197,8 @@
                                     IsEnabled="False"
                                     Text="End Reached"
                                     IsVisible="{Binding EndReached}"/>
-                
+
             </StackLayout>
-            <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
-                            LogInCommand="{Binding LogIn}" />
         </Grid>
     </Grid>
 

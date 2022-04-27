@@ -28,5 +28,27 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>ADB2C Auth</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>msal9ca5addd-1c8e-4c1f-b8bd-9e6b422b49fb</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+<array>
+     <string>msauthv2</string>
+     <string>msauthv3</string>
+</array>
 </dict>
 </plist>

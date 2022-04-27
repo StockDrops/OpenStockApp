@@ -80,16 +80,22 @@
                                 NotificationActions="{Binding NotificationActions}"
                                 IsBusy="{Binding IsBusy}"
                                 IsLoggedIn="{Binding IsLoggedIn}"
+                                IsVisible="{Binding IsLoggedIn}"
                                 ReloadSourceCommand="{Binding ReloadModels}"
                                 SaveModelOptionsCommand="{Binding SaveModelOptions}"
                                 VerticalOptions="StartAndExpand"/>
+        <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
+                         LogInCommand="{Binding LogIn}"
+                         Grid.Row="0"
+                         Grid.RowSpan="3"
+                         
+                         />
         <Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
                     Command="{Binding SaveModelOptions}" 
                     IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                      IsVisible="{Binding IsLoggedIn}"
                     Grid.Row="2"/>
-        <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
-                            LogInCommand="{Binding LogIn}" />
+        
     </Grid>
     
 </ContentPage>

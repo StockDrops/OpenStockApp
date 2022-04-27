@@ -6,32 +6,31 @@ using OpenStockApi.Core.Models.Searches;
 namespace OpenStockApp.Pages.Alerts
 {
     [XamlCompilation(XamlCompilationOptions.Skip)]
-    public partial class NotificationsPage : ContentPage
+    public partial class NotificationsPageIos : ContentPage
     {
         
-        public NotificationsPage(NotificationsPageViewModel notificationsPageViewModel)
+        public NotificationsPageIos(INotificationsPageViewModel notificationsPageViewModel)
         {
             
             InitializeComponent();
             BindingContext = notificationsPageViewModel;
             //var converter = new CommunityToolkit.Maui.Converters.IsStringNotNullOrEmptyConverter();
-            Behaviors.Add(new EventToCommandBehavior { EventName = nameof(this.Appearing), Command = notificationsPageViewModel.NavigateToPage }); //TODO: One day I'd like to know why this is needed, and why the XAML binding is not working.
+            Behaviors.Add(new EventToCommandBehavior { EventName = nameof(this.NavigatedTo), Command = notificationsPageViewModel.NavigateToPage }); //TODO: One day I'd like to know why this is needed, and why the XAML binding is not working.
             //Behaviors.Add(new EventToCommandBehavior { EventName = nameof(this.Appearing), Command = notificationsPageViewModel.NavigateToPage });
-            //notificationsPageViewModel.ScrollTo = OnScrollTo;
-            notificationsPageViewModel.SetBinding(NotificationsPageViewModel.ListHeightProperty, new Binding(nameof(Height), source: listView));
+            notificationsPageViewModel.ScrollTo = OnScrollTo;
         }
 
-        
+
         public void OnScrollTo(Result result)
         {
-            
+#if ANDROID || IOS
             try
             {
-                //if (result != null)
-                //    listView?.ScrollTo(result, ScrollToPosition.End, true);
+                if (result != null)
+                    collectionView?.ScrollTo(0, position: ScrollToPosition.Start);
             }
             catch { }
-             
+#endif  
         }
     }
 }

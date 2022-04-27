@@ -12,11 +12,22 @@ using OpenStockApp.Core.Contracts.Services;
 using OpenStockApp.Core.Contracts.Services.Hubs;
 using OpenStockApp.Core.Maui.Contracts.Services;
 using OpenStockApp.Core.Contracts.Services.Settings;
-using OpenStockApp.Core.Contracts.Services.Users;
 
-namespace OpenStockApp.ViewModels
+/* Unmerged change from project 'OpenStockApp (net6.0-windows10.0.19041)'
+Before:
+using OpenStockApp.Core.Contracts.Services.Users;
+After:
+using OpenStockApp.Core.Contracts.Services.Users;
+using OpenStockApp;
+using OpenStockApp.ViewModels;
+using OpenStockApp.ViewModels.Notifications;
+*/
+using OpenStockApp.Core.Contracts.Services.Users;
+using System.Windows.Input;
+
+namespace OpenStockApp.ViewModels.Notifications
 {
-    public class NotificationsPageViewModel : BaseConnectionViewModel
+    public class NotificationsPageViewModel : BaseConnectionViewModel, INotificationsPageViewModel
     {
         public static readonly BindableProperty ListHeightProperty =
             BindableProperty.Create(nameof(ListHeight), typeof(double), typeof(NotificationsPageViewModel), 0.0);
@@ -40,24 +51,24 @@ namespace OpenStockApp.ViewModels
             get => (bool)GetValue(IsRefreshingProperty);
             set => SetValue(IsRefreshingProperty, value);
         }
-        
+
         public static readonly BindableProperty HasToApplyFilterSettingsProperty = BindableProperty.Create(nameof(HasToApplyFilterSettings), typeof(bool), typeof(NotificationsPageViewModel), false);
-        
+
         public bool HasToApplyFilterSettings
         {
             get => (bool)GetValue(HasToApplyFilterSettingsProperty);
             set => SetValue(HasToApplyFilterSettingsProperty, value);
         }
 
-        public AsyncRelayCommand NavigateToPage { get; set; }
-        public AsyncRelayCommand LoadMoreCommand { get; set; }
-        public AsyncRelayCommand ApplyFilterSettings { get;set; }
-        public AsyncRelayCommand TestNotificationCommand { get; set; }
-        
+        public ICommand NavigateToPage { get; set; }
+        public ICommand LoadMoreCommand { get; set; }
+        public ICommand ApplyFilterSettings { get; set; }
+        public ICommand TestNotificationCommand { get; set; }
+
 
 
         public Action<Result>? ScrollTo { get; set; }
-        
+
 
         public ObservableCollection<Result> Results { get; set; } = new ObservableCollection<Result>();
 
@@ -84,6 +95,9 @@ namespace OpenStockApp.ViewModels
             LoadMoreCommand = new AsyncRelayCommand(OnLoadMore);
             ApplyFilterSettings = new AsyncRelayCommand(OnDisplayFilteredToggled);
             TestNotificationCommand = new AsyncRelayCommand(OnSendTestNotification);
+#if DEBUG
+            IsLoggedIn = true;
+#endif
             RegisterEvents();
         }
         public void RegisterEvents()
@@ -96,14 +110,14 @@ namespace OpenStockApp.ViewModels
         public async Task OnSendTestNotification(CancellationToken token = default)
         {
             await notificationsHubClient.SendTestNotification(token);
-            await (Application.Current?.MainPage?.DisplayAlert("Enable the test model if you want to receive a ping", "You can enable it in the alert settings if you want the notification to ping, under the product 'RTX 3080', just search for 'test' when loading the RTX 3080s. If you enable the test model you will not only see the notification on this page but will also see a toast notification and see if when you toggle 'Apply Filter Settings'", "OK") ?? Task<bool>.FromResult(false));
+            await (Application.Current?.MainPage?.DisplayAlert("Enable the test model if you want to receive a ping", "You can enable it in the alert settings if you want the notification to ping, under the product 'RTX 3080', just search for 'test' when loading the RTX 3080s. If you enable the test model you will not only see the notification on this page but will also see a toast notification and see if when you toggle 'Apply Filter Settings'", "OK") ?? Task.FromResult(false));
         }
 
         public void OnNotificationReceived(object? sender, Result result)
         {
             if (HasToApplyFilterSettings)
             {
-                if(filterService.CanShowNotification(result))
+                if (filterService.CanShowNotification(result))
                     Dispatcher.Dispatch(() => Results.Insert(0, result));
             }
             else
@@ -116,7 +130,7 @@ namespace OpenStockApp.ViewModels
         private void OnEndReached(object? sender, EventArgs e) => EndReached = true;
 
         private void OnDisplayResult(object? sender, Result result) => Results.Add(result);
-        
+
         private async Task OnDisplayFilteredToggled(CancellationToken token = default)
         {
             IsRefreshing = true;
@@ -142,7 +156,7 @@ namespace OpenStockApp.ViewModels
                     IsRefreshing = false;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.LogError(ex, "");
             }
@@ -160,7 +174,7 @@ namespace OpenStockApp.ViewModels
         private async Task LoadAndAddResultsAsync(int pageNumber, bool filtered, CancellationToken cancellationToken = default)
         {
             IsRefreshing = true;
-            if(pageNumber == 1)
+            if (pageNumber == 1)
                 Results.Clear();
             if (!filtered)
                 await resultWindowService.LoadResultsFromServerAsync(pageSize, pageNumber, cancellationToken);

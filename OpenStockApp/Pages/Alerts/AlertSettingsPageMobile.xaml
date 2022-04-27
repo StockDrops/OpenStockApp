@@ -11,7 +11,7 @@
              xmlns:converters="clr-namespace:OpenStockApp.Converters"
              xmlns:views="clr-namespace:OpenStockApp.Views"
              x:Class="OpenStockApp.Pages.Alerts.AlertSettingsPageMobile"
-             x:DataType="vm:AlertSettingsViewModel"
+             x:DataType="vm:IAlertSettingsViewModel"
              x:Name="page"
              Title="{x:Static strings:Resources.ShellAddNotifications}"
              >
@@ -84,12 +84,12 @@
                                 IsLoggedIn="{Binding IsLoggedIn}"
                                 ReloadSourceCommand="{Binding LoadModels}"
                                 SaveModelOptionsCommand="{Binding SaveModelOptions}"
+                                IsVisible="{Binding IsLoggedIn}"
                                 VerticalOptions="Start"
-                                Grid.Row="1"
-                                        
-                                        />
+                                Grid.Row="1"/>
         <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
-                            LogInCommand="{Binding LogIn}" />
+                            LogInCommand="{Binding LogIn}" 
+                         Grid.Row="1"/>
 
         <Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
                 Command="{Binding SaveModelOptions}" 

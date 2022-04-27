@@ -8,7 +8,7 @@ namespace OpenStockApp.Pages.Alerts;
 
 public partial class AlertSettingsPageMobile : ContentPage 
 {    
-    public AlertSettingsPageMobile(AlertSettingsViewModel alertSettingsViewModel)
+    public AlertSettingsPageMobile(IAlertSettingsViewModel alertSettingsViewModel)
     {        
         BindingContext = alertSettingsViewModel;
 #if ANDROID || IOS || WINDOWS

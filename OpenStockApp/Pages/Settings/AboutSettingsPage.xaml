@@ -14,6 +14,10 @@
                 <RowDefinition Height="48" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+        
+
+                
+
             <StackLayout Grid.Row="0" Margin="{StaticResource SmallLeftMargin}">
                 <Label
                     Margin="{StaticResource SmallTopMargin}"

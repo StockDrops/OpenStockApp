@@ -33,6 +33,7 @@ using OpenStockApp.Core.Maui.Services.Notifications;
 using OpenStockApp.Core.Maui.Contracts.Services;
 using Microsoft.Extensions.Logging;
 using OpenStockApp.Services.Users;
+using OpenStockApp.ViewModels.Notifications;
 
 
 
@@ -97,6 +98,18 @@ public static class MauiProgram
                     //    BackgroundServicesContainer.StartApp();
                     //});
                 });
+#elif IOS
+            lifecycle.AddiOS(configure =>
+            {
+                configure.OnActivated(activity =>
+                {
+                    BackgroundServicesContainer.StartApp();
+                });
+                configure.WillTerminate(activity =>
+                {
+                    BackgroundServicesContainer.StopApp();
+                });
+            });
 #endif
         });
         //configuration:
@@ -327,8 +340,14 @@ public static class MauiProgram
         builder.Services.AddTransient<ActiveNotificationsPage>();
         builder.Services.AddTransient<AboutSettingsPage>();
         builder.Services.AddTransient<NotificationsPage>();
+        builder.Services.AddTransient<NotificationsPageIos>();
 
         builder.Services.AddTransient<NotificationPageMobile>();
+#if DEBUG
+        builder.Services.AddTransient<INotificationsPageViewModel, TestNotificationViewModel>();
+#else
+        builder.Services.AddTransient<INotificationsPageViewModel, NotificationsPageViewModel>();
+#endif
         builder.Services.AddTransient<AlertSettingsPageMobile>();
         builder.Services.AddTransient<RetailerOptionsPage>();
         builder.Services.AddTransient<RetailerOptionsViewModel>();

@@ -95,7 +95,9 @@
 
         </StackLayout>
         <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
-                            LogInCommand="{Binding LogIn}" />
+                            LogInCommand="{Binding LogIn}"
+                         Grid.Row="0"
+                         Grid.RowSpan="2"/>
         <Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
                 Command="{Binding SaveModelOptions}" 
                 IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
