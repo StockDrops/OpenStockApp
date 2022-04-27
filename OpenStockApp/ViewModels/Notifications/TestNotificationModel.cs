@@ -13,7 +13,7 @@ using Condition = OpenStockApi.Core.Models.Products.Condition;
 
 namespace OpenStockApp.ViewModels.Notifications
 {
-    internal class TestNotificationViewModel : INotificationsPageViewModel
+    public class TestNotificationViewModel : INotificationsPageViewModel
     {
         public TestNotificationViewModel()
         {
@@ -82,6 +82,8 @@ namespace OpenStockApp.ViewModels.Notifications
         public bool IsLoggedIn { get; set; } = true;
 
         public ICommand LogIn { get; }
+        public bool IsBusy { get; set; }
+        public string? Title { get; set; }
 
         public void Dispose()
         {

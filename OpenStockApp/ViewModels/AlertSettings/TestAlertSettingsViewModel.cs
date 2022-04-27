@@ -1,41 +1,22 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+﻿using Microsoft.Toolkit.Mvvm.Input;
 using OpenStockApi.Core.Models.Products;
-using OpenStockApi.Core.Models.Users;
-using OpenStockApp.SignalR.Services;
-using OpenStockApp.Extensions;
-using System.Collections.ObjectModel;
-using OpenStockApp.Core.Contracts.Services.Users;
-using OpenStockApp.Core.Contracts.Services;
 using OpenStockApi.Core.Models.Regions;
-using OpenStockApp.Core.Contracts.Services.Hubs;
+using OpenStockApi.Core.Models.Users;
 using OpenStockApp.Core.Maui.Models;
-using OpenStockApp.Core.Maui.Services.Settings;
-using OpenStockApp.Core.Contracts.Services.Settings;
+using OpenStockApp.Extensions;
 using OpenStockApp.Models.Users;
 using OpenStockApp.Services;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace OpenStockApp.ViewModels.AlertSettings
 {
-    public class ObservableProduct : ObservableObject
-    {
-        private Product product;
-        public ObservableProduct(Product product)
-        {
-            this.product = product;
-        }
-
-        public Product Product
-        {
-            get { return this.product; }
-            set { SetProperty(ref this.product, value); } 
-        }
-
-
-    }
-
-    public class AlertSettingsViewModel : BaseConnectionViewModel, IAlertSettingsViewModel, IBaseConnectionViewModel
+    public class TestAlertSettingsViewModel : IAlertSettingsViewModel
     {
         #region Collections
         public ObservableCollection<Product> Products { get; set; } = new ObservableCollection<Product>();
@@ -59,31 +40,23 @@ namespace OpenStockApp.ViewModels.AlertSettings
 
         public AsyncRelayCommand SaveModelOptions { get; set; }
         public AsyncRelayCommand<string> PerformSearch { get; set; }
-        #endregion
 
-        #region Services
-        private readonly IUserOptionsHubClient userOptionsHub;
-        private readonly IIdentityService identityService;
-        private readonly IUserOptionsDisplayService userOptionsDisplayService;
-        private readonly IRetailerOptionsDisplayService retailerOptionsDisplayService;
-        private readonly IUserOptionsService userOptionsService;
+        public ICommand ConnectCommand { get; }
+
+        public bool IsConnected { get; }
+
+        public bool IsLoggedIn { get; set; }
+
+        public ICommand LogIn { get; }
+
+        public bool IsBusy { get; set; }
+        public string? Title { get; set; }
         #endregion
         //public AsyncRelayCommand SaveUserOptions { get; set; }
 
         //private readonly UserOptionsService userOptionsService;
-        public AlertSettingsViewModel(IUserOptionsHubClient userOptionsHub,
-            IUserOptionsService userOptionsService,
-            IIdentityService identityService,
-            IRetailerOptionsDisplayService retailerOptionsDisplayService,
-            IUserOptionsDisplayService userOptionsDisplayService) : base(baseHubClient: userOptionsHub, identityService)
+        public TestAlertSettingsViewModel()
         {
-            #region Service Assignements
-            this.userOptionsHub = userOptionsHub;
-            this.userOptionsDisplayService = userOptionsDisplayService;
-            this.retailerOptionsDisplayService = retailerOptionsDisplayService;
-            this.userOptionsService = userOptionsService;
-            this.identityService = identityService;
-            #endregion
             #region Command Assigments
             LoadProducts = new AsyncRelayCommand(OnLoadProducts);
             LoadRetailers = new AsyncRelayCommand(OnCountrySelected);
@@ -91,12 +64,12 @@ namespace OpenStockApp.ViewModels.AlertSettings
             SaveModelOptions = new AsyncRelayCommand(OnSaveModelOptions);
             PerformSearch = new AsyncRelayCommand<string>(OnPerformSearch);
             #endregion
-            IsLoggedIn = identityService.IsLoggedIn();
+            IsLoggedIn = true;
             RegisterEvents();
         }
         public void RegisterEvents()
         {
-            retailerOptionsDisplayService.DisplayRetailerOptions += OnDisplayRetailerOptions;
+            
         }
 
         public void OnDisplayRetailerOptions(object? sender, RetailerOptions retailerOptions)
@@ -119,7 +92,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
         public async Task OnLoadProducts(CancellationToken token = default)
         {
             LoadActions();
-            await LoadAllCountries();
+           
             await LoadAllProducts();
 
         }
@@ -147,14 +120,14 @@ namespace OpenStockApp.ViewModels.AlertSettings
             IsBusy = true;
             try
             {
-                await userOptionsService.SaveCurrentUserOptionsAsync(cancellationToken);
+                //await userOptionsService.SaveCurrentUserOptionsAsync(cancellationToken);
                 IsBusy = false;
-                MessagingCenter.Send<AlertSettingsViewModel, Exception?>(this, "saved", null);
+                MessagingCenter.Send<IAlertSettingsViewModel, Exception?>(this, "saved", null);
             }
             catch (HubNotConnected ex)
             {
                 IsBusy = false;
-                MessagingCenter.Send<AlertSettingsViewModel, Exception?>(this, "saved", ex);
+                MessagingCenter.Send<IAlertSettingsViewModel, Exception?>(this, "saved", ex);
             }
 
         }
@@ -187,49 +160,71 @@ namespace OpenStockApp.ViewModels.AlertSettings
         {
             IsBusy = true;
             Models.Clear();
-            _ = Task.Run(async () =>
-            {
-                //await Task.Delay(1000);
-                var groupedOptions = await userOptionsDisplayService.GetGroupedObversableModelOptionsAsync(SelectedProduct, cancellationToken);
+            //_ = Task.Run(async () =>
+            //{
+            //    //await Task.Delay(1000);
+            //    var groupedOptions = await userOptionsDisplayService.GetGroupedObversableModelOptionsAsync(SelectedProduct, cancellationToken);
 
-                foreach (var options in groupedOptions)
-                {
+            //    foreach (var options in groupedOptions)
+            //    {
 
-                    Dispatcher.Dispatch(() => Models.Add(options));
-                    //await Task.Delay(200);
-                }
-                Dispatcher.Dispatch(() => IsBusy = false);
-            });
-        }
-        private async Task LoadAllCountries(CancellationToken token = default)
-        {
-            IsBusy = true;
-            var countries = await userOptionsHub.GetCountries(token);
-            Countries.Clear();
-            foreach (var country in countries)
-            {
-                Countries.Add(country);
-            }
-            IsBusy = false;
+            //        Dispatcher.Dispatch(() => Models.Add(options));
+            //        //await Task.Delay(200);
+            //    }
+            //    Dispatcher.Dispatch(() => IsBusy = false);
+            //});
         }
         private async Task LoadCountryRetailers(Country country, CancellationToken token = default)
         {
             IsBusy = true;
             Retailers.Clear();
-            await retailerOptionsDisplayService.LoadAndDisplayRetailers(SelectedCountry, token);
+            //await retailerOptionsDisplayService.LoadAndDisplayRetailers(SelectedCountry, token);
             IsBusy = false;
         }
-        private async Task LoadAllProducts(CancellationToken token = default)
+        private Task LoadAllProducts(CancellationToken token = default)
         {
             IsBusy = true;
-
-            var products = await Task.Run(async () => await userOptionsHub.GetProducts(token));
             Products.Clear();
-            foreach (var product in products)
+            for(int i = 0; i < 10; i++)
             {
+                var product = new Product
+                {
+                    Name = $"Test product {i}",
+                    Description = $"Description {i}",
+                    IsEnabled = true,
+                    Id = i,
+                    IsFeatured = false
+
+                };
                 Products.Add(product);
             }
             IsBusy = false;
+            return Task.CompletedTask;
+        }
+
+        public void Dispose()
+        {
+            
+        }
+
+        public void OnClosed(object? sender, Exception? exception)
+        {
+
+        }
+
+        public Task OnConnect(CancellationToken cancellationToken = default)
+        {
+            return Task.CompletedTask;
+        }
+
+        public void OnConnected(object? sender, EventArgs eventArgs)
+        {
+            
+        }
+
+        public void OnReconnected(object? sender, EventArgs eventArgs)
+        {
+            
         }
     }
 }

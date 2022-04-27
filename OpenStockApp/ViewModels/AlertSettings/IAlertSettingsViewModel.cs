@@ -8,29 +8,27 @@ using System.Collections.ObjectModel;
 
 namespace OpenStockApp.ViewModels.AlertSettings
 {
-    public interface IAlertSettingsViewModel
+    public interface IAlertSettingsViewModel : IBaseConnectionViewModel
     {
-        ObservableCollection<Country> Countries { get; set; }
-        AsyncRelayCommand LoadModels { get; set; }
-        AsyncRelayCommand LoadProducts { get; set; }
-        AsyncRelayCommand LoadRetailers { get; set; }
-        ObservableCollection<GroupedObversableModelOptions> Models { get; set; }
-        ObservableCollection<DisplayedNotificationActions> NotificationActions { get; set; }
-        AsyncRelayCommand<string> PerformSearch { get; set; }
-        ObservableCollection<Product> Products { get; set; }
-        ObservableCollection<RetailerOptions> Retailers { get; set; }
-        AsyncRelayCommand SaveModelOptions { get; set; }
-        Country SelectedCountry { get; set; }
-        Product SelectedProduct { get; set; }
-        ObservableCollection<GroupedObversableModelOptions> UnsearchedModels { get; }
+        public ObservableCollection<Country> Countries { get; set; }
+        public AsyncRelayCommand LoadModels { get; set; }
+        public AsyncRelayCommand LoadProducts { get; set; }
+        public AsyncRelayCommand LoadRetailers { get; set; }
+        public ObservableCollection<GroupedObversableModelOptions> Models { get; set; }
+        public ObservableCollection<DisplayedNotificationActions> NotificationActions { get; set; }
+        public AsyncRelayCommand<string> PerformSearch { get; set; }
+        public ObservableCollection<Product> Products { get; set; }
+        public ObservableCollection<RetailerOptions> Retailers { get; set; }
+        public AsyncRelayCommand SaveModelOptions { get; set; }
+        public Country SelectedCountry { get; set; }
+        public Product SelectedProduct { get; set; }
+        public ObservableCollection<GroupedObversableModelOptions> UnsearchedModels { get; }
 
-        void LoadActions();
-        Task OnCountrySelected(CancellationToken cancellationToken);
-        void OnDisplayRetailerOptions(object? sender, RetailerOptions retailerOptions);
-        Task OnLoadProducts(CancellationToken token = default);
-        Task OnPerformSearch(string? query, CancellationToken cancellationToken = default);
-        Task OnProductSelected(CancellationToken cancellationToken = default);
-        Task OnSaveModelOptions(CancellationToken cancellationToken = default);
-        void RegisterEvents();
+        public Task OnCountrySelected(CancellationToken cancellationToken);
+        public void OnDisplayRetailerOptions(object? sender, RetailerOptions retailerOptions);
+        public Task OnLoadProducts(CancellationToken token = default);
+        public Task OnPerformSearch(string? query, CancellationToken cancellationToken = default);
+        public Task OnProductSelected(CancellationToken cancellationToken = default);
+        public Task OnSaveModelOptions(CancellationToken cancellationToken = default);
     }
 }

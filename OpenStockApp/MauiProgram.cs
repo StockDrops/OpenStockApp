@@ -331,7 +331,7 @@ public static class MauiProgram
         builder.Services.AddTransient<DiscordSettingsViewModel>();
         builder.Services.AddTransient<ThemeViewModel>();
         builder.Services.AddTransient<UserSettingsViewModel>();
-        builder.Services.AddTransient<AlertSettingsViewModel>();
+        //builder.Services.AddTransient<AlertSettingsViewModel>();
         builder.Services.AddTransient<UserOptionsViewModel>();
         builder.Services.AddTransient<NotificationsPageViewModel>();
         builder.Services.AddTransient<ActiveNotificationsViewModel>();
@@ -345,7 +345,9 @@ public static class MauiProgram
         builder.Services.AddTransient<NotificationPageMobile>();
 #if DEBUG
         builder.Services.AddTransient<INotificationsPageViewModel, TestNotificationViewModel>();
+        builder.Services.AddTransient<IAlertSettingsViewModel, TestAlertSettingsViewModel>();
 #else
+        builder.Services.AddTransient<IAlertSettingsViewModel, AlertSettingsViewModel>();
         builder.Services.AddTransient<INotificationsPageViewModel, NotificationsPageViewModel>();
 #endif
         builder.Services.AddTransient<AlertSettingsPageMobile>();

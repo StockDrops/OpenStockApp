@@ -11,7 +11,7 @@
              xmlns:converters="clr-namespace:OpenStockApp.Converters"
              xmlns:views="clr-namespace:OpenStockApp.Views"
              x:Class="OpenStockApp.Pages.Alerts.AlertSettingsPageMobile"
-             x:DataType="vm:IAlertSettingsViewModel"
+             x:DataType="vm:AlertSettingsViewModel"
              x:Name="page"
              Title="{x:Static strings:Resources.ShellAddNotifications}"
              >
@@ -35,8 +35,14 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="{OnPlatform Android=40, Default=80}" />
         </Grid.RowDefinitions>
+
+        <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
+                            LogInCommand="{Binding LogIn}" 
+                         Grid.Row="0"
+                         Grid.RowSpan="3"/>
+
         <Grid Grid.Row="0">
-            <StackLayout Margin="{OnPlatform iOS='30,60,30,30', Android='5', Default='30'}" 
+            <StackLayout Margin="{OnPlatform iOS='30', Android='5', Default='30'}" 
                      IsVisible="{Binding IsLoggedIn}" 
                     >
                 <!--<main:ConnectionIndicatorView IsConnected="{Binding BindingContext.IsConnected, Source={x:Reference page}}"
@@ -65,9 +71,9 @@
 
 
                 <Picker Title="Select a Product to track"
-                ItemsSource="{Binding Products}"
-                ItemDisplayBinding="{Binding Name}"
-                SelectedItem="{Binding SelectedProduct, Mode=OneWayToSource}"
+                        ItemsSource="{Binding Products}"
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedItem="{Binding SelectedProduct, Mode=OneWayToSource}"
                         Margin="0,10,0,10"
                 >
                     <Picker.Behaviors>
@@ -87,9 +93,7 @@
                                 IsVisible="{Binding IsLoggedIn}"
                                 VerticalOptions="Start"
                                 Grid.Row="1"/>
-        <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
-                            LogInCommand="{Binding LogIn}" 
-                         Grid.Row="1"/>
+        
 
         <Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
                 Command="{Binding SaveModelOptions}" 

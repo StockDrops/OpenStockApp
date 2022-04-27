@@ -3,17 +3,17 @@ using System.Windows.Input;
 
 namespace OpenStockApp.ViewModels
 {
-    public interface IBaseConnectionViewModel
+    public interface IBaseConnectionViewModel : IBaseViewModel
     {
-        ICommand ConnectCommand { get; }
-        bool IsConnected { get; }
-        bool IsLoggedIn { get; set; }
-        ICommand LogIn { get; }
+        public ICommand ConnectCommand { get; }
+        public bool IsConnected { get; }
+        public bool IsLoggedIn { get; set; }
+        public ICommand LogIn { get; }
 
-        void Dispose();
-        void OnClosed(object? sender, Exception? exception);
-        Task OnConnect(CancellationToken cancellationToken = default);
-        void OnConnected(object? sender, EventArgs eventArgs);
-        void OnReconnected(object? sender, EventArgs eventArgs);
+        public void Dispose();
+        public void OnClosed(object? sender, Exception? exception);
+        public Task OnConnect(CancellationToken cancellationToken = default);
+        public void OnConnected(object? sender, EventArgs eventArgs);
+        public void OnReconnected(object? sender, EventArgs eventArgs);
     }
 }
