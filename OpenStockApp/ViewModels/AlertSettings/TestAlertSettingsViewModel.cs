@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Mvvm.Input;
+﻿using Microsoft.Maui.Dispatching;
+using Microsoft.Toolkit.Mvvm.Input;
 using OpenStockApi.Core.Models.Products;
 using OpenStockApi.Core.Models.Regions;
 using OpenStockApi.Core.Models.Users;
@@ -160,6 +161,35 @@ namespace OpenStockApp.ViewModels.AlertSettings
         {
             IsBusy = true;
             Models.Clear();
+
+            for(int i = 0; i < 4; i++)
+            {
+                
+                var l = new List<ShowModel>();
+                for(int j = 0; j < 8; j++)
+                {
+                    var testModel = new Model
+                    {
+                        Id = i,
+                        IsEnabled = true,
+                        IsFeatured = false,
+                        Name = $"Test model {i}",
+                        BrandId = 1,
+                        Brand = new Brand { Name = "Test brand", IsEnabled = true },
+                        Product = new Product { IsEnabled = true, Name = "Test Product" },
+
+                    };
+                    var modelOptions = new ModelOptions
+                    {
+                        ModelId = i,
+                        Model = testModel,
+                        IsEnabled = i % 2 == 0 ? true : false
+                    };
+                    await Task.Delay(50); //https://github.com/xamarin/Xamarin.Forms/issues/13268#issuecomment-857895339
+                    l.Add(new ShowModel(testModel, modelOptions));
+                }
+                Dispatcher.GetForCurrentThread()?.Dispatch(() => Models.Add(new GroupedObversableModelOptions($"Test {i}", l)));
+            }
             //_ = Task.Run(async () =>
             //{
             //    //await Task.Delay(1000);
