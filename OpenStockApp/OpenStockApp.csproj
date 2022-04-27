@@ -17,7 +17,7 @@
 		<!-- App Identifier -->
 		<ApplicationId>com.stockdrops.StockDropsOpenStockApp</ApplicationId>
 		<ApplicationId Condition="$(TargetFramework.Contains('-mac')) or $(TargetFramework.Contains('-ios'))">com.stockdrops.openstockapp</ApplicationId>
-		<ApplicationId Condition="$(TargetFramework.Contains('-windows'))">9833150E-67CE-483A-AE72-F712156DC535"</ApplicationId>
+		<ApplicationIdGuid>9833150E-67CE-483A-AE72-F712156DC535</ApplicationIdGuid>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.1.4.1</ApplicationDisplayVersion>
@@ -134,7 +134,7 @@
 	  <MauiImage Include="Resources\Images\icons\settings_dark.svg" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-rc1" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-rc2" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
 	  <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
 	  <PackageReference Include="Microsoft.Identity.Client" Version="4.43.2-dev" />

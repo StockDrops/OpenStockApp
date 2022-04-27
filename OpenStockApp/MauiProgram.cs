@@ -78,13 +78,21 @@ public static class MauiProgram
                     ToastNotificationManagerCompat.OnActivated += WindowsNotificationService.OnActivated;
                 });
                configure.OnClosed((app, args) => {
-                   BackgroundServicesContainer.StopApp();
-                   SystemEvents.PowerModeChanged -= BackgroundServicesContainer.OnPowerStateChanged;
+                    SystemEvents.PowerModeChanged -= BackgroundServicesContainer.OnPowerStateChanged;
+                    try{
+                        BackgroundServicesContainer.StopApp();
+                    }
+                   catch(Exception ex)
+                   {
+                       System.Diagnostics.Debug.WriteLine(ex);
+                   }
+                    
+                   
                });
                 
             });
 #elif ANDROID
-                lifecycle.AddAndroid(configure =>
+            lifecycle.AddAndroid(configure =>
                 {
                     configure.OnApplicationCreating(activity =>
                    {
