@@ -21,121 +21,273 @@
     <ContentView.Content>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="{OnPlatform Android=40, Default=100}"/>
+                <RowDefinition Height="0.36*"/>
                 <RowDefinition Height="*"/>
-                
+                <RowDefinition Height="{OnPlatform Android=40, Default=80, iOS='Auto'}" />
             </Grid.RowDefinitions>
-            <StackLayout Grid.Row="0" Margin="{OnPlatform Default='30,10,30,10', Android='0,2,0,2', iOS='0,2,0,2'}">
-                <SearchBar x:Name="searchBar"
+
+            <views:LogInView IsLoggedIn="{Binding IsLoggedIn, Source={x:Reference view}}"
+                            LogInCommand="{Binding LogInCommand, Source={x:Reference view}}" 
+                         Grid.Row="0"
+                         Grid.RowSpan="3"/>
+
+            <StackLayout Grid.Row="0" Grid.RowSpan="1"
+                         IsVisible="{Binding IsLoggedIn, Source={x:Reference view}}"
+                         Margin="0,5,0,10">
+                <StackLayout Margin="{OnPlatform iOS='15,40,15,0', Android='5', Default='30'}" 
+                     IsVisible="{Binding IsLoggedIn, Source={x:Reference view}}" 
+                    >
+                    <Grid HeightRequest="40">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{OnPlatform UWP='0.3*', Default='0.6*'}"/>
+                            <ColumnDefinition Width="0.4*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                            <Label VerticalOptions="Center" Text="Products Options" Style="{StaticResource ListTitleStyle}"
+                               Margin="0,10,0,10"/>
+                            <Button Text="Help" IsVisible="{OnPlatform Android='False', UWP='True', Default='False'}" 
+                                Command="{Binding HelpCommand, Source={x:Reference view}}" 
+                                HeightRequest="40"
+                                Margin="10,10,0,10"/>
+                        </StackLayout>
+                        <Button Text="Help" 
+                                IsVisible="{OnPlatform Android='True', UWP='False', Default='True'}" 
+                                Command="{Binding HelpCommand, Source={x:Reference view}}" 
+                                HeightRequest="40" 
+                                HorizontalOptions="{OnPlatform Android='End', UWP='End', Default='End'}" 
+                                Grid.Column="{OnPlatform Default=1, UWP=0}"/>
+                    </Grid>
+
+                    
+                    <Border Margin="0,5,0,0"
+                        BackgroundColor="{AppThemeBinding Dark='#2a292f', Default='#2a292f'}"
+                        Stroke="{AppThemeBinding Dark='#2a292f', Default='#2a292f'}"
+                        Padding="10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="9" />
+                        </Border.StrokeShape>
+                        <Picker Title="Select a product to track"
+                            TitleColor="{AppThemeBinding Dark='#AEAEB2', Default='#AEAEB2'}"
+                            TextColor="{AppThemeBinding Dark='#AEAEB2', Default='#AEAEB2'}"
+                            BackgroundColor="{AppThemeBinding Dark='#2a292f', Default='#2a292f'}"
+                            HeightRequest="{OnPlatform iOS=25, Default=10}"
+                            ItemsSource="{Binding Products, Source={x:Reference view}}"
+                            ItemDisplayBinding="{Binding Name}"
+                            SelectedItem="{Binding SelectedProduct, Mode=OneWayToSource, Source={x:Reference view}}">
+                            <Picker.Behaviors>
+                                <mct:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding SelectedProductCommand, Source={x:Reference view}}" />
+                            </Picker.Behaviors>
+                        </Picker>
+                    </Border>
+
+                </StackLayout>
+
+            </StackLayout>
+
+            <Grid Grid.Row="1" 
+                  Margin="{OnPlatform iOS='10,0,0,0', Default='5,0,0,0'}"
+                  IsVisible="{Binding IsLoggedIn, Source={x:Reference view}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{OnPlatform Android=40, Default=100}"/>
+                    <RowDefinition Height="*"/>
+
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Row="0" Margin="{OnPlatform Default='30,10,30,10', Android='0,2,0,2', iOS='0,2,0,2'}">
+                    <SearchBar x:Name="searchBar"
                            IsTextPredictionEnabled="True"
                            Placeholder="Search for a model"
                            SearchCommand="{Binding PerformSearchCommand, Source={x:Reference view}}"
                            SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
                            Margin="0,0,0,5"
                            >
-                    <SearchBar.Behaviors>
-                        <mct:EventToCommandBehavior EventName="TextChanged"
+                        <SearchBar.Behaviors>
+                            <mct:EventToCommandBehavior EventName="TextChanged"
                                                     Command="{Binding PerformSearchCommand, Source={x:Reference view}}"
                                                     CommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
-                    </SearchBar.Behaviors>
-                </SearchBar>
-                <StackLayout Orientation="Horizontal" Margin="0,5,0,5">
-                    <Button Text="Enable All" Command="{Binding SelectCommand, Source={x:Reference view}}" Margin="0,0,5,0" />
-                    <Button Text="Disable All" Command="{Binding DeselectCommand, Source={x:Reference view}}" Margin="0,0,5,0" />
+                        </SearchBar.Behaviors>
+                    </SearchBar>
+                    <StackLayout Orientation="Horizontal" Margin="0,5,0,5">
+                        <Button Text="Enable All" Command="{Binding SelectCommand, Source={x:Reference view}}" Margin="0,0,5,0" />
+                        <Button Text="Disable All" Command="{Binding DeselectCommand, Source={x:Reference view}}" Margin="0,0,5,0" />
+                    </StackLayout>
                 </StackLayout>
-            </StackLayout>
-            
 
 
-            <CollectionView ItemsSource="{Binding ItemSource, Source={x:Reference view}}"
-                            
-                            Grid.Row="1"
-                            IsGrouped="true"
-                            
-                            Margin="{OnPlatform Default='30,10,30,10', Android='0,1,0,1'}">
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical"
+
+                <CollectionView ItemsSource="{Binding ItemSource, Source={x:Reference view}}"
+                                SelectionMode="None"
+                                Grid.Row="1"
+                                IsGrouped="true"
+                                Margin="{OnPlatform Default='30,10,30,10', Android='0,1,0,1', iOS='0,1,0,1'}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical"
                                      Span="{OnPlatform Android=1, iOS=1, Default=1}"
-                                     VerticalItemSpacing="10"
+                                     VerticalItemSpacing="{OnPlatform Default=10, iOS=2}"
                                      HorizontalItemSpacing="10"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.GroupHeaderTemplate>
-                    <DataTemplate x:DataType="models:GroupedObversableModelOptions">
-                        <Grid HorizontalOptions="StartAndExpand"
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.GroupHeaderTemplate>
+                        <DataTemplate x:DataType="models:GroupedObversableModelOptions">
+                            <Grid HorizontalOptions="StartAndExpand"
                                   VerticalOptions="StartAndExpand"
-                                  MinimumHeightRequest="{OnPlatform Default=80, Android=30}"
-                                  HeightRequest="{OnPlatform Default=80, Android=30}">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="0.1*"/>
-                                <RowDefinition Height="0.8*"/>
-                                <RowDefinition Height="0.1*"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.2*"/>
-                                <ColumnDefinition Width="0.6*"/>
-                                <ColumnDefinition Width="0.2*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Text="{Binding Name}"
+                                  MinimumHeightRequest="{OnPlatform Default=80, Android=30, iOS=28}"
+                                  HeightRequest="{OnPlatform Default=80, Android=30, iOS=28}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.1*"/>
+                                    <RowDefinition Height="0.8*"/>
+                                    <RowDefinition Height="0.1*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.2*"/>
+                                    <ColumnDefinition Width="0.6*"/>
+                                    <ColumnDefinition Width="0.2*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Name}"
                                    Style="{StaticResource SubtitleTextStyle}"
                                        Grid.Column="1"
                                        Grid.Row="1"
                                        HorizontalOptions="CenterAndExpand"
                                        VerticalOptions="CenterAndExpand"
                                    />
-                        </Grid>
+                            </Grid>
 
-                    </DataTemplate>
-                </CollectionView.GroupHeaderTemplate>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:ShowModel">
-                        <Grid HeightRequest="{OnPlatform Default=400, Android=250}">
-                            <StackLayout>
+                        </DataTemplate>
+                    </CollectionView.GroupHeaderTemplate>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:ShowModel">
+                            <Grid HeightRequest="{OnPlatform Default=400, Android=250, iOS=230}"
+                                  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
+                                  Margin="0,0,20,0"
+                                  ColumnDefinitions="0.35*,0.65*">
                                 <Label Text="{Binding Model.Name}"
-                                           LineBreakMode="WordWrap"
-                                           FontSize="Small"
-                                           FontAttributes="Bold"
-                                           Margin="{OnPlatform Default='0,10,0,10', Android='0,2,0,2'}"/>
-                                <StackLayout Orientation="{OnPlatform Android='Horizontal', Default='Vertical'}">
-                                    <Label Text="Enable" Margin="0,10,0,10" />
-                                    <CheckBox IsChecked="{Binding ModelOptions.IsEnabled}"/>
-                                </StackLayout>
-                                <StackLayout Orientation="{OnPlatform Android='Horizontal', Default='Vertical'}">
-                                    <Label Text="Max Price:" Margin="0,10,0,10"/>
-                                    <Entry Keyboard="Numeric" IsTextPredictionEnabled="False" Text="{Binding ModelOptions.MaxPrice}" MinimumWidthRequest="100">
-                                        <Entry.Behaviors>
-                                            <validators:NumericValidationBehavior Flags="ValidateOnValueChanged"
+                                       HorizontalOptions="Start"
+                                       LineBreakMode="WordWrap"
+                                       FontSize="Small"
+                                       FontAttributes="Bold"
+                                       Margin="{OnPlatform Default='0,10,0,10', Android='0,2,0,2'}"
+                                       Grid.Row="0"
+                                       Grid.Column="0"
+                                       Grid.ColumnSpan="2"
+                                       />
+                                
+                                <Label Text="Enable"
+                                       Margin="0,10,0,10"
+                                       VerticalOptions="Center"
+                                       Grid.Row="1"
+                                       Grid.Column="0"/>
+                                <CheckBox IsChecked="{Binding ModelOptions.IsEnabled}"
+                                          VerticalOptions="Center"
+                                          BackgroundColor="{AppThemeBinding Default={OnPlatform iOS='Transparent'}}"
+                                          Grid.Row="1"
+                                          Grid.Column="1"/>
+
+                                <Label Text="Max Price:" 
+                                       Margin="0,10,0,10"
+                                       Grid.Row="2"
+                                       Grid.Column="0"/>
+                                <Entry Keyboard="Numeric" 
+                                       IsTextPredictionEnabled="False"
+                                       Text="{Binding ModelOptions.MaxPrice}" 
+                                       MinimumWidthRequest="100"
+                                       BackgroundColor="{AppThemeBinding Dark={OnPlatform Default='#2a292f'}, Light={OnPlatform Default='#2a292f'}, Default={OnPlatform Default='#2a292f'}}"
+                                       Margin="0,2,8,2"
+                                       Grid.Row="2"
+                                       Grid.Column="1">
+                                    <Entry.Behaviors>
+                                        <validators:NumericValidationBehavior Flags="ValidateOnValueChanged"
                                                                        MaximumDecimalPlaces="2"
                                                                        InvalidStyle="{StaticResource InvalidEntry}"
                                                                        ValidStyle="{StaticResource ValidEntry}"                                                                       
                                             />
-                                        </Entry.Behaviors>
-                                    </Entry>
-                                </StackLayout>
-                                <StackLayout Orientation="{OnPlatform Android='Horizontal', Default='Vertical'}">
-                                    <Label Text="Min Price:" Margin="0,10,0,10"/>
-                                    <Entry Text="{Binding ModelOptions.MinPrice}" Keyboard="Numeric" MinimumWidthRequest="100" >
-                                        <Entry.Behaviors>
-                                            <validators:NumericValidationBehavior Flags="ValidateOnValueChanged"
+                                    </Entry.Behaviors>
+                                </Entry>
+
+                                <Label Text="Min Price:"
+                                       Margin="0,10,0,10"
+                                       Grid.Row="3"
+                                       Grid.Column="0"/>
+                                <Entry Text="{Binding ModelOptions.MinPrice}" 
+                                       Keyboard="Numeric" 
+                                       MinimumWidthRequest="100"
+                                       Margin="0,2,8,2"
+                                       BackgroundColor="{AppThemeBinding Dark={OnPlatform Default='#2a292f'}, Light={OnPlatform Default='#2a292f'}, Default={OnPlatform Default='#2a292f'}}"
+                                       Grid.Row="3"
+                                       Grid.Column="1">
+                                    <Entry.Behaviors>
+                                        <validators:NumericValidationBehavior Flags="ValidateOnValueChanged"
                                                                        MaximumDecimalPlaces="2"
                                                                        InvalidStyle="{StaticResource InvalidEntry}"
                                                                        ValidStyle="{StaticResource ValidEntry}"                                                                       
                                             />
-                                        </Entry.Behaviors>
-                                    </Entry>
-                                </StackLayout>
-                                <StackLayout Orientation="{OnPlatform Android='Vertical', Default='Vertical'}">
-                                    <Label Text="Action:" Margin="0,10,0,10" />
+                                    </Entry.Behaviors>
+                                </Entry>
+
+                                <Label Text="Action:" 
+                                       Margin="0,10,0,5"
+                                       Grid.Row="4"
+                                       Grid.Column="0"/>
+                                <Frame BorderColor="{AppThemeBinding Dark='#2a292f', Default='#2a292f'}"
+                                        Padding="1"
+                                        Margin="2,0,8,4"
+                                        Grid.Row="5"
+                                        Grid.ColumnSpan="2"
+                                        IsClippedToBounds="True"
+                                        BackgroundColor="{AppThemeBinding Dark={OnPlatform Default='#2a292f'}, Light={OnPlatform Default='#2a292f'}, Default={OnPlatform Default='#2a292f'}}"
+                                        >
                                     <Picker ItemDisplayBinding="{Binding Description}"
+                                            HeightRequest="30"
+                                            Margin="5"
+                                        
+                                        BackgroundColor="{AppThemeBinding Dark={OnPlatform Default='#2a292f'}, Light={OnPlatform Default='#2a292f'}, Default={OnPlatform Default='#2a292f'}}"
                                         SelectedIndex="{Binding ModelOptions.NotificationAction, Mode=TwoWay, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type users:NotificationAction}}"
                                         ItemsSource="{Binding BindingContext.NotificationActions, Source={x:Reference view}}"
                                             />
-                                </StackLayout>
-                            </StackLayout>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-            <!--<Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
+                                </Frame>
+                                
+
+
+                                <!--<StackLayout>
+                                    
+                                    <StackLayout Orientation="{OnPlatform Android='Horizontal', iOS='Horizontal', Default='Vertical'}">
+                                        <Label Text="Enable" Margin="0,10,0,10" VerticalOptions="Center"/>
+                                        <CheckBox IsChecked="{Binding ModelOptions.IsEnabled}" VerticalOptions="Center" />
+                                    </StackLayout>
+                                    <StackLayout Orientation="{OnPlatform Android='Horizontal', iOS='Horizontal', Default='Vertical'}">
+                                        <Label Text="Max Price:" Margin="0,10,0,10"/>
+                                        <Entry Keyboard="Numeric" IsTextPredictionEnabled="False" Text="{Binding ModelOptions.MaxPrice}" MinimumWidthRequest="100">
+                                            <Entry.Behaviors>
+                                                <validators:NumericValidationBehavior Flags="ValidateOnValueChanged"
+                                                                       MaximumDecimalPlaces="2"
+                                                                       InvalidStyle="{StaticResource InvalidEntry}"
+                                                                       ValidStyle="{StaticResource ValidEntry}"                                                                       
+                                            />
+                                            </Entry.Behaviors>
+                                        </Entry>
+                                    </StackLayout>
+                                    <StackLayout Orientation="{OnPlatform Android='Horizontal', iOS='Horizontal', Default='Vertical'}">
+                                        <Label Text="Min Price:" Margin="0,10,0,10"/>
+                                        <Entry Text="{Binding ModelOptions.MinPrice}" Keyboard="Numeric" MinimumWidthRequest="100" >
+                                            <Entry.Behaviors>
+                                                <validators:NumericValidationBehavior Flags="ValidateOnValueChanged"
+                                                                       MaximumDecimalPlaces="2"
+                                                                       InvalidStyle="{StaticResource InvalidEntry}"
+                                                                       ValidStyle="{StaticResource ValidEntry}"                                                                       
+                                            />
+                                            </Entry.Behaviors>
+                                        </Entry>
+                                    </StackLayout>
+                                    <StackLayout Orientation="{OnPlatform Android='Vertical', iOS='Vertical', Default='Vertical'}">
+                                        <Label Text="Action:" Margin="0,10,0,10" />
+                                        <Picker ItemDisplayBinding="{Binding Description}"
+                                        SelectedIndex="{Binding ModelOptions.NotificationAction, Mode=TwoWay, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type users:NotificationAction}}"
+                                        ItemsSource="{Binding BindingContext.NotificationActions, Source={x:Reference view}}"
+                                            />
+                                    </StackLayout>
+                                </StackLayout>-->
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <!--<Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
                     Command="{Binding SaveModelOptionsCommand, Source={x:Reference view}}" 
                     IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                      IsVisible="{Binding IsLoggedIn}"
@@ -143,6 +295,12 @@
             <Button Text="Log In"
                 Grid.Row="2"
                 IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}}" />-->
+            </Grid>
+            <Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}, Source={x:Reference view}}"
+                Command="{Binding SaveCommand, Source={x:Reference view}}" 
+                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}, Source={x:Reference view}}"
+                 IsVisible="{Binding IsLoggedIn, Source={x:Reference view}}"
+                Grid.Row="2"/>
         </Grid>
     </ContentView.Content>
 </ContentView>

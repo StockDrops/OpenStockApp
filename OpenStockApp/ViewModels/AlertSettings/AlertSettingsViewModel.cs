@@ -54,7 +54,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
 
         #region Commands
         public AsyncRelayCommand LoadProducts { get; set; }
-        public AsyncRelayCommand LoadModels { get; set; }
+        public AsyncRelayCommand ProductSelected { get; set; }
         public AsyncRelayCommand LoadRetailers { get; set; }
 
         public AsyncRelayCommand SaveModelOptions { get; set; }
@@ -87,7 +87,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
             #region Command Assigments
             LoadProducts = new AsyncRelayCommand(OnLoadProducts);
             LoadRetailers = new AsyncRelayCommand(OnCountrySelected);
-            LoadModels = new AsyncRelayCommand(OnProductSelected);
+            ProductSelected = new AsyncRelayCommand(OnProductSelected);
             SaveModelOptions = new AsyncRelayCommand(OnSaveModelOptions);
             PerformSearch = new AsyncRelayCommand<string>(OnPerformSearch);
             #endregion

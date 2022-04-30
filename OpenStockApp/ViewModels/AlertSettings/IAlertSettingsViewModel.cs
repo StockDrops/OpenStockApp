@@ -11,7 +11,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
     public interface IAlertSettingsViewModel : IBaseConnectionViewModel
     {
         public ObservableCollection<Country> Countries { get; set; }
-        public AsyncRelayCommand LoadModels { get; set; }
+        public AsyncRelayCommand ProductSelected { get; set; }
         public AsyncRelayCommand LoadProducts { get; set; }
         public AsyncRelayCommand LoadRetailers { get; set; }
         public ObservableCollection<GroupedObversableModelOptions> Models { get; set; }

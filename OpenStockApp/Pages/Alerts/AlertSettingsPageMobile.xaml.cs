@@ -18,7 +18,7 @@ public partial class AlertSettingsPageMobile : ContentPage
 
         Behaviors.Add(new EventToCommandBehavior { EventName = nameof(this.Appearing), Command = alertSettingsViewModel.LoadProducts });
         //Behaviors.Add(new EventToCommandBehavior { EventName = nameof(this.NavigatedFrom), Command = alertSettingsViewModel.NavigatedAwayCommand });
-        MessagingCenter.Subscribe<AlertSettingsViewModel, Exception?>(this, "saved", async (sender, args) =>
+        MessagingCenter.Subscribe<IAlertSettingsViewModel, Exception?>(this, "saved", async (sender, args) =>
         {
             await OnSaved(sender, args);
         });

@@ -21,16 +21,11 @@
         
     </ContentPage.Behaviors>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="140"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="{OnPlatform Android=40, Default=80}"/>
-        </Grid.RowDefinitions>
-        <StackLayout Margin="{OnPlatform Android=15, UWP='30', Default=15}" Grid.Row="0" IsVisible="{Binding IsLoggedIn}" >
-            <!--<StackLayout IsVisible="{OnPlatform Android=False, Default=True}">
+        <!--<StackLayout Margin="{OnPlatform Android=15, UWP='30', Default=15}" Grid.Row="0" IsVisible="{Binding IsLoggedIn}" >
+            --><!--<StackLayout IsVisible="{OnPlatform Android=False, Default=True}">
                 <Label Text="{x:Static strings:Resources.ActiveNotificationsExplanationTitle}" LineBreakMode="WordWrap" Style="{StaticResource ListTitleStyle}" Margin="0,10,0,10" />
                 <Label Text="{x:Static strings:Resources.ActiveNotificationsExplanation}" LineBreakMode="CharacterWrap" Style="{StaticResource BodyTextStyle}" HorizontalOptions="Start" MaximumWidthRequest="{OnPlatform Android=350, UWP=1400, MacCatalyst=1400}" Margin="0,10,0,10"/>
-            </StackLayout>-->
+            </StackLayout>--><!--
             <Grid HeightRequest="40">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="{OnPlatform UWP='0.3*', Default='0.6*'}"/>
@@ -53,12 +48,12 @@
                         Grid.Column="{OnPlatform Default=1, UWP=0}"/>
             </Grid>
 
-            <!--<StackLayout Orientation="Horizontal">
+            --><!--<StackLayout Orientation="Horizontal">
                 <Label Text="{OnPlatform Default='Products Options', Android='Select an actively tracked product'}" 
                        VerticalOptions="Center"
                        Style="{StaticResource ListTitleStyle}" Margin="0,10,0,10"/>
                 <Button Text="Help" Command="{Binding DisplayHelp, Source={x:Reference page}}" HeightRequest="40" Margin="10,10,0,10"/>
-            </StackLayout>-->
+            </StackLayout>--><!--
             
 
             
@@ -74,17 +69,22 @@
             </Picker>
 
             
-        </StackLayout>
-        <views:ModelOptionsView Grid.Row="1"
+        </StackLayout>-->
+        <views:ModelOptionsView Grid.Row="0"
                                 ItemSource="{Binding GroupedModelOptions}"
                                 NotificationActions="{Binding NotificationActions}"
                                 IsBusy="{Binding IsBusy}"
                                 IsLoggedIn="{Binding IsLoggedIn}"
-                                IsVisible="{Binding IsLoggedIn}"
+                                LogInCommand="{Binding LogIn}"
                                 ReloadSourceCommand="{Binding ReloadModels}"
-                                SaveModelOptionsCommand="{Binding SaveModelOptions}"
+                                SaveCommand="{Binding SaveModelOptions}"
+                                HelpTextTitle="{x:Static strings:Resources.ActiveNotificationsExplanationTitle}"
+                                HelpText="{x:Static strings:Resources.ActiveNotificationsExplanation}"
+                                Products="{Binding Products}"
+                                SelectedProductCommand="{Binding ItemSelected}"
+                                SelectedProduct="{Binding SelectedProduct}"
                                 VerticalOptions="StartAndExpand"/>
-        <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
+        <!--<views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
                          LogInCommand="{Binding LogIn}"
                          Grid.Row="0"
                          Grid.RowSpan="3"
@@ -94,7 +94,7 @@
                     Command="{Binding SaveModelOptions}" 
                     IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                      IsVisible="{Binding IsLoggedIn}"
-                    Grid.Row="2"/>
+                    Grid.Row="2"/>-->
         
     </Grid>
     

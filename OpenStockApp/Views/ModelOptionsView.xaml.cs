@@ -1,4 +1,5 @@
 using Microsoft.Toolkit.Mvvm.Input;
+using OpenStockApi.Core.Models.Products;
 using OpenStockApp.Core.Maui.Models;
 using OpenStockApp.Extensions;
 using OpenStockApp.Models.Users;
@@ -19,6 +20,9 @@ public partial class ModelOptionsView : ContentView
         set => SetValue(ItemSourceProperty, value);
 
     }
+
+
+
     public static readonly BindableProperty NotificationActionsProperty = BindableProperty.Create(nameof(NotificationActions),
         typeof(ObservableCollection<DisplayedNotificationActions>), typeof(ModelOptionsView), new ObservableCollection<DisplayedNotificationActions>()); // , propertyChanged: (b, o, n) => OnNotificationActionsChanged(b, o, n));
 	public ObservableCollection<DisplayedNotificationActions> NotificationActions
@@ -55,6 +59,13 @@ public partial class ModelOptionsView : ContentView
             SetValue(IsLoggedInProperty, value);
         }
     }
+    public static readonly BindableProperty LogInCommandProperty = BindableProperty.Create(nameof(LogInCommand), typeof(ICommand), typeof(ModelOptionsView), default);
+
+    public ICommand LogInCommand
+    {
+        get => (ICommand)GetValue(LogInCommandProperty);
+        set => SetValue(LogInCommandProperty, value);
+    }
 
     public static readonly BindableProperty ReloadSourceCommandProperty = BindableProperty.Create(nameof(ReloadSourceCommand), typeof(ICommand), typeof(ModelOptionsView), default);
     public ICommand ReloadSourceCommand
@@ -62,12 +73,13 @@ public partial class ModelOptionsView : ContentView
         get => (ICommand)GetValue(ReloadSourceCommandProperty);
         set => SetValue(ReloadSourceCommandProperty, value);
     }
-    public static readonly BindableProperty SaveModelOptionsCommandProperty = BindableProperty.Create(nameof(SaveModelOptionsCommand), typeof(ICommand), typeof(ModelOptionsView), default);
-    public ICommand SaveModelOptionsCommand
-    {
-        get => (ICommand)GetValue(SaveModelOptionsCommandProperty);
-        set => SetValue(SaveModelOptionsCommandProperty, value);
-    }
+    //public static readonly BindableProperty SaveModelOptionsCommandProperty = BindableProperty.Create(nameof(SaveModelOptionsCommand), typeof(ICommand), typeof(ModelOptionsView), default);
+    //public ICommand SaveModelOptionsCommand
+    //{
+    //    get => (ICommand)GetValue(SaveModelOptionsCommandProperty);
+    //    set => SetValue(SaveModelOptionsCommandProperty, value);
+    //}
+
     public static readonly BindableProperty PerformSearchCommandProperty = BindableProperty.Create(nameof(PerformSearchCommand), typeof(Command<string>), typeof(ModelOptionsView), default);
 
     public Command<string> PerformSearchCommand
@@ -75,9 +87,59 @@ public partial class ModelOptionsView : ContentView
         get => (Command<string>)GetValue(PerformSearchCommandProperty);
         set => SetValue(PerformSearchCommandProperty, value);
     }
-    
+
+    public static readonly BindableProperty HelpTextProperty = BindableProperty.Create(nameof(HelpText), typeof(string), typeof(ModelOptionsView), string.Empty);
+
+    public string? HelpText
+    {
+        get => (string?)GetValue(HelpTextProperty);
+        set => SetValue(HelpTextProperty, value);
+    }
+
+    public static readonly BindableProperty HelpTextTitleProperty = BindableProperty.Create(nameof(HelpTextTitle), typeof(string), typeof(ModelOptionsView), string.Empty);
+
+    public string? HelpTextTitle
+    {
+        get => (string?)GetValue(HelpTextTitleProperty);
+        set => SetValue(HelpTextTitleProperty, value);
+    }
+
+
+    public static readonly BindableProperty ProductsProperty = BindableProperty.Create(nameof(Products), typeof(ObservableCollection<Product>), typeof(ModelOptionsView), new ObservableCollection<Product>());
+
+    public ObservableCollection<Product> Products
+    {
+        get => (ObservableCollection<Product>)GetValue(ProductsProperty);
+        set => SetValue(ProductsProperty, value);
+    }
+
+    public static readonly BindableProperty SelectedProductProperty = BindableProperty.Create(nameof(SelectedProduct), typeof(Product), typeof(ModelOptionsView), null);
+    public Product? SelectedProduct
+    {
+        get => (Product?)GetValue(SelectedProductProperty);
+        set => SetValue(SelectedProductProperty, value);
+    }
+
+    public static readonly BindableProperty SelectedProductCommandProperty = BindableProperty.Create(nameof(SelectedProductCommand), typeof(ICommand), typeof(ModelOptionsView), default);
+
+    public ICommand SelectedProductCommand
+    {
+        get => (ICommand)GetValue(SelectedProductCommandProperty);
+        set => SetValue(SelectedProductCommandProperty, value);
+    }
+
+    public static readonly BindableProperty SaveCommandProperty = BindableProperty.Create(nameof(SaveCommand), typeof(ICommand), typeof(ModelOptionsView), default);
+
+    public ICommand SaveCommand
+    {
+        get => (ICommand)GetValue(SaveCommandProperty);
+        set => SetValue(SaveCommandProperty, value);
+    }
+
     public Command SelectCommand { get; }
     public Command DeselectCommand { get; }
+
+    public ICommand HelpCommand { get; }
     public ModelOptionsView()
 	{
         //BindingContext = this;
@@ -89,6 +151,7 @@ public partial class ModelOptionsView : ContentView
             });
         SelectCommand = new Command(() => OnSelectCommand());
         DeselectCommand = new Command(() => OnDeselectCommand());
+        HelpCommand = new AsyncRelayCommand(OnDisplayHelpAsync);
         InitializeComponent();
     }
 
@@ -108,7 +171,10 @@ public partial class ModelOptionsView : ContentView
         }
         IsBusy = false;
     }
-
+    private async Task OnDisplayHelpAsync(CancellationToken cancellationToken = default)
+    {
+        await (Application.Current?.MainPage?.DisplayAlert(HelpTextTitle ?? "Help", HelpText, "Ok") ?? Task.CompletedTask);
+    }
     private void OnDeselectCommand()
     {
         SelectDeselectItems(false);

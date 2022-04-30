@@ -93,15 +93,15 @@
                         Margin="0,10,0,10"
                 >
                 <Picker.Behaviors>
-                    <mct:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding LoadModels}" />
+                        <mct:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding ProductSelected}" />
                 </Picker.Behaviors>
             </Picker>
                 <views:ModelOptionsView ItemSource="{Binding Models}"
                                 NotificationActions="{Binding NotificationActions}"
                                 IsBusy="{Binding IsBusy}"
                                 IsLoggedIn="{Binding IsLoggedIn}"
-                                ReloadSourceCommand="{Binding LoadModels}"
-                                SaveModelOptionsCommand="{Binding SaveModelOptions}"
+                                ReloadSourceCommand="{Binding ProductSelected}"
+                                SaveCommand="{Binding SaveModelOptions}"
                                 VerticalOptions="StartAndExpand"/>
                 <!--<SearchBar x:Name="searchBar"
                            IsTextPredictionEnabled="True"
