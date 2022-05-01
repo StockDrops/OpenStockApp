@@ -154,7 +154,7 @@
                     </CollectionView.GroupHeaderTemplate>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:ShowModel">
-                            <Grid HeightRequest="{OnPlatform Default=400, Android=250, iOS=230}"
+                            <Grid HeightRequest="{OnPlatform Default=400, Android=250, iOS=240}"
                                   RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
                                   Margin="0,0,20,0"
                                   ColumnDefinitions="0.35*,0.65*">

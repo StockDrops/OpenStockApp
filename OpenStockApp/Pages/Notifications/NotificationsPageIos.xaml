@@ -1,13 +1,14 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:OpenStockApp.ViewModels"
+             xmlns:notifications="clr-namespace:OpenStockApp.ViewModels.Notifications"
              xmlns:viewcore="clr-namespace:OpenStockApp.Core.Maui.Views;assembly=OpenStockApp.Core.Maui"
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:mct2="clr-namespace:CommunityToolkit.Maui;assembly=CommunityToolkit.Maui"
              xmlns:modelsapi="clr-namespace:OpenStockApi.Core.Models.Searches;assembly=OpenStockApi.Core"
              xmlns:views="clr-namespace:OpenStockApp.Views"
              xmlns:main="clr-namespace:OpenStockApp"
-             x:DataType="vm:INotificationsPageViewModel"
+             x:DataType="notifications:NotificationsPageViewModel"
              x:Class="OpenStockApp.Pages.Alerts.NotificationsPageIos"
              x:Name="page"
              Title="Notifications Hub"
@@ -23,44 +24,49 @@
         <mct:EventToCommandBehavior EventName="NavigatedTo"
                                     Command="{Binding LoadPreviousResults}"/>
     </ContentPage.Behaviors>-->
-    <RefreshView Command="{Binding NavigateToPage}"
-                     IsRefreshing="{Binding IsRefreshing}"
-                     IsVisible="{Binding IsLoggedIn}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="{OnPlatform Default='Auto', iOS='150'}"/>
-                <RowDefinition Height="*"/>
-                <!--<RowDefinition Height="80"/>-->
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.40*" />
-                <ColumnDefinition Width="0.60*" />
-            </Grid.ColumnDefinitions>
-            <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
-                         Grid.ColumnSpan="2"
-                         Grid.RowSpan="3"
+    <Grid>
+        <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
+                             Grid.Row="0"
+                             Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.RowSpan="3"
                             LogInCommand="{Binding LogIn}" />
+        <!--<RefreshView Command="{Binding NavigateToPage}"
+                 IsRefreshing="{Binding IsRefreshing}"
+                 IsVisible="{Binding IsLoggedIn}"
+                 >-->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="{OnPlatform Default='Auto', iOS='150'}"/>
+                    <RowDefinition Height="*"/>
+                    <!--<RowDefinition Height="80"/>-->
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.40*" />
+                    <ColumnDefinition Width="0.60*" />
+                </Grid.ColumnDefinitions>
 
-            <StackLayout Grid.Row="0" Grid.Column="0" 
+
+                <StackLayout Grid.Row="0" Grid.Column="0" 
                      IsVisible="{Binding IsLoggedIn}"
                      HorizontalOptions="CenterAndExpand"
                      >
-                <main:ConnectionIndicatorView IsConnected="{Binding IsConnected}"
+                    <main:ConnectionIndicatorView IsConnected="{Binding IsConnected}"
                                           ConnectCommand="{Binding ConnectCommand}"
                                           
                                           />
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.45*"/>
-                        <ColumnDefinition Width="0.1*"/>
-                        <ColumnDefinition Width="0.45*"/>
-                    </Grid.ColumnDefinitions>
-                    <!--<ActivityIndicator Grid.Column="1" IsRunning="{Binding IsRefreshing}" HorizontalOptions="Center" Margin="10" IsVisible="{OnPlatform Default=False, MacCatalyst=True, UWP=True, iOS=False}"/>-->
-                </Grid>
-            </StackLayout>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.45*"/>
+                            <ColumnDefinition Width="0.1*"/>
+                            <ColumnDefinition Width="0.45*"/>
+                        </Grid.ColumnDefinitions>
+                        <!--<ActivityIndicator Grid.Column="1" IsRunning="{Binding IsRefreshing}" HorizontalOptions="Center" Margin="10" IsVisible="{OnPlatform Default=False, MacCatalyst=True, UWP=True, iOS=False}"/>-->
+                    </Grid>
+                </StackLayout>
 
-            <Button Grid.Row="0"
+                <Button Grid.Row="0"
                 Grid.Column="1"
                 VerticalOptions="Start"
                 HorizontalOptions="Center"
@@ -70,127 +76,148 @@
                 Command="{Binding TestNotificationCommand}"
                 IsVisible="{Binding IsLoggedIn}"
                 Margin="0,5,0,5"/>
-            <Frame CornerRadius="5" Grid.Row="1" 
+                <Frame CornerRadius="5" Grid.Row="1" 
                Grid.ColumnSpan="2" 
                Margin="{OnPlatform Default=4, iOS=25}"
                BackgroundColor="{AppThemeBinding Dark={StaticResource SecondaryColor}, Light={StaticResource BackgroundColor}}"
                IsVisible="{Binding IsLoggedIn}">
-                <StackLayout Grid.Row="1" Orientation="Horizontal">
-                    <StackLayout Orientation="Vertical">
-                        <Label Text="Enable alert settings" 
+                    <StackLayout Grid.Row="1" Orientation="Horizontal">
+                        <StackLayout Orientation="Vertical">
+                            <Label Text="Enable alert settings" 
                        VerticalOptions="Center"
                        Margin="{OnPlatform Default='10,0,10,0', Android='0,0,0,0', iOS='0,0,0,10'} "/>
-                        <Switch IsToggled="{Binding HasToApplyFilterSettings}"
+                            <Switch IsToggled="{Binding HasToApplyFilterSettings}"
                             VerticalOptions="Center"
                             HorizontalOptions="Center">
-                            <Switch.Behaviors>
-                                <mct:EventToCommandBehavior EventName="Toggled"
+                                <Switch.Behaviors>
+                                    <mct:EventToCommandBehavior EventName="Toggled"
                                                     Command="{Binding ApplyFilterSettings}"/>
-                            </Switch.Behaviors>
-                        </Switch>
-                        <!--<views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='False', Android='True'}"  />-->
-                        <!--<views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='True', Android='False'}"  />-->
+                                </Switch.Behaviors>
+                            </Switch>
+                            <!--<views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='False', Android='True'}"  />-->
+                            <!--<views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='True', Android='False'}"  />-->
+                        </StackLayout>
+                        <StackLayout>
+                            <views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='False', Android='True', iOS='True'}"  />
+                        </StackLayout>
                     </StackLayout>
-                    <StackLayout>
-                        <views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='False', Android='True', iOS='True'}"  />
-                    </StackLayout>
-                </StackLayout>
 
-            </Frame>
-            <StackLayout  Grid.Row="2"
+                </Frame>
+                <StackLayout  Grid.Row="2"
                       Grid.Column="0"
                      Grid.ColumnSpan="2">
 
 
-                <CollectionView ItemsSource="{Binding Results}"
-                                ItemsUpdatingScrollMode="{OnPlatform Default='KeepItemsInView', iOS='KeepScrollOffset'}"
+                    <CollectionView ItemsSource="{Binding Results}"
+                                ItemsUpdatingScrollMode="{OnPlatform Default='KeepItemsInView', iOS='KeepItemsInView'}"
                                 SelectionMode="None"
                                 VerticalOptions="Start"
                                 Margin="5,0,5,0"
                             
-                                RemainingItemsThreshold="1"
+                                RemainingItemsThreshold="3"
                                 RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}"
                                 x:Name="collectionView">
-                    <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical"
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical"
                                      Span="{OnPlatform Android=1, iOS=1, Default=1}"
                                      VerticalItemSpacing="10"
                                      />
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="modelsapi:Result">
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="modelsapi:Result">
 
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="100"/>
-                                    <RowDefinition Height="160"/>
-                                    <RowDefinition Height="100"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="1*" />
-                                </Grid.ColumnDefinitions>
-                                <StackLayout Grid.Column="0" Grid.Row="0" Margin="25">
-                                    <Label Text="{Binding Sku.Model.Name}" 
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="100"/>
+                                        <RowDefinition Height="160"/>
+                                        <RowDefinition Height="100"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackLayout Grid.Column="0" Grid.Row="0" Margin="25">
+                                        <Label Text="{Binding Sku.Model.Name}" 
                                            MaximumWidthRequest="80"
                                    Style="{StaticResource ListTitleStyle}" 
                                        VerticalOptions="Center"
                                    LineBreakMode="WordWrap"
                                    TextTransform="Uppercase"/>
-                                    <Label Text="{Binding Sku.Retailer.Name}" Margin="0,4,0,4" />
-                                    <Label Text="{Binding Price}" />
-                                    <Label Text="{Binding DateTimeFound, StringFormat='{0:g}'}"/>
+                                        <Label Text="{Binding Sku.Retailer.Name}" Margin="0,4,0,4" />
+                                        <Label Text="{Binding Price}" />
+                                        <Label Text="{Binding DateTimeFound, StringFormat='{0:g}'}"/>
 
-                                </StackLayout>
-                                <StackLayout Grid.Column="1" Grid.Row="0"  Margin="{OnPlatform Default='10', UWP=25}">
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="1" Grid.Row="0"  Margin="{OnPlatform Default='10', UWP=25}">
 
-                                    <Image Source="{Binding ThumbnailUrl}" 
+                                        <Image Source="{Binding ThumbnailUrl}" 
                                            HeightRequest="{OnPlatform Default=80, Android=50, iOS=50}"
                                            Aspect="AspectFit"  IsVisible="{Binding ThumbnailUrl, Converter={StaticResource IsNotNullOrEmptyConverter}}" Margin="0"  />
-                                    <Label Text="{Binding Id, StringFormat='Id: {0}'}"
+                                        <Label Text="{Binding Id, StringFormat='Id: {0}'}"
                                        VerticalOptions="Start"
                                            Margin="{OnPlatform Default='0,1,0,1', UWP='0,10,0,10', iOS='0,1,0,1'}"/>
 
-                                </StackLayout>
-                                <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="20">
+                                    </StackLayout>
+                                    <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="20">
 
-                                    <Image Source="{Binding ImageUrl}"
+                                        <Image Source="{Binding ImageUrl}"
                                            HeightRequest="120"
                                            Aspect="AspectFit" Margin="0,10,0,10">
-                                        <!--<Image.Clip>
+                                            <!--<Image.Clip>
                                     <RoundRectangleGeometry CornerRadius="10" Rect="10,10,150,100" />
                                 </Image.Clip>-->
-                                    </Image>
+                                        </Image>
 
-                                </StackLayout>
-                                <StackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="20">
+                                    </StackLayout>
+                                    <StackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="20">
 
-                                    <views:HyperlinkButton Text="Product Url" Url="{Binding ProductUrl}" Margin="2" />
-                                    <views:HyperlinkButton Url="{Binding AtcUrl}" Text="Add To Cart Url" IsVisible="{Binding AtcUrl, Converter={StaticResource IsNotNullOrEmptyConverter}}" Margin="2"/>
-                                </StackLayout>
-                            </Grid>
+                                        <views:HyperlinkButton Text="Product Url" Url="{Binding ProductUrl}" Margin="2" />
+                                        <views:HyperlinkButton Url="{Binding AtcUrl}" Text="Add To Cart Url" IsVisible="{Binding AtcUrl, Converter={StaticResource IsNotNullOrEmptyConverter}}" Margin="2"/>
+                                    </StackLayout>
+                                </Grid>
 
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    <CollectionView.Footer>
+                        <StackLayout>
+                            <Button Margin="0,20,0,20"
+                                    ZIndex="50"
+                                    Text="Load More?"
+                                    MinimumWidthRequest="{OnPlatform Android=100, iOS=100, UWP=300}"
+                                    HorizontalOptions="Center"
+                                    FontSize="Medium"
+                                    FontAttributes="Bold"
+                                    IsVisible="{Binding EndReached, Converter={StaticResource InvertedBoolConverter}}"
+                                    Command="{Binding LoadMoreCommand}"/>
+                            <Button Margin="0,20,0,20"
+                                    MinimumWidthRequest="{OnPlatform Android=100, iOS=100, UWP=300}"
+                                    HorizontalOptions="Center"
+                                    FontSize="Medium"
+                                    FontAttributes="Bold"
+                                    IsEnabled="False"
+                                    Text="End Reached"
+                                    IsVisible="{Binding EndReached}"/>
+                        </StackLayout>
+                    </CollectionView.Footer>
+                    </CollectionView>
 
-            </StackLayout>
+                </StackLayout>
 
 
 
-            <!--IsPullToRefreshEnabled="true"
+                <!--IsPullToRefreshEnabled="true"
                       IsRefreshing="{Binding IsRefreshing}"
                       RefreshCommand="{Binding NavigateToPage}"
                       LoadMoreCommand="{Binding LoadMoreCommand}"-->
-            <!--There's an issue with this not working as it should: https://github.com/dotnet/maui/issues/4116 ItemsUpdatingScrollMode="KeepLastItemInView" -->
+                <!--There's an issue with this not working as it should: https://github.com/dotnet/maui/issues/4116 ItemsUpdatingScrollMode="KeepLastItemInView" -->
 
 
-            <StackLayout Grid.Row="2" 
+                <StackLayout Grid.Row="2" 
                          VerticalOptions="End"
                          HorizontalOptions="End"
                          Margin="5">
 
-                <!--<Button Margin="0,20,0,20"
+                    <!--<Button Margin="0,20,0,20"
                 ZIndex="50"
                                     Text="Load More?"
                                     MinimumWidthRequest="{OnPlatform Android=100, iOS=100, UWP=300}"
@@ -199,14 +226,14 @@
                                     FontAttributes="Bold"
                                     IsVisible="{Binding EndReached, Converter={StaticResource InvertedBoolConverter}}"
                                     Command="{Binding LoadMoreCommand}"/>-->
-                <!--<Button Margin="0,20,0,20"
+                    <!--<Button Margin="0,20,0,20"
                                     Text="Go to Top"
                                     MinimumWidthRequest="300"
                                     HorizontalOptions="Center"
                                     FontSize="Medium"
                                     FontAttributes="Bold"
                                     Command="{Binding GoToTopCommand}"/>-->
-                <Button Margin="0,20,0,20"
+                    <Button Margin="0,20,0,20"
                                     MinimumWidthRequest="{OnPlatform Android=100, iOS=100, UWP=300}"
                                     HorizontalOptions="Center"
                                     FontSize="Medium"
@@ -215,7 +242,9 @@
                                     Text="End Reached"
                                     IsVisible="{Binding EndReached}"/>
 
-            </StackLayout>
-        </Grid>
-    </RefreshView>
+                </StackLayout>
+            </Grid>
+        <!--</RefreshView>-->
+    </Grid>
+    
 </ContentPage>

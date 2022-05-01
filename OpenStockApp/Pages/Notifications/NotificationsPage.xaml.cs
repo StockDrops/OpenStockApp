@@ -5,15 +5,16 @@ using OpenStockApp.ViewModels.Notifications;
 
 namespace OpenStockApp.Pages.Alerts
 {
-    [XamlCompilation(XamlCompilationOptions.Skip)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NotificationsPage : ContentPage
     {
         
         public NotificationsPage(NotificationsPageViewModel notificationsPageViewModel)
         {
             
-            InitializeComponent();
+            
             BindingContext = notificationsPageViewModel;
+            InitializeComponent();
             //var converter = new CommunityToolkit.Maui.Converters.IsStringNotNullOrEmptyConverter();
             Behaviors.Add(new EventToCommandBehavior { EventName = nameof(this.Appearing), Command = notificationsPageViewModel.NavigateToPage }); //TODO: One day I'd like to know why this is needed, and why the XAML binding is not working.
             //Behaviors.Add(new EventToCommandBehavior { EventName = nameof(this.Appearing), Command = notificationsPageViewModel.NavigateToPage });

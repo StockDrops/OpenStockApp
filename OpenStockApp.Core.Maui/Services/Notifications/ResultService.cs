@@ -73,6 +73,9 @@ namespace OpenStockApp.Core.Maui.Services.Notifications
                 await foreach (var result in stream)
                 {
                     result.DateTimeFound = result.DateTimeFound.ToLocalTime();
+#if IOS
+                    await Task.Delay(50);
+#endif
                     DisplayResult?.Invoke(this, result);
                     count++;
                 }

@@ -577,7 +577,7 @@ namespace OpenStockApp.Services.Users
                                                     .WithB2CAuthority(authority);
 #if ANDROID
                                                     clientBuilder.WithParentActivityOrWindow(() => MainActivity);
-#elif (IOS && !DEBUG) || MACCATALYST
+#elif IOS || MACCATALYST
                                                     clientBuilder.WithIosKeychainSecurityGroup("com.stockdrops.openstockapp");
 #endif
            return clientBuilder.WithRedirectUri(redirectUri)

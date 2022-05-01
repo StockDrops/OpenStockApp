@@ -55,9 +55,9 @@
                         SelectedItem="{Binding SelectedCountry}"
                         
                         >
-                        <Picker.Behaviors>
+                        <!--<Picker.Behaviors>
                             <mct:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding LoadRetailers}"/>
-                        </Picker.Behaviors>
+                        </Picker.Behaviors>-->
 
                     </Picker>
 

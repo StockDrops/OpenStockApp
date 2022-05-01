@@ -46,7 +46,7 @@
                                 HelpText="{x:Static strings:Resources.AddNotificationsExplanation}"
                                 Products="{Binding Products}"
                                 SelectedProductCommand="{Binding ProductSelected}"
-                                SelectedProduct="{Binding SelectedProduct}"
+                                SelectedProduct="{Binding SelectedProduct, Mode=OneWayToSource}"
                                 Margin="0,5,0,0"
                                 Grid.Row="0"
                                 />

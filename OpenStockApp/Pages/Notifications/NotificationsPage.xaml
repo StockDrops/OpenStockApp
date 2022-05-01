@@ -7,7 +7,7 @@
              xmlns:modelsapi="clr-namespace:OpenStockApi.Core.Models.Searches;assembly=OpenStockApi.Core"
              xmlns:views="clr-namespace:OpenStockApp.Views"
              xmlns:main="clr-namespace:OpenStockApp"
-             x:DataType="vm:NotificationsPageViewModel"
+             x:DataType="vm:INotificationsPageViewModel"
              x:Class="OpenStockApp.Pages.Alerts.NotificationsPage"
              x:Name="page"
              Title="Notifications Hub"

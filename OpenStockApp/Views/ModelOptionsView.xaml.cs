@@ -211,7 +211,7 @@ public partial class ModelOptionsView : ContentView
     /// </summary>
     /// <param name="query"></param>
     /// <returns></returns>
-    public void OnPerformSearch(string? query)
+    public async void OnPerformSearch(string? query)
     {
         if (IsBusy)
             return;
@@ -222,10 +222,11 @@ public partial class ModelOptionsView : ContentView
             ReloadSourceCommand.Execute(null);
         if (query.Count() < 3)
             return;
-
-        foreach (var group in ItemSource)
+        await Task.Delay(50);
+        foreach (var group in ItemSource) //TODO: this is not working well on ios.
         {
             group.RemoveAll(m => !(m.Model != null && m.Model.Name != null && m.Model.Name.Contains(query, StringComparison.InvariantCultureIgnoreCase)));
+            await Task.Delay(50);
         }
         ItemSource.RemoveAll(g => g.Count == 0);
     }

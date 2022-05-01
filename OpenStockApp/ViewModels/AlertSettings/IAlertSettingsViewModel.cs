@@ -13,14 +13,12 @@ namespace OpenStockApp.ViewModels.AlertSettings
         public ObservableCollection<Country> Countries { get; set; }
         public AsyncRelayCommand ProductSelected { get; set; }
         public AsyncRelayCommand LoadProducts { get; set; }
-        public AsyncRelayCommand LoadRetailers { get; set; }
         public ObservableCollection<GroupedObversableModelOptions> Models { get; set; }
         public ObservableCollection<DisplayedNotificationActions> NotificationActions { get; set; }
         public AsyncRelayCommand<string> PerformSearch { get; set; }
         public ObservableCollection<Product> Products { get; set; }
         public ObservableCollection<RetailerOptions> Retailers { get; set; }
         public AsyncRelayCommand SaveModelOptions { get; set; }
-        public Country SelectedCountry { get; set; }
         public Product SelectedProduct { get; set; }
         public ObservableCollection<GroupedObversableModelOptions> UnsearchedModels { get; }
 

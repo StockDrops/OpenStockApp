@@ -95,9 +95,6 @@ namespace OpenStockApp.ViewModels.Notifications
             LoadMoreCommand = new AsyncRelayCommand(OnLoadMore);
             ApplyFilterSettings = new AsyncRelayCommand(OnDisplayFilteredToggled);
             TestNotificationCommand = new AsyncRelayCommand(OnSendTestNotification);
-#if DEBUG
-            IsLoggedIn = true;
-#endif
             RegisterEvents();
         }
         public void RegisterEvents()
@@ -174,6 +171,7 @@ namespace OpenStockApp.ViewModels.Notifications
         private async Task LoadAndAddResultsAsync(int pageNumber, bool filtered, CancellationToken cancellationToken = default)
         {
             IsRefreshing = true;
+            await Task.Delay(50);
             if (pageNumber == 1)
                 Results.Clear();
             if (!filtered)

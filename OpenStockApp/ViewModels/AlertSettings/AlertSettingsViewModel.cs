@@ -55,7 +55,6 @@ namespace OpenStockApp.ViewModels.AlertSettings
         #region Commands
         public AsyncRelayCommand LoadProducts { get; set; }
         public AsyncRelayCommand ProductSelected { get; set; }
-        public AsyncRelayCommand LoadRetailers { get; set; }
 
         public AsyncRelayCommand SaveModelOptions { get; set; }
         public AsyncRelayCommand<string> PerformSearch { get; set; }
@@ -86,7 +85,6 @@ namespace OpenStockApp.ViewModels.AlertSettings
             #endregion
             #region Command Assigments
             LoadProducts = new AsyncRelayCommand(OnLoadProducts);
-            LoadRetailers = new AsyncRelayCommand(OnCountrySelected);
             ProductSelected = new AsyncRelayCommand(OnProductSelected);
             SaveModelOptions = new AsyncRelayCommand(OnSaveModelOptions);
             PerformSearch = new AsyncRelayCommand<string>(OnPerformSearch);
@@ -123,9 +121,10 @@ namespace OpenStockApp.ViewModels.AlertSettings
             await LoadAllProducts();
 
         }
-        public void LoadActions()
+        public async void LoadActions()
         {
             NotificationActions.Clear();
+            await Task.Delay(50);
             NotificationActions.Add(new DisplayedNotificationActions
             {
                 Action = NotificationAction.OpenProductUrl,
@@ -186,26 +185,27 @@ namespace OpenStockApp.ViewModels.AlertSettings
         private async Task LoadModelsFromHub(CancellationToken cancellationToken = default)
         {
             IsBusy = true;
+            
             Models.Clear();
-            _ = Task.Run(async () =>
+            await Task.Delay(100);
+            
+            //await Task.Delay(1000);
+            var groupedOptions = await userOptionsDisplayService.GetGroupedObversableModelOptionsAsync(SelectedProduct, cancellationToken);
+
+            foreach (var options in groupedOptions)
             {
-                //await Task.Delay(1000);
-                var groupedOptions = await userOptionsDisplayService.GetGroupedObversableModelOptionsAsync(SelectedProduct, cancellationToken);
 
-                foreach (var options in groupedOptions)
-                {
-
-                    Dispatcher.Dispatch(() => Models.Add(options));
-                    //await Task.Delay(200);
-                }
-                Dispatcher.Dispatch(() => IsBusy = false);
-            });
+                Models.Add(options);
+                await Task.Delay(50);
+            }
+            IsBusy = false;
         }
         private async Task LoadAllCountries(CancellationToken token = default)
         {
             IsBusy = true;
             var countries = await userOptionsHub.GetCountries(token);
             Countries.Clear();
+            await Task.Delay(50);
             foreach (var country in countries)
             {
                 Countries.Add(country);
@@ -225,6 +225,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
 
             var products = await Task.Run(async () => await userOptionsHub.GetProducts(token));
             Products.Clear();
+            await Task.Delay(50);
             foreach (var product in products)
             {
                 Products.Add(product);

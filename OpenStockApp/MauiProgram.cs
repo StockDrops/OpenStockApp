@@ -34,6 +34,7 @@ using OpenStockApp.Core.Maui.Contracts.Services;
 using Microsoft.Extensions.Logging;
 using OpenStockApp.Services.Users;
 using OpenStockApp.ViewModels.Notifications;
+using OpenStockApp.Services.Notifications;
 
 
 
@@ -331,6 +332,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<AndroidNotificationService>();
         builder.Services.AddSingleton<INotificationService, AndroidNotificationService>(services => services.GetRequiredService<AndroidNotificationService>()); ;
         builder.Services.AddSingleton<IAndroidNotificationBuilder, AndroidNotificationBuilder>();
+#elif IOS
+        builder.Services.AddSingleton<INotificationService, NotificationService>();
 #endif
         //configure
         builder.Services.Configure<AppConfig>(builder.Configuration.GetSection(nameof(AppConfig)));
@@ -351,7 +354,7 @@ public static class MauiProgram
         builder.Services.AddTransient<NotificationsPageIos>();
 
         builder.Services.AddTransient<NotificationPageMobile>();
-#if DEBUG
+#if false
         builder.Services.AddTransient<INotificationsPageViewModel, TestNotificationViewModel>();
         builder.Services.AddTransient<IAlertSettingsViewModel, TestAlertSettingsViewModel>();
 #else

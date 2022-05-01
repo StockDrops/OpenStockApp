@@ -5,7 +5,7 @@ using OpenStockApi.Core.Models.Searches;
 
 namespace OpenStockApp.Pages.Alerts
 {
-    [XamlCompilation(XamlCompilationOptions.Skip)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NotificationsPageIos : ContentPage
     {
         
