@@ -1,5 +1,6 @@
 ﻿using Foundation;
 using Microsoft.Identity.Client;
+using OpenStockApp.Models;
 using UIKit;
 using UserNotifications;
 
@@ -21,31 +22,63 @@ public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterD
         var options = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Sound;
         center.RequestAuthorization(options, (bool success, NSError error) =>
         {
-            center.Delegate = this;
+            if (success)
+            {
+                center.Delegate = this;
 
-            var openAddToCartUrl = UNNotificationAction.FromIdentifier("atcurl", "Open Add to Cart Url", UNNotificationActionOptions.None);
-            var openProductUrl = UNNotificationAction.FromIdentifier("producturl", "Open Product Url", UNNotificationActionOptions.None);
+                var openAddToCartUrl = UNNotificationAction.FromIdentifier(NotificationCategories.AddToCart, "Open Add to Cart Url", UNNotificationActionOptions.None);
+                var openProductUrl = UNNotificationAction.FromIdentifier(NotificationCategories.ProductUrl, "Open Product Url", UNNotificationActionOptions.None);
 
-            var openUrlCategory = UNNotificationCategory.FromIdentifier(
-                "url-category",
-                new UNNotificationAction[] { openAddToCartUrl, openProductUrl },
-                new string[] { },
-                UNNotificationCategoryOptions.CustomDismissAction
-            );
+                var openAllUrlCategory = UNNotificationCategory.FromIdentifier(
+                    NotificationCategories.All,
+                    new UNNotificationAction[] { openAddToCartUrl, openProductUrl },
+                    new string[] { },
+                    UNNotificationCategoryOptions.CustomDismissAction
+                );
 
-            var set = new NSSet<UNNotificationCategory>(openUrlCategory);
-            center.SetNotificationCategories(set);
+                var openAddToCartUrlCategory = UNNotificationCategory.FromIdentifier(
+                    NotificationCategories.AddToCart,
+                    new UNNotificationAction[] { openAddToCartUrl },
+                    new string[] { },
+                    UNNotificationCategoryOptions.CustomDismissAction
+                    );
+
+                var openProductUrlCategory = UNNotificationCategory.FromIdentifier(
+                    NotificationCategories.ProductUrl,
+                    new UNNotificationAction[] { openProductUrl },
+                    new string[] { },
+                    UNNotificationCategoryOptions.CustomDismissAction
+                    );
+
+                var set = new NSSet<UNNotificationCategory>(openAllUrlCategory, openAddToCartUrlCategory, openProductUrlCategory);
+                center.SetNotificationCategories(set);
+            }
         });
         center.RemoveAllPendingNotificationRequests();
         return base.FinishedLaunching(application, launchOptions);
     }
 
     [Export("userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")]
-    public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, System.Action completionHandler)
+    public async void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, System.Action completionHandler)
     {
         if (response.IsDefaultAction)
         {
             Console.WriteLine("ACTION: Default");
+        }
+        else if (response.IsCustomAction)
+        {
+            NSObject? url = null;
+            switch (response.ActionIdentifier.ToString())
+            {
+                case (NotificationCategories.ProductUrl):
+                    response.Notification.Request.Content.UserInfo.TryGetValue(new NSString(NotificationCategories.AddToCart), out url);
+                    break;
+                case (NotificationCategories.AddToCart):
+                    response.Notification.Request.Content.UserInfo.TryGetValue(new NSString(NotificationCategories.ProductUrl), out url);
+                    break;
+            }
+            if(url != null)
+                await Browser.OpenAsync(url.ToString());
         }
         if (response.IsDismissAction)
         {
@@ -57,5 +90,16 @@ public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterD
         }
 
         completionHandler();
+    }
+
+    [Export("userNotificationCenter:willPresentNotification:withCompletionHandler:")]
+    public void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
+    {
+        // Do something with the notification
+        Console.WriteLine("Active Notification: {0}", notification);
+
+        // Tell system to display the notification anyway or use
+        // `None` to say we have handled the display locally.
+        completionHandler(UNNotificationPresentationOptions.Alert | UNNotificationPresentationOptions.Sound);
     }
 }
