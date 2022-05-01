@@ -128,6 +128,14 @@ public partial class ModelOptionsView : ContentView
         set => SetValue(SelectedProductCommandProperty, value);
     }
 
+    public static readonly BindableProperty ProductPickerTitleProperty = BindableProperty.Create(nameof(ProductPickerTitle), typeof(string), typeof(ModelOptionsView), string.Empty);
+
+    public string ProductPickerTitle 
+    { 
+        get => (string)GetValue(ProductPickerTitleProperty); 
+        set => SetValue(ProductPickerTitleProperty, value); 
+    }
+
     public static readonly BindableProperty SaveCommandProperty = BindableProperty.Create(nameof(SaveCommand), typeof(ICommand), typeof(ModelOptionsView), default);
 
     public ICommand SaveCommand

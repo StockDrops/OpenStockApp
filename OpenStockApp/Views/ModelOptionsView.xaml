@@ -66,11 +66,11 @@
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="9" />
                         </Border.StrokeShape>
-                        <Picker Title="Select a product to track"
+                        <Picker Title="{Binding ProductPickerTitle, Source={x:Reference view}}"
                             TitleColor="{AppThemeBinding Dark='#AEAEB2', Default='#AEAEB2'}"
                             TextColor="{AppThemeBinding Dark='#AEAEB2', Default='#AEAEB2'}"
                             BackgroundColor="{AppThemeBinding Dark='#2a292f', Default='#2a292f'}"
-                            HeightRequest="{OnPlatform iOS=25, Default=10}"
+                            HeightRequest="{OnPlatform iOS=20, Default=10}"
                             ItemsSource="{Binding Products, Source={x:Reference view}}"
                             ItemDisplayBinding="{Binding Name}"
                             SelectedItem="{Binding SelectedProduct, Mode=OneWayToSource, Source={x:Reference view}}">
@@ -85,7 +85,7 @@
             </StackLayout>
 
             <Grid Grid.Row="1" 
-                  Margin="{OnPlatform iOS='10,0,0,0', Default='5,0,0,0'}"
+                  Margin="{OnPlatform iOS='10,0,10,0', Default='5,0,0,0'}"
                   IsVisible="{Binding IsLoggedIn, Source={x:Reference view}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="{OnPlatform Android=40, Default=100}"/>

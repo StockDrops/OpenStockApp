@@ -65,7 +65,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
             SaveModelOptions = new AsyncRelayCommand(OnSaveModelOptions);
             PerformSearch = new AsyncRelayCommand<string>(OnPerformSearch);
             #endregion
-            IsLoggedIn = false;
+            IsLoggedIn = true;
             RegisterEvents();
         }
         public void RegisterEvents()

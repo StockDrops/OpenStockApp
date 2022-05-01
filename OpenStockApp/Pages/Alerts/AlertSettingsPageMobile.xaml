@@ -40,7 +40,7 @@
                                 LogInCommand="{Binding LogIn}"
                                 ReloadSourceCommand="{Binding ProductSelected}"
                                 SaveCommand="{Binding SaveModelOptions}"
-                                
+                                ProductPickerTitle="Select a product to track"                                
                                 VerticalOptions="Start"
                                 HelpTextTitle="{x:Static strings:Resources.AddNotificationsExplanationTitle}"
                                 HelpText="{x:Static strings:Resources.AddNotificationsExplanation}"

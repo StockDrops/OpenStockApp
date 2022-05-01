@@ -73,6 +73,7 @@
         <views:ModelOptionsView Grid.Row="0"
                                 ItemSource="{Binding GroupedModelOptions}"
                                 NotificationActions="{Binding NotificationActions}"
+                                ProductPickerTitle="Select an actively tracked product"
                                 IsBusy="{Binding IsBusy}"
                                 IsLoggedIn="{Binding IsLoggedIn}"
                                 LogInCommand="{Binding LogIn}"
