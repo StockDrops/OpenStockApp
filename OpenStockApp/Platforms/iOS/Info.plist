@@ -49,6 +49,8 @@
 <array>
      <string>msauthv2</string>
      <string>msauthv3</string>
+	<string>googlechrome</string>
+	<string>googlechromes</string>
 </array>
 </dict>
 </plist>

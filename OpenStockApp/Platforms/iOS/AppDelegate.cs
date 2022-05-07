@@ -1,8 +1,14 @@
-﻿using Foundation;
+﻿using CoreFoundation;
+using Foundation;
 using Microsoft.Identity.Client;
+using Microsoft.Maui.Dispatching;
+using OpenStockApp.Core.Contracts.Services.Settings;
+using OpenStockApp.Core.Contracts.Services.Users;
 using OpenStockApp.Models;
+using OpenStockApp.Services;
 using UIKit;
 using UserNotifications;
+
 
 namespace OpenStockApp;
 
@@ -26,8 +32,8 @@ public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterD
             {
                 center.Delegate = this;
 
-                var openAddToCartUrl = UNNotificationAction.FromIdentifier(NotificationCategories.AddToCart, "Open Add to Cart Url", UNNotificationActionOptions.None);
-                var openProductUrl = UNNotificationAction.FromIdentifier(NotificationCategories.ProductUrl, "Open Product Url", UNNotificationActionOptions.None);
+                var openAddToCartUrl = UNNotificationAction.FromIdentifier(NotificationCategories.AddToCart, "Open Add to Cart Url", UNNotificationActionOptions.Foreground);
+                var openProductUrl = UNNotificationAction.FromIdentifier(NotificationCategories.ProductUrl, "Open Product Url", UNNotificationActionOptions.Foreground);
 
                 var openAllUrlCategory = UNNotificationCategory.FromIdentifier(
                     NotificationCategories.All,
@@ -55,7 +61,26 @@ public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterD
             }
         });
         center.RemoveAllPendingNotificationRequests();
+
+        UIApplication.SharedApplication.RegisterForRemoteNotifications();
+
+
         return base.FinishedLaunching(application, launchOptions);
+    }
+    /// <summary>
+    /// This gets called when the app succesfully registers with APNS. This will send the token to AWS.
+    /// </summary>
+    /// <param name="application"></param>
+    /// <param name="deviceToken"></param>
+    [Export("application:didRegisterForRemoteNotificationsWithDeviceToken:")]
+    public virtual void RegisteredForRemoteNotifications(UIKit.UIApplication application, Foundation.NSData deviceToken)
+    {
+        System.Diagnostics.Debug.WriteLine($"Device Name: {DeviceInfo.Name}");
+        System.Diagnostics.Debug.WriteLine($"Token: {deviceToken.GetBase64EncodedString(NSDataBase64EncodingOptions.None)}");
+        var identity = ServiceLocator.GetService<IIdentityService>();
+        var n = identity != null ? "Not null" : "null";
+        System.Diagnostics.Debug.WriteLine($"service is {n}");
+        System.Diagnostics.Debug.WriteLine($"id: {identity?.GetUniqueId()}");
     }
 
     [Export("userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")]
@@ -68,6 +93,7 @@ public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterD
         else if (response.IsCustomAction)
         {
             NSObject? url = null;
+            
             switch (response.ActionIdentifier.ToString())
             {
                 case (NotificationCategories.ProductUrl):
@@ -77,8 +103,42 @@ public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterD
                     response.Notification.Request.Content.UserInfo.TryGetValue(new NSString(NotificationCategories.ProductUrl), out url);
                     break;
             }
-            if(url != null)
-                await Browser.OpenAsync(url.ToString());
+            switch (UIApplication.SharedApplication.ApplicationState)
+            {
+                case UIApplicationState.Background:
+                    break;
+                default:
+                    if(url is not null)
+                        Open(url.ToString());
+                    break;
+            }
+
+            //if(url != null)
+            //{
+            //    DispatchQueue.MainQueue.DispatchAsync(async () =>
+            //    {
+            //        var appleUrl = new NSUrl(url.ToString());
+            //        //await Launcher.OpenAsync(new Uri(url.ToString()));
+            //        //var ok = UIApplication.SharedApplication.OpenUrl(appleUrl);
+            //        //System.Diagnostics.Debug.WriteLine($"Opened: {ok}");
+            //        if(UIApplication.SharedApplication.CanOpenUrl(new NSUrl("googlechrome://")))
+            //        {
+            //            UIApplication.SharedApplication.OpenUrl(new NSUrl("googlechrome://google.com"), new UIApplicationOpenUrlOptions(), (ok) =>
+            //            {
+            //                System.Diagnostics.Debug.WriteLine($"Opened: {ok}");
+            //            });
+            //        }
+                    
+            //    });
+            //    if (UIApplication.SharedApplication.CanOpenUrl(new NSUrl("googlechrome://")))
+            //    {
+            //        UIApplication.SharedApplication.OpenUrl(new NSUrl("googlechrome://google.com"), new UIApplicationOpenUrlOptions(), (ok) =>
+            //        {
+            //            System.Diagnostics.Debug.WriteLine($"Opened: {ok}");
+            //        });
+            //    }
+
+            //}
         }
         if (response.IsDismissAction)
         {
@@ -88,8 +148,29 @@ public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterD
         {
             Console.WriteLine($"ACTION: {response.ActionIdentifier}");
         }
-
         completionHandler();
+    }
+
+    private void Open(string url)
+    {
+        
+        
+        if (UIApplication.SharedApplication.CanOpenUrl(new NSUrl("googlechrome://")))
+        {
+            var uri = new Uri(url);
+            UIApplication.SharedApplication.OpenUrl(new NSUrl($"googlechrome://{uri.Host + uri.PathAndQuery + uri.Fragment}"), new UIApplicationOpenUrlOptions(), (ok) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"Opened on chrome: {ok}");
+            });
+        }
+        else
+        {
+            var appleUrl = new NSUrl(url);
+            UIApplication.SharedApplication.OpenUrl(appleUrl, new UIApplicationOpenUrlOptions(), (ok) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"Opened on default browser: {ok}");
+            });
+        }
     }
 
     [Export("userNotificationCenter:willPresentNotification:withCompletionHandler:")]
