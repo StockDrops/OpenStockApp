@@ -97,10 +97,10 @@ public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterD
             switch (response.ActionIdentifier.ToString())
             {
                 case (NotificationCategories.ProductUrl):
-                    response.Notification.Request.Content.UserInfo.TryGetValue(new NSString(NotificationCategories.AddToCart), out url);
+                    response.Notification.Request.Content.UserInfo.TryGetValue(new NSString(NotificationCategories.ProductUrl), out url);
                     break;
                 case (NotificationCategories.AddToCart):
-                    response.Notification.Request.Content.UserInfo.TryGetValue(new NSString(NotificationCategories.ProductUrl), out url);
+                    response.Notification.Request.Content.UserInfo.TryGetValue(new NSString(NotificationCategories.AddToCart), out url);
                     break;
             }
             switch (UIApplication.SharedApplication.ApplicationState)
