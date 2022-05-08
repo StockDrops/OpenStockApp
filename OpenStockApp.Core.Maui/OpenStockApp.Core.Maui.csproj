@@ -21,7 +21,7 @@
 	  <PackageReference Include="Microsoft.Toolkit.Diagnostics" Version="7.1.2" />
 	  <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
 	  
-	  <PackageReference Include="OpenStockApi.Core" Version="2.5.0" />
+	  <PackageReference Include="OpenStockApi.Core" Version="2.6.0-dev" />
 	  <PackageReference Include="System.Linq.Async" Version="6.0.1" />
 	</ItemGroup>
 	<ItemGroup Condition="$(TargetFramework.Contains('-windows'))">

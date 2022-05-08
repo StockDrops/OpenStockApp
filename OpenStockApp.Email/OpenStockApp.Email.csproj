@@ -14,7 +14,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.4" />
     <PackageReference Include="Microsoft.Graph" Version="4.25.0" />
-    <PackageReference Include="OpenStockApi.Core" Version="2.5.0" />
+    <PackageReference Include="OpenStockApi.Core" Version="2.6.0-dev" />
   </ItemGroup>
 
   <ItemGroup>

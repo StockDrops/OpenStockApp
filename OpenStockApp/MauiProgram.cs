@@ -283,6 +283,8 @@ public static class MauiProgram
             return new EntityApiService<OpenStockApi.Core.Models.Users.ModelOptions>(apiService, "/ModelOptions");
         });
 
+        builder.Services.AddSingleton<ITokenRegistrationApiService, TokenRegistrationApiService>();
+        builder.Services.AddSingleton<ITokenRegistrationService, TokenRegistrationService>();
 
         var legacyApiConfig = builder.Configuration.GetSection("LegacyApiConfiguration").Get<ApiConfiguration>();
         if (legacyApiConfig == null)

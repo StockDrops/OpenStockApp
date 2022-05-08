@@ -4,6 +4,7 @@ using Microsoft.Identity.Client;
 using Microsoft.Maui.Dispatching;
 using OpenStockApp.Core.Contracts.Services.Settings;
 using OpenStockApp.Core.Contracts.Services.Users;
+using OpenStockApp.Core.Models.Events;
 using OpenStockApp.Models;
 using OpenStockApp.Services;
 using UIKit;
@@ -77,10 +78,10 @@ public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterD
     {
         System.Diagnostics.Debug.WriteLine($"Device Name: {DeviceInfo.Name}");
         System.Diagnostics.Debug.WriteLine($"Token: {deviceToken.GetBase64EncodedString(NSDataBase64EncodingOptions.None)}");
-        var identity = ServiceLocator.GetService<IIdentityService>();
-        var n = identity != null ? "Not null" : "null";
-        System.Diagnostics.Debug.WriteLine($"service is {n}");
-        System.Diagnostics.Debug.WriteLine($"id: {identity?.GetUniqueId()}");
+
+        var hexString = Convert.ToHexString(Convert.FromBase64String(deviceToken.GetBase64EncodedString(NSDataBase64EncodingOptions.None))).ToLower();
+        MessagingCenter.Send(this, Events.RegisterToken, hexString);
+              
     }
 
     [Export("userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")]

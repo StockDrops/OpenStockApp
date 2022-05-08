@@ -141,7 +141,7 @@
 	  <PackageReference Condition="$(TargetFramework.Contains('-windows'))" Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.19.6" />
 	  <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
 	  <PackageReference Include="NReco.Logging.File" Version="1.1.4" />
-	  <PackageReference Include="OpenStockApi.Core" Version="2.5.0" />
+	  <PackageReference Include="OpenStockApi.Core" Version="2.6.0-dev" />
 	  <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
 	</ItemGroup>
 
