@@ -188,20 +188,15 @@
     </Style>
 
     <Style TargetType="Picker">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
-        <Setter Property="TitleColor" Value="{AppThemeBinding Light={StaticResource DarkGray}, Dark={StaticResource LightGray}}" />
-        
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark='#AEAEB2', Light='#2a292f', Default='#AEAEB2'}" />
+        <Setter Property="TitleColor" Value="{AppThemeBinding Dark='#AEAEB2', Light='#2a292f', Default='#AEAEB2'}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark='#2a292f', Light='#C8E5E5EA', Default='#2a292f'}" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
-                    <VisualState x:Name="Normal">
-                        <VisualState.Setters>
-                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
-                            <Setter Property="TitleColor" Value="{AppThemeBinding Light={StaticResource DarkGray}, Dark={StaticResource LightGray}}" />
-                        </VisualState.Setters>
-                    </VisualState>
+                    <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
                             <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightGray}, Dark={StaticResource DarkGray}}" />
@@ -210,6 +205,15 @@
                     </VisualState>
                 </VisualStateGroup>
             </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Border" x:Key="PickerBorder">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark='#2a292f', Default='#2a292f', Light='#C8E5E5EA'}"/>
+        <Setter Property="Stroke" Value="{AppThemeBinding Dark='#2a292f', Default='#2a292f', Light='#C8E5E5EA'}"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="StrokeShape">
+            <RoundRectangle CornerRadius="9" />
         </Setter>
     </Style>
 

@@ -83,8 +83,14 @@
                                 HelpText="{x:Static strings:Resources.ActiveNotificationsExplanation}"
                                 Products="{Binding Products}"
                                 SelectedProductCommand="{Binding ItemSelected}"
-                                SelectedProduct="{Binding SelectedProduct}"
-                                VerticalOptions="StartAndExpand"/>
+                                SelectedProduct="{Binding SelectedProduct, Mode=OneWayToSource}"
+                                Margin="5,30,5,5"/>
+        <Button Style="{StaticResource RightBottomButton}"
+                Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
+                Command="{Binding SaveModelOptions}" 
+                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                IsVisible="{Binding IsLoggedIn}"
+                ZIndex="50"/>
         <!--<views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
                          LogInCommand="{Binding LogIn}"
                          Grid.Row="0"

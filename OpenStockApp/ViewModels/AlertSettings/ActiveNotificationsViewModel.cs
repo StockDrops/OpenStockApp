@@ -115,11 +115,13 @@ namespace OpenStockApp.ViewModels.AlertSettings
             if(modelOptionsForProduct is not null)
             {
                 GroupedModelOptions.Clear();
+                await Task.Delay(50);
                 var observableModels = new List<ShowModel>();
                 foreach (var modelOptions in modelOptionsForProduct)
                 {
                     if(modelOptions != null && modelOptions.Model != null)
                     {
+                        await Task.Delay(50);
                         observableModels.Add(new ShowModel(modelOptions.Model, modelOptions));
                     }
                 }
@@ -127,8 +129,9 @@ namespace OpenStockApp.ViewModels.AlertSettings
                                                     .OrderBy(g => g.First().Model?.Brand?.Name)
                                                     .Select(x => new GroupedObversableModelOptions(x.First().Model?.Brand?.Name ?? "Null", x.ToList()))
                                                     .ToList();
-                foreach(var item in l)
+                foreach (var item in l)
                 {
+                    await Task.Delay(50);
                     GroupedModelOptions.Add(item);
                 }
             }
