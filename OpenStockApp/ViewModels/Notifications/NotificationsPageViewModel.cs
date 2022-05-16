@@ -185,8 +185,8 @@ namespace OpenStockApp.ViewModels.Notifications
 
         public async Task OnLoadMore(CancellationToken cancellationToken = default)
         {
-            if (!EndReached)
-            {
+            if (!EndReached && !IsRefreshing)
+            {                
                 IsRefreshing = true;
                 previousPageNumber++;
                 await LoadAndAddResultsAsync(previousPageNumber, HasToApplyFilterSettings, cancellationToken);
