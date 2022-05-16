@@ -146,16 +146,25 @@ namespace OpenStockApp.ViewModels.AlertSettings
             IsBusy = true;
             try
             {
+#if IOS || ANDROID
+                var toast = new CommunityToolkit.Maui.Alerts.Toast() { Text = "Saving... Please Wait..." };
+                await toast.Show(cancellationToken);
+#endif
                 await userOptionsService.SaveCurrentUserOptionsAsync(cancellationToken);
                 IsBusy = false;
-                MessagingCenter.Send<AlertSettingsViewModel, Exception?>(this, "saved", null);
+                MessagingCenter.Send<IAlertSettingsViewModel, Exception?>(this, "saved", null);
+                System.Diagnostics.Debug.WriteLine("Saved");
+
+#if IOS || ANDROID
+                toast = new CommunityToolkit.Maui.Alerts.Toast() { Text = "Saved" };
+                await toast.Show();
+#endif
             }
             catch (HubNotConnected ex)
             {
                 IsBusy = false;
-                MessagingCenter.Send<AlertSettingsViewModel, Exception?>(this, "saved", ex);
+                MessagingCenter.Send<IAlertSettingsViewModel, Exception?>(this, "saved", ex);
             }
-
         }
         /// <summary>
         /// 

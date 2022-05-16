@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace OpenStockApp.Views;
 
-public partial class ModelOptionsView : ContentView
+public partial class ModelOptionsView : CollectionView
 {
     public static readonly BindableProperty ItemSourceProperty = BindableProperty.Create(nameof(ItemSource), typeof(ObservableCollection<GroupedObversableModelOptions>), typeof(ModelOptionsView), new ObservableCollection<GroupedObversableModelOptions>());
         //, propertyChanged:
@@ -34,7 +34,7 @@ public partial class ModelOptionsView : ContentView
         }
     }
 
-    public static BindableProperty IsBusyProperty = BindableProperty.Create(nameof(IsBusy), typeof(bool), typeof(ModelOptionsView), defaultValue: false);
+    public readonly static BindableProperty IsBusyProperty = BindableProperty.Create(nameof(IsBusy), typeof(bool), typeof(ModelOptionsView), defaultValue: false);
 
     public bool IsBusy
     {
@@ -47,6 +47,21 @@ public partial class ModelOptionsView : ContentView
             SetValue(IsBusyProperty, value);
         }
     }
+
+    public readonly static BindableProperty ShowSaveButtonProperty = BindableProperty.Create(nameof(ShowSaveButton), typeof(bool), typeof(ModelOptionsView), defaultValue: true);
+
+    public bool ShowSaveButton
+    {
+        get
+        {
+            return (bool)GetValue(ShowSaveButtonProperty);
+        }
+        set
+        {
+            SetValue(ShowSaveButtonProperty, value);
+        }
+    }
+
     public static readonly BindableProperty IsLoggedInProperty = BindableProperty.Create(nameof(IsLoggedIn), typeof(bool), typeof(ModelOptionsView), defaultValue: false);
     public bool IsLoggedIn
     {

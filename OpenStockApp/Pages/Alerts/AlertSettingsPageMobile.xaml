@@ -28,28 +28,57 @@
             <converters:DisplayedNotificationActionsToNotificationsActionConverter x:Key="DisplayedNotificationActionsConverter" EnumType="{x:Type apiusers:NotificationAction}" />
         </ResourceDictionary>
     </ContentPage.Resources>
-
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
         <views:ModelOptionsView ItemSource="{Binding Models}"
-                                NotificationActions="{Binding NotificationActions}"
-                                IsBusy="{Binding IsBusy}"
-                                IsLoggedIn="{Binding IsLoggedIn}"
-                                LogInCommand="{Binding LogIn}"
-                                ReloadSourceCommand="{Binding ProductSelected}"
-                                SaveCommand="{Binding SaveModelOptions}"
-                                ProductPickerTitle="Select a product to track"                                
-                                VerticalOptions="Start"
-                                HelpTextTitle="{x:Static strings:Resources.AddNotificationsExplanationTitle}"
-                                HelpText="{x:Static strings:Resources.AddNotificationsExplanation}"
-                                Products="{Binding Products}"
-                                SelectedProductCommand="{Binding ProductSelected}"
-                                SelectedProduct="{Binding SelectedProduct, Mode=OneWayToSource}"
-                                Margin="0,5,0,0"
-                                Grid.Row="0"
-                                />
-     
+                            NotificationActions="{Binding NotificationActions}"
+                            IsBusy="{Binding IsBusy}"
+                            IsLoggedIn="{Binding IsLoggedIn}"
+                            LogInCommand="{Binding LogIn}"
+                            ReloadSourceCommand="{Binding ProductSelected}"
+                            SaveCommand="{Binding SaveModelOptions}"
+                            ProductPickerTitle="Select a product to track"
+                            HelpTextTitle="{x:Static strings:Resources.AddNotificationsExplanationTitle}"
+                            HelpText="{x:Static strings:Resources.AddNotificationsExplanation}"
+                            Products="{Binding Products}"
+                            SelectedProductCommand="{Binding ProductSelected}"
+                            SelectedProduct="{Binding SelectedProduct, Mode=OneWayToSource}"
+                            Margin="0,25,0,0"
+                            Grid.Row="0"
+                            ShowSaveButton="False"
+                            
+                            />
+
+        <Button Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
+                VerticalOptions="End"
+                Command="{Binding SaveModelOptions}" 
+                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                IsVisible="{Binding IsLoggedIn}"
+                HorizontalOptions="End"
+                HeightRequest="40"
+                WidthRequest="150"
+                BackgroundColor="{AppThemeBinding Dark={StaticResource DarkGray}, Light={StaticResource LightGray}}"
+                ZIndex="50"
+                            />
+        <!--<StackLayout Grid.Row="1" BackgroundColor="{AppThemeBinding Dark={StaticResource DarkGray}, Light={StaticResource LightGray}}">
+            <Button Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
+                    VerticalOptions="Center"
+                            Command="{Binding SaveModelOptions}" 
+                            IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                            IsVisible="{Binding IsLoggedIn}"
+                            Grid.Row="2"/>
+        </StackLayout>-->
     </Grid>
+
+
+
+    <!--<Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.9*"/>
+            <RowDefinition Height="0.1*"/>
+        </Grid.RowDefinitions>
+        
+
+
+        
+    </Grid>-->
 </ContentPage>

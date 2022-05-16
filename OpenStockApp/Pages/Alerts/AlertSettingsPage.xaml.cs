@@ -17,17 +17,17 @@ public partial class AlertSettingsPage : ContentPage
         InitializeComponent();
 
         Behaviors.Add(new EventToCommandBehavior { EventName = nameof(this.NavigatedTo), Command = alertSettingsViewModel.LoadProducts });
-        MessagingCenter.Subscribe<AlertSettingsViewModel, Exception?>(this, "saved", async (sender, args) =>
+        MessagingCenter.Subscribe<AlertSettingsViewModel, string?>(this, "saved", async (sender, args) =>
         {
             await OnSaved(sender, args);
         });
     }
-    public async Task OnSaved(object sender, object? exception)
+    public async Task OnSaved(object sender, string? exception)
     {
         if (exception is null)
             await DisplayAlert("Saved", "Alert settings saved", "Ok");
-        else if (exception is HubNotConnected)
-            await DisplayAlert("Failed to Save", "Alerts settings were not saved since you are not connected to our server.", "Ok");
+        else if (!string.IsNullOrEmpty(exception))
+            await DisplayAlert("Failed to Save", $"Alerts settings were not saved. Error: {exception}", "Ok");
     }
     public ICommand DisplayHelp { get; set; }
     public void OnDisplayHelp()

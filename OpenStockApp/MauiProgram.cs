@@ -250,8 +250,11 @@ public static class MauiProgram
         builder.Services.AddHttpClient<IApiService, ApiService>()
             .ConfigureHttpClient(httpClient =>
             {
-                if(!string.IsNullOrEmpty(apiConfig.ApiBaseUrl))
+                if (!string.IsNullOrEmpty(apiConfig.ApiBaseUrl))
+                {
                     httpClient.BaseAddress = new Uri(apiConfig.ApiBaseUrl);
+                    System.Diagnostics.Debug.WriteLine(apiConfig?.ApiBaseUrl);
+                }
             });
         builder.Services.AddSingleton<IEntityApiService<OpenStockApi.Core.Models.Users.User>, EntityApiService<OpenStockApi.Core.Models.Users.User>>(services =>
         {

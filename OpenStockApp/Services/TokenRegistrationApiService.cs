@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Net.Http.Json;
 using OpenStockApp.Core.Contracts.Services.Users;
+using System.Web;
 
 namespace OpenStockApp.Services
 {
@@ -24,13 +25,16 @@ namespace OpenStockApp.Services
         public async Task<TokenRegistrationResponse?> RegisterTokenAsync(string token, string? arn = null, CancellationToken cancellationToken = default)
         {
             var deviceType = deviceService.GetDeviceType();
-            var url = $"api/tokens/register/{token}&deviceType={deviceType}&deviceName={DeviceInfo.Name}";
+            var url = $"api/tokens/register/{token}?deviceType={deviceType}&deviceName={HttpUtility.UrlPathEncode(DeviceInfo.Name)}";
             if (arn != null)
             {
                 url += $"&arn={arn}";
             }
+            System.Diagnostics.Debug.WriteLine(url);
             var request = new HttpRequestMessage(HttpMethod.Put, url);
             var response = await apiService.SendRequestAsync(request, cancellationToken).ConfigureAwait(false);
+
+            System.Diagnostics.Debug.WriteLine($"Received status code {response.StatusCode}, {await response.Content.ReadAsStringAsync()}");
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<TokenRegistrationResponse>(cancellationToken: cancellationToken).ConfigureAwait(false);

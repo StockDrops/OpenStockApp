@@ -16,7 +16,7 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-rc2" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-rc3" />
 	  <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
 	  <PackageReference Include="Microsoft.Toolkit.Diagnostics" Version="7.1.2" />
 	  <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />

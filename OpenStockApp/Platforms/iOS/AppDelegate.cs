@@ -77,9 +77,8 @@ public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterD
     public virtual void RegisteredForRemoteNotifications(UIKit.UIApplication application, Foundation.NSData deviceToken)
     {
         System.Diagnostics.Debug.WriteLine($"Device Name: {DeviceInfo.Name}");
-        System.Diagnostics.Debug.WriteLine($"Token: {deviceToken.GetBase64EncodedString(NSDataBase64EncodingOptions.None)}");
-
         var hexString = Convert.ToHexString(Convert.FromBase64String(deviceToken.GetBase64EncodedString(NSDataBase64EncodingOptions.None))).ToLower();
+        System.Diagnostics.Debug.WriteLine($"Token: {hexString}");
         MessagingCenter.Send(this, Events.RegisterToken, hexString);
               
     }

@@ -120,7 +120,7 @@
 
 	<ItemGroup>
 	  <EmbeddedResource Include="appsettings.json">
-	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </EmbeddedResource>
 	</ItemGroup>
 
@@ -134,7 +134,7 @@
 	  <MauiImage Include="Resources\Images\icons\settings_dark.svg" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-rc2" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-rc3" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
 	  <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
 	  <PackageReference Include="Microsoft.Identity.Client" Version="4.43.2-dev" />
