@@ -1,11 +1,15 @@
-﻿namespace OpenStockApp.Pages.Settings;
+﻿using OpenStockApp.ViewModels.Settings;
 
-//[XamlCompilation(XamlCompilationOptions.Compile)]
+namespace OpenStockApp.Pages.Settings;
+
+[XamlCompilation(XamlCompilationOptions.Skip)]
 public partial class PersonalizationSettingsPage : ContentPage
 {
-    public PersonalizationSettingsPage()
+    public PersonalizationSettingsPage(PersonalizationViewModel viewModel)
     {
+        BindingContext = viewModel;
         InitializeComponent();
+        
         //BindingContext = Maui.Services.Application.ServiceProvider.GetService<AboutSettingsViewModel>();
     }
 }

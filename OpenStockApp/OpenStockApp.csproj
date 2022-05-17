@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) and '$(MSBuildRuntimeType)' == 'Full'">$(TargetFrameworks);net6.0-windows10.0.19041</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041.0</TargetFrameworks>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>OpenStockApp</RootNamespace>
 		<UseMaui>true</UseMaui>
@@ -20,20 +20,21 @@
 		<ApplicationIdGuid>9833150E-67CE-483A-AE72-F712156DC535</ApplicationIdGuid>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.1.4.1</ApplicationDisplayVersion>
-		<ApplicationVersion>5</ApplicationVersion>
-		<Version>1.1.4.1</Version>
+		<ApplicationDisplayVersion>1.1.5</ApplicationDisplayVersion>
+		<ApplicationVersion>6</ApplicationVersion>
+		<Version>1.1.5</Version>
 
 		<!-- Required for C# Hot Reload -->
 		<UseInterpreter Condition="'$(Configuration)' == 'Debug'">True</UseInterpreter>
 
-		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-ios'">14.2</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-maccatalyst'">14.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-android'">21.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</SupportedOSPlatformVersion>
-		<TargetPlatformMinVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+		
 		<Nullable>enable</Nullable>
-		<Platforms>AnyCPU;ARM64</Platforms>
 		<CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
 		<CodesignProvision>VS: WildCard Development</CodesignProvision>
 	</PropertyGroup>
@@ -53,7 +54,7 @@
 		<PackageCertificateThumbprint>f3ffd6400f5121320327716358758aaa55d3b6d6</PackageCertificateThumbprint>
 	</PropertyGroup>
 	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Debug'">
-		<ProvisioningType>automatic</ProvisioningType>
+		<ProvisioningType>manual</ProvisioningType>
 		<!--<_LibMonoLinkMode>Static</_LibMonoLinkMode>
 		<_LibXamarinLinkMode>Static</_LibXamarinLinkMode>-->
 		<CodesignKey>Apple Development: Enrique Morell Salcedo (C4XYQG8Q4D)</CodesignKey>
@@ -79,17 +80,14 @@
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
 	</ItemGroup>
-
 	<ItemGroup>
-	  <MauiImage Remove="Resources\Images\logo_stockdrops_small.svg" />
+		<MauiImage Remove="Resources\Images\logo_stockdrops_small.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <None Remove="appsettings.json" />
 	  <None Remove="Platforms\Android\google-services.json" />
 	  <None Remove="Platforms\Android\proguard.cfg" />
-	  <None Remove="Resources\Images\default_user.svg" />
-	  <None Remove="Resources\Images\default_user_dark.svg" />
 	  <None Remove="Resources\Images\discord_logo_color.svg" />
 	  <None Remove="Resources\Images\discord_logo_dark.svg" />
 	  <None Remove="Resources\Images\discord_logo_light.svg" />
@@ -219,11 +217,6 @@
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<OutputType>WinExe</OutputType>
 		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
-	</PropertyGroup>
-	
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|ARM64'">
-	  <CodesignKey>Apple Development: Enrique Morell Salcedo %28C4XYQG8Q4D%29</CodesignKey>
-	  <CodesignProvision>VS: WildCard Development</CodesignProvision>
 	</PropertyGroup>
 	
 	<!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">

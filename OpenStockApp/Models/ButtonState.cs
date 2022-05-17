@@ -2,7 +2,7 @@
 
 namespace OpenStockApp.Models
 {
-    public class RefreshButtonState : ObservableObject
+    public class ButtonState : ObservableObject
     {
         private bool isVisible;
         public bool IsVisible

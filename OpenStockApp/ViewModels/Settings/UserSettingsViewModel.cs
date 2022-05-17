@@ -8,11 +8,11 @@ using OpenStockApp.Models.Users;
 
 namespace OpenStockApp.ViewModels.Settings
 {
-    public class UserSettingsViewModel : ObservableObject
+    public class UserDataViewModel : IUserDataViewModel
     {
-        public ObservableUser User { get; private set; }
-        public RefreshButtonState RefreshUserButtonState { get; private set; }
-        public RefreshButtonState LogInOutButtonState { get; private set; }
+        public ObservableUser User { get; private set; } = new ObservableUser();
+        public ButtonState RefreshUserButtonState { get; private set; } = new ButtonState();
+        public ButtonState LogInOutButtonState { get; private set; } = new ButtonState();
         public AsyncRelayCommand RefreshUserCommandAsync { get; set; }
         public AsyncRelayCommand LogInOutUserCommandAsync { get; set; }
         public AsyncRelayCommand GetUserCommand { get; private set; }
@@ -22,15 +22,11 @@ namespace OpenStockApp.ViewModels.Settings
         private readonly LegacyApi.Services.LegacyApiService legacyApiService;
         private readonly IIdentityService identityService;
         private readonly ILogger logger;
-        public UserSettingsViewModel(
+        public UserDataViewModel(
             LegacyApi.Services.LegacyApiService legacyApiService,
             IIdentityService identityService,
-            ILogger<UserSettingsViewModel> logger)
+            ILogger<UserDataViewModel> logger)
         {
-            RefreshUserButtonState = new RefreshButtonState();
-            LogInOutButtonState = new RefreshButtonState();
-            User = new ObservableUser();
-
             this.identityService = identityService;
             this.logger = logger;
             this.legacyApiService = legacyApiService;
@@ -63,7 +59,6 @@ namespace OpenStockApp.ViewModels.Settings
         private void OnLoggedOut(object? sender, EventArgs e)
         {
             SetButtonsToLoggedOutState();
-            
         }
         private void SetButtonsToLoggedInState()
         {
@@ -104,11 +99,11 @@ namespace OpenStockApp.ViewModels.Settings
             {
                 var user = await identityService.GetUserDefaultScopesAsync();
                 var subscriptionLegacy = await legacyApiService.GetSubscriptionLevel();
-                if(user != null)
+                if (user != null)
                 {
                     User.SetUser(user);
                 }
-                if(subscriptionLegacy != null)
+                if (subscriptionLegacy != null)
                 {
                     User.SubscriptionLevel = subscriptionLegacy.Name;
                 }
@@ -127,13 +122,13 @@ namespace OpenStockApp.ViewModels.Settings
             }
             else
             {
-//#if ANDROID
-//                Application.Current.Dispatcher.BeginInvokeOnMainThread(async () =>
-//                {
-//                    var loginResult = await identityService.LoginAsync(null);
-//                }
-//                );
-//#else
+                //#if ANDROID
+                //                Application.Current.Dispatcher.BeginInvokeOnMainThread(async () =>
+                //                {
+                //                    var loginResult = await identityService.LoginAsync(null);
+                //                }
+                //                );
+                //#else
                 var loginResult = await identityService.LoginAsync();
                 switch (loginResult)
                 {
@@ -147,7 +142,7 @@ namespace OpenStockApp.ViewModels.Settings
                     case Core.Maui.Models.Users.LoginResultType.UnknownError:
                         break;
                 }
-//#endif
+                //#endif
             }
         }
         private async Task RefreshUser()
@@ -158,6 +153,7 @@ namespace OpenStockApp.ViewModels.Settings
                 {
                     RefreshUserButtonState.ButtonText = OpenStockApp.Resources.Strings.Resources.SettingsUserRefreshing;
                     RefreshUserButtonState.IsEnabled = false;
+                    await GetUser();
                     //await userDataService.UpdateUserAsync(userInitiated: true);
                     await RefreshUserButtonState.TimeoutButton(OpenStockApp.Resources.Strings.Resources.SettingsUserRefreshingInTimeout, OpenStockApp.Resources.Strings.Resources.SettingsUserRefreshButton, 5000);
                 }

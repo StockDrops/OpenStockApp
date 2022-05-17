@@ -59,7 +59,6 @@ namespace OpenStockApp.Core.Maui.Services.Notifications
 
         public async Task LoadFilteredResultsFromServerAsync(int pageSize, int pageNumber, CancellationToken cancellationToken = default)
         {
-            
             try
             {
                 var count = 0;

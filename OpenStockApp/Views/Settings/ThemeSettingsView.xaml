@@ -49,10 +49,9 @@
                        Margin="0,5,5,0">
                     <RadioButton
                             GroupName="AppTheme"
-                        VerticalOptions="Center"
+                            VerticalOptions="Center"
                             Content="{x:Static strings:Resources.SettingsPageRadioButtonDarkTheme}"
                             BackgroundColor="{AppThemeBinding Dark={StaticResource DarkGray}, Default={StaticResource White}}"
-
                             FontSize="Small"
                             TextColor="{AppThemeBinding Dark={StaticResource BackgroundColor},Light={StaticResource BackgroundColorDark}}"
                             IsChecked="{Binding Theme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark}" />
