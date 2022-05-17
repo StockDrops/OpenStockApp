@@ -41,9 +41,10 @@ namespace OpenStockApp.ViewModels.Settings
             LogInOutUserCommandAsync = new AsyncRelayCommand(() => Task.CompletedTask);
             RefreshUserCommandAsync = new AsyncRelayCommand(async () =>
             {
-                
-                await Task.Delay(1000);
                 User.SetUser(new Core.Models.Users.User { DisplayName = "Test Display Name", UserPrincipalName = "Test Principal Name" });
+                await Task.Delay(1000);
+                User.SetUser(new Core.Models.Users.User { DisplayName = "Test Display Name 2", UserPrincipalName = "Test Principal Name 2" });
+                
             });
         }
     }
