@@ -97,6 +97,8 @@ namespace OpenStockApp.ViewModels.Settings
         {
             if (identityService.IsLoggedIn())
             {
+                User.SetUser(new Core.Models.Users.User { DisplayName = "Loading User Information...", UserPrincipalName = "Wait a second...", GivenName ="Almost Done...", Mail = "loading@loading.com" });
+
                 var user = await identityService.GetUserDefaultScopesAsync();
                 var subscriptionLegacy = await legacyApiService.GetSubscriptionLevel();
                 if (user != null)

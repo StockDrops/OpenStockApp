@@ -347,7 +347,7 @@ public static class MauiProgram
         builder.Services.AddTransient<DiscordSettingsViewModel>();
         builder.Services.AddTransient<ThemeViewModel>();
         builder.Services.AddTransient<PersonalizationViewModel>();
-        builder.Services.AddTransient<IUserDataViewModel, TestUserDataViewModel>(); //UserDataViewModel
+        builder.Services.AddTransient<IUserDataViewModel, UserDataViewModel>(); //UserDataViewModel
         //builder.Services.AddTransient<AlertSettingsViewModel>();
         builder.Services.AddTransient<UserOptionsViewModel>();
         builder.Services.AddTransient<NotificationsPageViewModel>();
