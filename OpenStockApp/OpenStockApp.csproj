@@ -61,12 +61,15 @@
 		<CodesignEntitlement>Entitlements.plist</CodesignEntitlement>
 	</PropertyGroup>
 	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Release'">
+		<RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
 		<ProvisioningType>manual</ProvisioningType>
 		<!--<_LibMonoLinkMode>Static</_LibMonoLinkMode>
 		<_LibXamarinLinkMode>Static</_LibXamarinLinkMode>-->
-		<CodesignKey>Apple Development: Enrique Morell Salcedo (C4XYQG8Q4D)</CodesignKey>
+		<CodesignKey>Apple Distribution: StockDrops S.A.S. (M457K987S4)</CodesignKey>
 		<CodesignEntitlement>Entitlements.plist</CodesignEntitlement>
-		<CodesignProvision>Iphone 8 plus</CodesignProvision>
+		<CodesignProvision>OpenStockApp Distribution</CodesignProvision>
+		<ArchiveOnBuild>true</ArchiveOnBuild>
+		<TcpPort>58181</TcpPort>
 	</PropertyGroup>
 	<ItemGroup>
 		<MauiIcon Include="Resources\appicon.svg" ForegroundFile="Resources\appicon.svg" Color="#512BD4" />
