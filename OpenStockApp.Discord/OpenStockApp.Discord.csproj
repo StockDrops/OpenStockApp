@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Discord.Net.Rest" Version="3.6.1" />
     <PackageReference Include="Discord.Net.Webhook" Version="3.5.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
     <PackageReference Include="OpenStockApi.Core" Version="2.6.0-dev" />

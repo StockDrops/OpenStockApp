@@ -1,6 +1,8 @@
 ﻿using Bucket4Csharp.Core.Interfaces;
 using Bucket4Csharp.Core.Models;
 using Discord;
+using Discord.Net.Rest;
+using Discord.Rest;
 using Discord.Webhook;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -76,13 +78,29 @@ namespace OpenStockApp.Discord.Services
                 // meaning they manually edited the Json settings file to get around the initial validation.
                 throw new InvalidDiscordWebhookServerException("The server is in the blacklist.");
             }
-            
-            return await executeDiscordWebhook(result, CreateWebhookClient(discordWebhookUrl));
+            try
+            {
+                var client = CreateWebhookClient(discordWebhookUrl);
+                return await executeDiscordWebhook(result, client);
+            }
+            catch(Exception ex)
+            {
+                logger.LogError(ex, "Failed to create webhook client");
+            }
+            return 0;
         }
         private DiscordWebhookClient CreateWebhookClient(string discordWebhookUrl)
         {
+            if (OperatingSystem.IsIOS())
+            {
+                return new DiscordWebhookClient(discordWebhookUrl, new DiscordRestConfig
+                {
+                    RestClientProvider = DefaultRestClientProvider.Create(true)
+                });
+            }
             return new DiscordWebhookClient(discordWebhookUrl);
         }
+
         private async Task<ulong> executeDiscordWebhook(Result result, DiscordWebhookClient webhookClient)
         {
             var message = "In stock: " + ResultToMessage(result, false);

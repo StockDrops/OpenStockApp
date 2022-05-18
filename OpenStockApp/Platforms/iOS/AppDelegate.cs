@@ -5,8 +5,11 @@ using Microsoft.Maui.Dispatching;
 using OpenStockApp.Core.Contracts.Services.Settings;
 using OpenStockApp.Core.Contracts.Services.Users;
 using OpenStockApp.Core.Models.Events;
+using OpenStockApp.Discord.Contracts.Services;
 using OpenStockApp.Models;
+using OpenStockApp.Platforms.iOS.Helpers;
 using OpenStockApp.Services;
+using OpenStockApp.Services.Notifications;
 using UIKit;
 using UserNotifications;
 
@@ -80,7 +83,35 @@ public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterD
         var hexString = Convert.ToHexString(Convert.FromBase64String(deviceToken.GetBase64EncodedString(NSDataBase64EncodingOptions.None))).ToLower();
         System.Diagnostics.Debug.WriteLine($"Token: {hexString}");
         MessagingCenter.Send(this, Events.RegisterToken, hexString);
-              
+    }
+    /// <summary>
+    /// This will receive the notification and send it.
+    /// </summary>
+    /// <param name="application"></param>
+    /// <param name="userInfo"></param>
+    /// <param name="completionHandler"></param>
+    [Export("application:didReceiveRemoteNotification:fetchCompletionHandler:")]
+    public async void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIKit.UIBackgroundFetchResult> completionHandler)
+    {
+        try
+        {
+            var dict = userInfo.ToDictionary();
+            var decoded = NotificationDecoderService.DecodeNotification(dict);
+            var discordService = ServiceLocator.GetService<IDiscordWebhookService>();
+            if (discordService is not null && decoded is not null)
+            {
+                await discordService.ExecuteDiscordWebhook(decoded).ConfigureAwait(false);
+                completionHandler(UIBackgroundFetchResult.NewData);
+                return;
+            }
+            completionHandler(UIBackgroundFetchResult.NoData);
+            return;
+        }
+        finally
+        {
+            completionHandler(UIBackgroundFetchResult.Failed);
+        }
+        
     }
 
     [Export("userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")]

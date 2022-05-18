@@ -18,7 +18,7 @@
 
                 
 
-            <StackLayout Grid.Row="0" Margin="{StaticResource SmallLeftMargin}">
+            <StackLayout Grid.Row="0" Margin="5,30,5,5">
                 <Label
                     Margin="{StaticResource SmallTopMargin}"
                     Style="{StaticResource SubtitleTextStyle}"
@@ -56,10 +56,10 @@
                                        Url="{Binding UserPortalUrl}"/>
 
                 <!--ImageSource="{AppThemeBinding Dark='arrow_clockwise_dark.png', Light='arrow_clockwise.png'}"-->
-                <Button      Text="{x:Static strings:Resources.SettingsUpdateButtonText}"
+                <!--<Button      Text="{x:Static strings:Resources.SettingsUpdateButtonText}"
                              Margin="0,0,0,5"
                              HorizontalOptions="Start"
-                             x:Name="updatesButton"/>
+                             x:Name="updatesButton"/>-->
                 <views:SocialButtons />
                 <Label Text="Debug Info" Style="{StaticResource SubtitleTextStyle}" Margin="0,30,0,10"/>
                 <Label Text="Connection Id" Margin="0,10,0,10" />
