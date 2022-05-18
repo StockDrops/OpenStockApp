@@ -23,6 +23,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <mct:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueObject="Busy... Please wait..." FalseObject="Save Alert Settings" />
+            <mct:BoolToObjectConverter x:Key="BoolToZIndexConverter" TrueObject="1" FalseObject="100" />
             <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
             <mct:EnumToIntConverter x:Key="EnumToIntConverter" />
             <converters:DisplayedNotificationActionsToNotificationsActionConverter x:Key="DisplayedNotificationActionsConverter" EnumType="{x:Type apiusers:NotificationAction}" />
@@ -45,7 +46,7 @@
                             Margin="0,25,0,0"
                             Grid.Row="0"
                             ShowSaveButton="False"
-                            
+                            ZIndex="49"
                             />
         <!--BackgroundColor="{AppThemeBinding Dark={StaticResource DarkGray}, Light={StaticResource LightGray}}"-->
         <Button Style="{StaticResource RightBottomButton}"
@@ -59,6 +60,10 @@
                 WidthRequest="150"
                 ZIndex="50"
                             />
+        <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
+                            LogInCommand="{Binding LogIn}"
+                            Grid.Row="0"
+                            ZIndex="{Binding IsLoggedIn, Converter={StaticResource BoolToZIndexConverter}}"/>
         <!--<StackLayout Grid.Row="1" BackgroundColor="{AppThemeBinding Dark={StaticResource DarkGray}, Light={StaticResource LightGray}}">
             <Button Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
                     VerticalOptions="Center"

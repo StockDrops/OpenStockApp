@@ -13,6 +13,7 @@
              >
     <ContentPage.Resources>
         <mct:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueObject="Busy... Please wait..." FalseObject="Save Alert Settings" />
+        <mct:BoolToObjectConverter x:Key="BoolToZIndexConverter" TrueObject="1" FalseObject="100" />
         <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
     </ContentPage.Resources>
     <ContentPage.Behaviors>
@@ -84,6 +85,7 @@
                                 Products="{Binding Products}"
                                 SelectedProductCommand="{Binding ItemSelected}"
                                 SelectedProduct="{Binding SelectedProduct, Mode=OneWayToSource}"
+                                ZIndex="35"
                                 Margin="5,30,5,5"/>
         <Button Style="{StaticResource RightBottomButton}"
                 Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
@@ -91,6 +93,10 @@
                 IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                 IsVisible="{Binding IsLoggedIn}"
                 ZIndex="50"/>
+        <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
+                            LogInCommand="{Binding LogIn}"
+                            Grid.Row="0"
+                            ZIndex="{Binding IsLoggedIn, Converter={StaticResource BoolToZIndexConverter}}"/>
         <!--<views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
                          LogInCommand="{Binding LogIn}"
                          Grid.Row="0"

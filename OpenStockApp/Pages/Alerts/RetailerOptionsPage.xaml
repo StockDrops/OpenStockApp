@@ -12,6 +12,7 @@
              >
     <ContentPage.Resources>
         <mct:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueObject="Busy... Please wait..." FalseObject="Save Alert Settings" />
+        <mct:BoolToObjectConverter x:Key="BoolToZIndexConverter" TrueObject="1" FalseObject="100" />
         <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
         <mct:EnumToIntConverter x:Key="EnumToIntConverter" />
     </ContentPage.Resources>
@@ -85,6 +86,6 @@
         <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
                                      LogInCommand="{Binding LogIn}"
                                      Grid.Row="0"
-                                     ZIndex="2"/>
+                                     ZIndex="{Binding IsLoggedIn, Converter={StaticResource BoolToZIndexConverter}}"/>
     </Grid>
 </ContentPage>

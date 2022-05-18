@@ -16,6 +16,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <mct:IsStringNotNullOrEmptyConverter x:Key="IsNotNullOrEmptyConverter"/>
+            <mct:BoolToObjectConverter x:Key="BoolToZIndexConverter" TrueObject="1" FalseObject="100" />
             <mct:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueObject="Busy... Please wait..." FalseObject="Refresh List From Server" />
             <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
         </ResourceDictionary>
@@ -26,18 +27,18 @@
     RemainingItemsThreshold="4"
                                 RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}"
     </ContentPage.Behaviors>-->
-
-    <CollectionView ItemsSource="{Binding Results}"
+    <Grid Margin="0">
+        
+        <CollectionView ItemsSource="{Binding Results}"
                     ItemsUpdatingScrollMode="{OnPlatform Default='KeepItemsInView', iOS='KeepItemsInView'}"
                     SelectionMode="None"
-                    Margin="5,60,5,40"
+                    Margin="5,5,5,10"
+                    ZIndex="50"
                     x:Name="collectionView">
         <CollectionView.Header>
-            <Grid HeightRequest="195"
+                <Grid HeightRequest="195"
                   Margin="0,0,10,0">
-                <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
-                            LogInCommand="{Binding LogIn}" />
-                <StackLayout IsVisible="{Binding IsLoggedIn}"
+                    <StackLayout IsVisible="{Binding IsLoggedIn}"
                                  HorizontalOptions="CenterAndExpand">
                     <main:ConnectionIndicatorView IsConnected="{Binding IsConnected}"
                                                       ConnectCommand="{Binding ConnectCommand}"
@@ -144,7 +145,7 @@
             </DataTemplate>
         </CollectionView.ItemTemplate>
         <CollectionView.Footer>
-            <Grid>
+            <Grid IsVisible="{Binding IsLoggedIn}">
                 <Button Margin="0,2,0,2"
                             ZIndex="50"
                             Text="Load More?"
@@ -165,4 +166,9 @@
             </Grid>
         </CollectionView.Footer>
     </CollectionView>
+        <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
+                            LogInCommand="{Binding LogIn}"
+                            Grid.Row="0"
+                            ZIndex="{Binding IsLoggedIn, Converter={StaticResource BoolToZIndexConverter}}"/>
+    </Grid>
 </ContentPage>

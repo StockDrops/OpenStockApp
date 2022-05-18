@@ -25,7 +25,6 @@
                                      RefreshButtonState="{Binding UserDataViewModel.RefreshUserButtonState}"
                                      ImageProfileSource="{AppThemeBinding Dark='default_user_dark.png', Light='default_user_light.png'}"
                                      RefreshCommand="{Binding UserDataViewModel.RefreshUserCommandAsync}"/>
-            <Label Text="{Binding UserDataViewModel.User.Name}"/>
             <vs:ThemeSettingsView IsVisible="{OnPlatform Android=True, UWP=False, Default=True}"/>
             <views:SocialButtons />
 
