@@ -5,6 +5,7 @@ using OpenStockApp.Extensions;
 using OpenStockApp.Models.Users;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using System.Linq;
 
 namespace OpenStockApp.Views;
 
@@ -95,11 +96,11 @@ public partial class ModelOptionsView : CollectionView
     //    set => SetValue(SaveModelOptionsCommandProperty, value);
     //}
 
-    public static readonly BindableProperty PerformSearchCommandProperty = BindableProperty.Create(nameof(PerformSearchCommand), typeof(Command<string>), typeof(ModelOptionsView), default);
+    public static readonly BindableProperty PerformSearchCommandProperty = BindableProperty.Create(nameof(PerformSearchCommand), typeof(AsyncRelayCommand<string>), typeof(ModelOptionsView), default);
 
-    public Command<string> PerformSearchCommand
+    public AsyncRelayCommand<string> PerformSearchCommand
     {
-        get => (Command<string>)GetValue(PerformSearchCommandProperty);
+        get => (AsyncRelayCommand<string>)GetValue(PerformSearchCommandProperty);
         set => SetValue(PerformSearchCommandProperty, value);
     }
 
@@ -167,11 +168,7 @@ public partial class ModelOptionsView : CollectionView
 	{
         //BindingContext = this;
 
-        PerformSearchCommand = new Command<string>(
-            (query) =>
-            {
-                OnPerformSearch(query);
-            });
+        PerformSearchCommand = new AsyncRelayCommand<string>(OnPerformSearch);
         SelectCommand = new Command(() => OnSelectCommand());
         DeselectCommand = new Command(() => OnDeselectCommand());
         HelpCommand = new AsyncRelayCommand(OnDisplayHelpAsync);
@@ -226,8 +223,10 @@ public partial class ModelOptionsView : CollectionView
     /// </summary>
     /// <param name="query"></param>
     /// <returns></returns>
-    public async void OnPerformSearch(string? query)
+    public async Task OnPerformSearch(string? query, CancellationToken cancellationToken = default)
     {
+        if (cancellationToken.IsCancellationRequested)
+            return;
         if (IsBusy)
             return;
 
@@ -238,11 +237,64 @@ public partial class ModelOptionsView : CollectionView
         if (query.Count() < 3)
             return;
         await Task.Delay(50);
+
+        if (cancellationToken.IsCancellationRequested)
+            return;
+
         foreach (var group in ItemSource) //TODO: this is not working well on ios.
         {
+#if IOS
+            for(int i = 0; i < group.Count; i++)
+            {
+                try
+                {
+                    if (cancellationToken.IsCancellationRequested)
+                        return;
+                    var m = group[i];
+                    if (!(m.Model != null && m.Model.Name != null && m.Model.Name.Contains(query, StringComparison.InvariantCultureIgnoreCase)))
+                    {
+                        await Task.Delay(50);
+                        if (cancellationToken.IsCancellationRequested)
+                            return;
+                        group.Remove(m);
+                        
+                    }
+                }
+                catch(Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Failed with {ex}");
+                }
+            }
+#else
             group.RemoveAll(m => !(m.Model != null && m.Model.Name != null && m.Model.Name.Contains(query, StringComparison.InvariantCultureIgnoreCase)));
+#endif
             await Task.Delay(50);
         }
+#if IOS
+        var itemsToDelete = new List<GroupedObversableModelOptions>();
+        for (int i = 0; i < ItemSource.Count; i++)
+        {
+            var g = ItemSource[i];
+            if (g.Count == 0)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                    return;
+                itemsToDelete.Add(g);
+            }
+        }
+        if(itemsToDelete.Count > 0)
+        {
+            foreach(var item in itemsToDelete)
+            {
+                await Task.Delay(50);
+                if (cancellationToken.IsCancellationRequested)
+                    return;
+                ItemSource.Remove(item);
+                await Task.Delay(50);
+            }
+        }
+#else
         ItemSource.RemoveAll(g => g.Count == 0);
+#endif
     }
 }

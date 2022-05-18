@@ -111,30 +111,39 @@ namespace OpenStockApp.ViewModels.AlertSettings
 
         public async Task LoadActiveNotifications(Product product, CancellationToken cancellationToken = default)
         {
-            var modelOptionsForProduct = userOptionsService.UserOptions?.ModelOptions.Where(m => m.IsEnabled && m.Model.ProductId == product.Id).ToList();
-            if(modelOptionsForProduct is not null)
+            IsBusy = true;
+            try
             {
-                GroupedModelOptions.Clear();
-                await Task.Delay(50);
-                var observableModels = new List<ShowModel>();
-                foreach (var modelOptions in modelOptionsForProduct)
+                var modelOptionsForProduct = userOptionsService.UserOptions?.ModelOptions.Where(m => m.IsEnabled && m.Model.ProductId == product.Id).ToList();
+                if (modelOptionsForProduct is not null)
                 {
-                    if(modelOptions != null && modelOptions.Model != null)
+                    GroupedModelOptions.Clear();
+                    await Task.Delay(50);
+                    var observableModels = new List<ShowModel>();
+                    foreach (var modelOptions in modelOptionsForProduct)
+                    {
+                        if (modelOptions != null && modelOptions.Model != null)
+                        {
+                            await Task.Delay(50);
+                            observableModels.Add(new ShowModel(modelOptions.Model, modelOptions));
+                        }
+                    }
+                    var l = observableModels.GroupBy(m => m.Model.BrandId)
+                                                        .OrderBy(g => g.First().Model?.Brand?.Name)
+                                                        .Select(x => new GroupedObversableModelOptions(x.First().Model?.Brand?.Name ?? "Null", x.ToList()))
+                                                        .ToList();
+                    foreach (var item in l)
                     {
                         await Task.Delay(50);
-                        observableModels.Add(new ShowModel(modelOptions.Model, modelOptions));
+                        GroupedModelOptions.Add(item);
                     }
                 }
-                var l = observableModels.GroupBy(m => m.Model.BrandId)
-                                                    .OrderBy(g => g.First().Model?.Brand?.Name)
-                                                    .Select(x => new GroupedObversableModelOptions(x.First().Model?.Brand?.Name ?? "Null", x.ToList()))
-                                                    .ToList();
-                foreach (var item in l)
-                {
-                    await Task.Delay(50);
-                    GroupedModelOptions.Add(item);
-                }
             }
+            finally
+            {
+                IsBusy = false;
+            }
+            
         }
     }
 }
