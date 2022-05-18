@@ -50,10 +50,11 @@
                                       HorizontalOptions="Start"
                                        Margin="0,0,0,5"
                                       Url="{Binding LicenseAgreementUrl}"/>
-                <views:HyperlinkButton Text="{x:Static strings:Resources.SettingsAboutUserPortalLinkText}"
+                
+                <!--<views:HyperlinkButton Text="{x:Static strings:Resources.SettingsAboutUserPortalLinkText}"
                                        HorizontalOptions="Start"
                                        Margin="0,0,0,5"
-                                       Url="{Binding UserPortalUrl}"/>
+                                       Url="{Binding UserPortalUrl}"/>-->
 
                 <!--ImageSource="{AppThemeBinding Dark='arrow_clockwise_dark.png', Light='arrow_clockwise.png'}"-->
                 <!--<Button      Text="{x:Static strings:Resources.SettingsUpdateButtonText}"
