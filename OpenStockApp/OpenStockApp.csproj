@@ -15,8 +15,7 @@
 		<ApplicationTitle>StockDrops OpenStock App</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.stockdrops.StockDropsOpenStockApp</ApplicationId>
-		<ApplicationId Condition="$(TargetFramework.Contains('-mac')) or $(TargetFramework.Contains('-ios'))">com.stockdrops.openstockapp</ApplicationId>
+		<ApplicationId>com.stockdrops.openstockapp</ApplicationId>
 		<ApplicationIdGuid>9833150E-67CE-483A-AE72-F712156DC535</ApplicationIdGuid>
 
 		<!-- Versions -->
@@ -35,8 +34,7 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 		
 		<Nullable>enable</Nullable>
-		<CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
-		<CodesignProvision>VS: WildCard Development</CodesignProvision>
+
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="$(TargetFramework.Contains('-android'))">
@@ -55,6 +53,8 @@
 	</PropertyGroup>
 	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Debug'">
 		<ProvisioningType>manual</ProvisioningType>
+				<!--<CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
+		<CodesignProvision>VS: WildCard Development</CodesignProvision>-->
 		<!--<_LibMonoLinkMode>Static</_LibMonoLinkMode>
 		<_LibXamarinLinkMode>Static</_LibXamarinLinkMode>-->
 		<CodesignKey>Apple Development: Enrique Morell Salcedo (C4XYQG8Q4D)</CodesignKey>
@@ -63,13 +63,15 @@
 	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Release'">
 		<RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
 		<ProvisioningType>manual</ProvisioningType>
+		<CodesignKey>Apple Development: Enrique Morell Salcedo (C4XYQG8Q4D)</CodesignKey>
+		<CodesignProvision>VS: WildCard Development</CodesignProvision>
 		<!--<_LibMonoLinkMode>Static</_LibMonoLinkMode>
 		<_LibXamarinLinkMode>Static</_LibXamarinLinkMode>-->
-		<CodesignKey>Apple Distribution: StockDrops S.A.S. (M457K987S4)</CodesignKey>
+		<!--<CodesignKey>Apple Distribution: StockDrops S.A.S. (M457K987S4)</CodesignKey>-->
 		<CodesignEntitlement>Entitlements.plist</CodesignEntitlement>
-		<CodesignProvision>OpenStockApp Distribution</CodesignProvision>
-		<ArchiveOnBuild>true</ArchiveOnBuild>
-		<TcpPort>58181</TcpPort>
+		<!--<CodesignProvision>OpenStockApp Distribution</CodesignProvision>-->
+		<!--<ArchiveOnBuild>true</ArchiveOnBuild>
+		<TcpPort>58181</TcpPort>-->
 	</PropertyGroup>
 	<ItemGroup>
 		<MauiIcon Include="Resources\appicon.svg" ForegroundFile="Resources\appicon.svg" Color="#512BD4" />
@@ -220,6 +222,38 @@
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<OutputType>WinExe</OutputType>
 		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
+	  <MtouchLink>None</MtouchLink>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
+	  <MtouchLink>None</MtouchLink>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-ios|AnyCPU'">
+	  <MtouchLink>None</MtouchLink>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-ios|AnyCPU'">
+	  <MtouchLink>None</MtouchLink>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-maccatalyst|AnyCPU'">
+	  <MtouchLink>None</MtouchLink>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-maccatalyst|AnyCPU'">
+	  <MtouchLink>None</MtouchLink>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|AnyCPU'">
+	  <MtouchLink>None</MtouchLink>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|AnyCPU'">
+	  <MtouchLink>None</MtouchLink>
 	</PropertyGroup>
 	
 	<!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
