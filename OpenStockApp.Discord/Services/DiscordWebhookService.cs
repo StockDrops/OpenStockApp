@@ -4,7 +4,6 @@ using Discord;
 using Discord.Net.Rest;
 using Discord.Rest;
 using Discord.Webhook;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OpenStockApi.Core.Models.Products;
 using OpenStockApi.Core.Models.Regions;

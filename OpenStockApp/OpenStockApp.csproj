@@ -139,6 +139,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-rc3" />
+	  <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
 	  <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
 	  <PackageReference Include="Microsoft.Identity.Client" Version="4.43.2-dev" />
@@ -147,6 +148,7 @@
 	  <PackageReference Include="NReco.Logging.File" Version="1.1.4" />
 	  <PackageReference Include="OpenStockApi.Core" Version="2.8.0-dev" />
 	  <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
+	  <PackageReference Include="System.Runtime.Caching" Version="6.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
