@@ -9,10 +9,9 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using OpenStockApp.ViewModels.Settings;
 using OpenStockApp.Models;
-using OpenStockApp.Ef.Models;
 using OpenStockApp.Core.Contracts.Services.Settings;
 using OpenStockApp.Core.Maui.Services.Settings;
-using OpenStockApp.Email.Models.Context;
+//using OpenStockApp.Email.Models.Context;
 using OpenStockApp.Discord.Contracts.Services;
 using OpenStockApp.Discord.Services;
 using OpenStockApp.Core.Services;
@@ -153,41 +152,40 @@ public static class MauiProgram
             //config.AddJsonFile(ConfigFile, optional: false, reloadOnChange: true);
         
         //database
-        var dbConfig = builder.Configuration.GetSection(nameof(DatabaseConfiguration)).Get<DatabaseConfiguration>();
-        var emailOptions = builder.Configuration.GetSection(nameof(EmailOptions)).Get<EmailOptions>();
+        //var dbConfig = builder.Configuration.GetSection(nameof(DatabaseConfiguration)).Get<DatabaseConfiguration>();
+        //var emailOptions = builder.Configuration.GetSection(nameof(EmailOptions)).Get<EmailOptions>();
         
         var local_path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         var entryAssemblyName = Assembly.GetEntryAssembly()?.GetName()?.Name ?? "StockDrops";
         var localAppFolder = Path.Combine(local_path, $"StockDrops\\{entryAssemblyName}");
 
-        dbConfig.ConnectionString = dbConfig.ConnectionString?.Replace("[path]", Path.Combine(localAppFolder, dbConfig.DatabaseName!));
-        emailOptions.ConnectionString = emailOptions.ConnectionString?.Replace("[path]", Path.Combine(localAppFolder, emailOptions.DatabaseName!));
+        //dbConfig.ConnectionString = dbConfig.ConnectionString?.Replace("[path]", Path.Combine(localAppFolder, dbConfig.DatabaseName!));
+        //emailOptions.ConnectionString = emailOptions.ConnectionString?.Replace("[path]", Path.Combine(localAppFolder, emailOptions.DatabaseName!));
         
         //Create the folder if it doesn't exist.
         Directory.CreateDirectory(localAppFolder);
 
 
-        builder.Services.Configure<DatabaseConfiguration>(options =>
-        {
-            options.DatabaseName = dbConfig.DatabaseName;
-            options.ConnectionString = dbConfig.ConnectionString;
-        });
-        builder.Services.Configure<EmailOptions>(options =>
-        {
-            options.DatabaseName = emailOptions.DatabaseName;
-            options.EncryptionKey = emailOptions.EncryptionKey;
-            options.ConnectionString = emailOptions.ConnectionString;
-        });
+        //builder.Services.Configure<DatabaseConfiguration>(options =>
+        //{
+        //    options.DatabaseName = dbConfig.DatabaseName;
+        //    options.ConnectionString = dbConfig.ConnectionString;
+        //});
+        //builder.Services.Configure<EmailOptions>(options =>
+        //{
+        //    options.DatabaseName = emailOptions.DatabaseName;
+        //    options.EncryptionKey = emailOptions.EncryptionKey;
+        //    options.ConnectionString = emailOptions.ConnectionString;
+        //});
 
 
         builder.Services.AddSingleton<ApplicationHostService>();
 
         
 
-        builder.Services.AddDbContext<AppDbContext>();
-        builder.Services.AddDbContextFactory<AppDbContext>();
-        builder.Services.AddDbContext<EmailDbContext>();
-        builder.Services.AddDbContextFactory<EmailDbContext>();
+
+        //builder.Services.AddDbContext<EmailDbContext>();
+        //builder.Services.AddDbContextFactory<EmailDbContext>();
         builder.Services.AddMemoryCache();
 
         builder.Services.AddHttpClient<DiscordWebhookService>(client =>
@@ -373,8 +371,8 @@ public static class MauiProgram
         builder.Services.AddTransient<RetailerOptionsViewModel>();
 
         var app = builder.Build();
-        app.MigrateDatabase<AppDbContext>();
-        app.MigrateDatabase<EmailDbContext>();
+        //app.MigrateDatabase<AppDbContext>();
+        //app.MigrateDatabase<EmailDbContext>();
         return app;
 	}
 }

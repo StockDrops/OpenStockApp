@@ -7,12 +7,12 @@ namespace OpenStockApp.Email.Models.Email
     {
         public long Id { get; set; }
         public string? Name { get; set; }
-        [Encrypted]
+
         public string? EmailAddress { get; set; }
 
-        [Encrypted]
+
         public string? Username { get; set; }
-        [Encrypted]
+
         public string? Password { get; set; }
         public string? Host { get; set; }
 

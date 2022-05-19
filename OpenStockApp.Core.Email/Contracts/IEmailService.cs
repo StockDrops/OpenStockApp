@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OpenStockApp.Email.Contracts
+namespace OpenStockApp.Core.Email.Contracts
 {
     public interface IEmailService
     {

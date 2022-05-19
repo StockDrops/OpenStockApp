@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OpenStockApp.Core.Email\OpenStockApp.Core.Email.csproj" />
     <ProjectReference Include="..\OpenStockApp.Core\OpenStockApp.Core.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿using OpenStockApp.Email.Contracts;
+﻿using OpenStockApp.Core.Email.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

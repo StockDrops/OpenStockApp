@@ -21,29 +21,29 @@ namespace OpenStockApp.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="app"></param>
         /// <returns></returns>
-        public static MauiApp MigrateDatabase<T>(this MauiApp app) where T : DbContext
-        {
-            using (var scope = app.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                try
-                {
-                    var db = services.GetRequiredService<T>();
-                    if (db != null)
-                    {
-                        //db.Database.EnsureCreated();
-                        db.Database.Migrate();
-                    }
-                    //throw new Exception("Test");
-                }
-                catch (Exception ex)
-                {
-                    var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-                    var logger = loggerFactory.CreateLogger("MigrateDatabase");
-                    logger?.LogError(ex, "An error occurred while migrating the database.");
-                }
-            }
-            return app;
-        }
+        //public static MauiApp MigrateDatabase<T>(this MauiApp app) where T : DbContext
+        //{
+        //    using (var scope = app.Services.CreateScope())
+        //    {
+        //        var services = scope.ServiceProvider;
+        //        try
+        //        {
+        //            var db = services.GetRequiredService<T>();
+        //            if (db != null)
+        //            {
+        //                //db.Database.EnsureCreated();
+        //                db.Database.Migrate();
+        //            }
+        //            //throw new Exception("Test");
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+        //            var logger = loggerFactory.CreateLogger("MigrateDatabase");
+        //            logger?.LogError(ex, "An error occurred while migrating the database.");
+        //        }
+        //    }
+        //    return app;
+        //}
     }
 }

@@ -40,7 +40,7 @@ using StockDrops.Maui;
 using StockDrops.Maui.ViewModels;
 using StockDrops.Maui.ViewModels.Settings;
 */
-using OpenStockApp.Email.Contracts;
+using OpenStockApp.Core.Email.Contracts;
 
 //#if ANDROID
 //using StockDrops.Core.Platforms.Android.Google;
