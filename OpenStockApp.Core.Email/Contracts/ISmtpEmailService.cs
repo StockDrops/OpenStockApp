@@ -1,5 +1,4 @@
-﻿using MimeKit;
-using OpenStockApp.Email.Models.Email;
+﻿using OpenStockApp.Email.Models.Email;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,7 @@ namespace OpenStockApp.Core.Email.Contracts
     public interface ISmtpEmailService
     {
         EmailUser RetrieveEmailUser(int id = 0);
-        MailboxAddress RetrieveMailboxAddress(int id = 0);
+       // MailboxAddress RetrieveMailboxAddress(int id = 0);
         void SaveEmailUser(EmailUser emailUser);
     }
 }
