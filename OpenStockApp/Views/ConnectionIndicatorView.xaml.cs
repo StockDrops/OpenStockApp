@@ -2,7 +2,7 @@ using System.Windows.Input;
 
 namespace OpenStockApp;
 
-[XamlCompilation(XamlCompilationOptions.Skip)]
+[XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class ConnectionIndicatorView : ContentView
 {
 	public static readonly BindableProperty IsConnectedProperty = BindableProperty.Create(nameof(IsConnected), typeof(bool), typeof(ConnectionIndicatorView), false);
