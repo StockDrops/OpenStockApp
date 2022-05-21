@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenStockApp.LegacyApi", "O
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E2C704B4-D6FC-4FB7-9C75-D46872F72BBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenStockApp.Core.Email", "OpenStockApp.Core.Email\OpenStockApp.Core.Email.csproj", "{EF8C8744-4DFD-4036-8D18-4C62155CD99C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenStockApp.Core.Email", "OpenStockApp.Core.Email\OpenStockApp.Core.Email.csproj", "{EF8C8744-4DFD-4036-8D18-4C62155CD99C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,9 +34,9 @@ Global
 		{1FA405A0-FFCC-4330-A8E5-B1DAE38A9444}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1FA405A0-FFCC-4330-A8E5-B1DAE38A9444}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FA405A0-FFCC-4330-A8E5-B1DAE38A9444}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{1FA405A0-FFCC-4330-A8E5-B1DAE38A9444}.Debug|ARM64.ActiveCfg = Debug|ARM64
-		{1FA405A0-FFCC-4330-A8E5-B1DAE38A9444}.Debug|ARM64.Build.0 = Debug|ARM64
-		{1FA405A0-FFCC-4330-A8E5-B1DAE38A9444}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{1FA405A0-FFCC-4330-A8E5-B1DAE38A9444}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{1FA405A0-FFCC-4330-A8E5-B1DAE38A9444}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{1FA405A0-FFCC-4330-A8E5-B1DAE38A9444}.Debug|ARM64.Deploy.0 = Debug|Any CPU
 		{1FA405A0-FFCC-4330-A8E5-B1DAE38A9444}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FA405A0-FFCC-4330-A8E5-B1DAE38A9444}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1FA405A0-FFCC-4330-A8E5-B1DAE38A9444}.Release|Any CPU.Deploy.0 = Release|Any CPU

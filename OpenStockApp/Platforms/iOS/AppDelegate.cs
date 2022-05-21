@@ -212,6 +212,6 @@ public class AppDelegate : MauiUIApplicationDelegate, IUNUserNotificationCenterD
 
         // Tell system to display the notification anyway or use
         // `None` to say we have handled the display locally.
-        completionHandler(UNNotificationPresentationOptions.Alert | UNNotificationPresentationOptions.Sound);
+        completionHandler(UNNotificationPresentationOptions.Badge | UNNotificationPresentationOptions.Sound);
     }
 }

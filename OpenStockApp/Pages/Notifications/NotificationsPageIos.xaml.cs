@@ -11,11 +11,11 @@ namespace OpenStockApp.Pages.Alerts
         
         public NotificationsPageIos(INotificationsPageViewModel notificationsPageViewModel)
         {
-            
-            InitializeComponent();
             BindingContext = notificationsPageViewModel;
+            Behaviors.Add(new EventToCommandBehavior { EventName = nameof(this.NavigatedTo), Command = notificationsPageViewModel.NavigateToPage });
+            InitializeComponent();
             //var converter = new CommunityToolkit.Maui.Converters.IsStringNotNullOrEmptyConverter();
-            Behaviors.Add(new EventToCommandBehavior { EventName = nameof(this.NavigatedTo), Command = notificationsPageViewModel.NavigateToPage }); //TODO: One day I'd like to know why this is needed, and why the XAML binding is not working.
+             //TODO: One day I'd like to know why this is needed, and why the XAML binding is not working.
             //Behaviors.Add(new EventToCommandBehavior { EventName = nameof(this.Appearing), Command = notificationsPageViewModel.NavigateToPage });
             notificationsPageViewModel.ScrollTo = OnScrollTo;
         }
@@ -26,8 +26,8 @@ namespace OpenStockApp.Pages.Alerts
 #if ANDROID || IOS
             try
             {
-                if (result != null)
-                    collectionView?.ScrollTo(0, position: ScrollToPosition.Start);
+                //if (result != null)
+                //    collectionView?.ScrollTo(0, position: ScrollToPosition.Start);
             }
             catch { }
 #endif  

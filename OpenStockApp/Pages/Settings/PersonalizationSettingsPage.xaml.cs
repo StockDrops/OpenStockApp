@@ -2,7 +2,7 @@
 
 namespace OpenStockApp.Pages.Settings;
 
-[XamlCompilation(XamlCompilationOptions.Skip)]
+[XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class PersonalizationSettingsPage : ContentPage
 {
     public PersonalizationSettingsPage(PersonalizationViewModel viewModel)

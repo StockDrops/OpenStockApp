@@ -34,6 +34,10 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 		
 		<Nullable>enable</Nullable>
+		
+		<CodesignProvision>VS: WildCard Development</CodesignProvision>
+		
+		<PlatformTarget>AnyCPU</PlatformTarget>
 
 	</PropertyGroup>
 	
@@ -67,8 +71,10 @@
 		<CodesignProvision>VS: WildCard Development</CodesignProvision>-->
 		<!--<_LibMonoLinkMode>Static</_LibMonoLinkMode>
 		<_LibXamarinLinkMode>Static</_LibXamarinLinkMode>-->
-		<CodesignKey>Apple Distribution: StockDrops S.A.S. (M457K987S4)</CodesignKey>
-		<CodesignProvision>OpenStockApp Distribution</CodesignProvision>
+		<!--<CodesignKey>Apple Distribution: StockDrops S.A.S. (M457K987S4)</CodesignKey>
+		<CodesignProvision>OpenStockApp Distribution</CodesignProvision>-->
+		<CodesignKey>Apple Development: Enrique Morell Salcedo (C4XYQG8Q4D)</CodesignKey>
+		<CodesignProvision>VS: WildCard Development</CodesignProvision>
 		<CodesignEntitlement>Entitlements.plist</CodesignEntitlement>
 		
 		<ArchiveOnBuild>true</ArchiveOnBuild>
@@ -161,15 +167,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Pages\Alerts\AlertSettingsPageMobile.xaml.cs">
-	    <DependentUpon>AlertSettingsPageMobile.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\Notifications\NotificationsPageIos.xaml.cs">
-	    <DependentUpon>NotificationsPageIos.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\Notifications\NotificationsPageMobile.xaml.cs">
-	    <DependentUpon>NotificationsPageMobile.xaml</DependentUpon>
-	  </Compile>
 	  <Compile Update="Resources\Strings\DiscordResources.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
@@ -227,37 +224,81 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
-	  <MtouchLink>None</MtouchLink>
+	  <MtouchLink>SdkOnly</MtouchLink>
+	  <MtouchDebug>True</MtouchDebug>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
-	  <MtouchLink>None</MtouchLink>
+	  <MtouchLink>SdkOnly</MtouchLink>
+	  <MtouchDebug>True</MtouchDebug>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-ios|AnyCPU'">
-	  <MtouchLink>None</MtouchLink>
+	  <MtouchLink>SdkOnly</MtouchLink>
+	  <MtouchUseLlvm>True</MtouchUseLlvm>
+	  <Optimize>True</Optimize>
+	  <MtouchDebug>True</MtouchDebug>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-ios|AnyCPU'">
-	  <MtouchLink>None</MtouchLink>
+	  <MtouchLink>SdkOnly</MtouchLink>
+	  <MtouchUseLlvm>True</MtouchUseLlvm>
+	  <MtouchDebug>True</MtouchDebug>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-maccatalyst|AnyCPU'">
-	  <MtouchLink>None</MtouchLink>
+	  <MtouchLink>SdkOnly</MtouchLink>
+	  <MtouchDebug>True</MtouchDebug>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-maccatalyst|AnyCPU'">
-	  <MtouchLink>None</MtouchLink>
+	  <MtouchLink>SdkOnly</MtouchLink>
+	  <MtouchDebug>True</MtouchDebug>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|AnyCPU'">
-	  <MtouchLink>None</MtouchLink>
+	  <MtouchLink>SdkOnly</MtouchLink>
+	  <MtouchDebug>True</MtouchDebug>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|AnyCPU'">
-	  <MtouchLink>None</MtouchLink>
+	  <MtouchLink>SdkOnly</MtouchLink>
+	  <MtouchDebug>True</MtouchDebug>
 	</PropertyGroup>
 	
+	<!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-ios|AnyCPU'">
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-maccatalyst|AnyCPU'">
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|AnyCPU'">
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-ios|AnyCPU'">
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-maccatalyst|AnyCPU'">
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|AnyCPU'">
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>-->
+	
+
 	<!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
 	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
 	</PropertyGroup>-->
