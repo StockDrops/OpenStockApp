@@ -28,12 +28,16 @@
                                 RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}"
     </ContentPage.Behaviors>-->
     <Grid Margin="0">
-        
-        <CollectionView ItemsSource="{Binding Results}"
+
+        <!--ItemsSource="{Binding Results}"
                     ItemsUpdatingScrollMode="{OnPlatform Default='KeepItemsInView', iOS='KeepItemsInView'}"
                     SelectionMode="None"
                     Margin="5,5,5,10"
-                    ZIndex="50"
+                    ZIndex="50"-->
+        <CollectionView ItemsSource="{Binding Results}"
+                         ItemsUpdatingScrollMode="{OnPlatform Default='KeepItemsInView', iOS='KeepItemsInView'}"
+                    SelectionMode="None"
+                    Margin="5,5,5,10"
                     x:Name="collectionView">
         <CollectionView.Header>
                 <Grid HeightRequest="195"
@@ -71,8 +75,8 @@
                                                                     Command="{Binding ApplyFilterSettings}"/>
                                     </Switch.Behaviors>
                                 </Switch>
-                                <!--<views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='False', Android='True'}"  />-->
-                                <!--<views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='True', Android='False'}"  />-->
+                                <views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='False', Android='True'}"  />
+                                <views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='True', Android='False'}"  />
                             </StackLayout>
                             <StackLayout>
                                 <views:SocialButtons VerticalOptions="Center" Margin="5,0,20,0" IsVisible="{OnPlatform Default='False', Android='True', iOS='True'}"  />
@@ -85,8 +89,8 @@
         </CollectionView.Header>
         <CollectionView.ItemsLayout>
             <GridItemsLayout Orientation="Vertical"
-                                     Span="{OnPlatform Android=1, iOS=1, Default=1}"
-                                     VerticalItemSpacing="10"
+                             Span="{OnPlatform Android=1, iOS=1, Default=1}"
+                             VerticalItemSpacing="10"
                                      />
         </CollectionView.ItemsLayout>
         <CollectionView.ItemTemplate>
@@ -129,9 +133,9 @@
                                IsVisible="{OnPlatform iOS={Binding ImageLicensed}, Default='True', MacCatalyst={Binding ImageLicensed}}"
                                HeightRequest="120"
                                 Aspect="AspectFit" Margin="0,10,0,10">
-                            <!--<Image.Clip>
+                            <Image.Clip>
                                     <RoundRectangleGeometry CornerRadius="10" Rect="10,10,120,120" />
-                            </Image.Clip>-->
+                            </Image.Clip>
                         </Image>
 
                     </StackLayout>
@@ -145,30 +149,32 @@
             </DataTemplate>
         </CollectionView.ItemTemplate>
         <CollectionView.Footer>
-            <Grid IsVisible="{Binding IsLoggedIn}">
-                <Button Margin="0,2,0,2"
-                            ZIndex="50"
-                            Text="Load More?"
-                            MinimumWidthRequest="{OnPlatform Android=100, iOS=100, UWP=300}"
-                            HorizontalOptions="Center"
-                            FontSize="Medium"
-                            FontAttributes="Bold"
-                            IsVisible="{Binding EndReached, Converter={StaticResource InvertedBoolConverter}}"
-                            Command="{Binding LoadMoreCommand}"/>
-                <Button Margin="0,2,0,2"
-                            MinimumWidthRequest="{OnPlatform Android=100, iOS=100, UWP=300}"
-                            HorizontalOptions="Center"
-                            FontSize="Medium"
-                            FontAttributes="Bold"
-                            IsEnabled="False"
-                            Text="End Reached"
-                            IsVisible="{Binding EndReached}"/>
+            <Grid>
+                <Grid IsVisible="{Binding IsLoggedIn}">
+                    <Button Margin="0,2,0,2"
+                        ZIndex="50"
+                        Text="Load More?"
+                        MinimumWidthRequest="{OnPlatform Android=100, iOS=100, UWP=300}"
+                        HorizontalOptions="Center"
+                        FontSize="Medium"
+                        FontAttributes="Bold"
+                        IsVisible="{Binding EndReached, Converter={StaticResource InvertedBoolConverter}}"
+                        Command="{Binding LoadMoreCommand}"/>
+            <Button Margin="0,2,0,2"
+                        MinimumWidthRequest="{OnPlatform Android=100, iOS=100, UWP=300}"
+                        HorizontalOptions="Center"
+                        FontSize="Medium"
+                        FontAttributes="Bold"
+                        IsEnabled="False"
+                        Text="End Reached"
+                        IsVisible="{Binding EndReached}"/>
+                </Grid>
             </Grid>
         </CollectionView.Footer>
     </CollectionView>
-        <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
+        <!--<views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
                             LogInCommand="{Binding LogIn}"
                             Grid.Row="0"
-                            ZIndex="{Binding IsLoggedIn, Converter={StaticResource BoolToZIndexConverter}}"/>
+                            ZIndex="{Binding IsLoggedIn, Converter={StaticResource BoolToZIndexConverter}}"/>-->
     </Grid>
 </ContentPage>

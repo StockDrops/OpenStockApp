@@ -25,10 +25,9 @@
         <CollectionView ItemsSource="{Binding Retailers}"
                         ItemsUpdatingScrollMode="KeepScrollOffset"
                         Grid.Row="0"
-                        ZIndex="49"
                         Margin="5,25,5,20">
             <CollectionView.Header>
-                <Grid IsVisible="{Binding IsLoggedIn}" ZIndex="10" Margin="5">
+                <Grid IsVisible="{Binding IsLoggedIn}" Margin="5">
                     <StackLayout>
                         <StackLayout Grid.Row="0" Orientation="Horizontal">
                             <Label VerticalOptions="Center" 
@@ -60,8 +59,7 @@
                     <Grid HeightRequest="90"
                           HorizontalOptions="Start"
                           WidthRequest="100"
-                          Margin="10,0,10,0"
-                          ZIndex="3">
+                          Margin="10,0,10,0">
                         <StackLayout>
                             <Label Text="{Binding Retailer.Name}" Style="{StaticResource ListTitleStyle}" />
                             <StackLayout Orientation="Horizontal">
@@ -81,11 +79,10 @@
                 IsVisible="{Binding IsLoggedIn}"
                 VerticalOptions="End"
                 HorizontalOptions="End"
-                ZIndex="50"
                 Grid.Row="1"/>
-        <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
+        <!--<views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
                                      LogInCommand="{Binding LogIn}"
                                      Grid.Row="0"
-                                     ZIndex="{Binding IsLoggedIn, Converter={StaticResource BoolToZIndexConverter}}"/>
+                                     ZIndex="{Binding IsLoggedIn, Converter={StaticResource BoolToZIndexConverter}}"/>-->
     </Grid>
 </ContentPage>

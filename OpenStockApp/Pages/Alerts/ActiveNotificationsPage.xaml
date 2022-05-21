@@ -19,58 +19,9 @@
     <ContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="NavigatedTo"
                                     Command="{Binding NavigatedToCommand}"/>
-        
     </ContentPage.Behaviors>
     <Grid>
-        <!--<StackLayout Margin="{OnPlatform Android=15, UWP='30', Default=15}" Grid.Row="0" IsVisible="{Binding IsLoggedIn}" >
-            --><!--<StackLayout IsVisible="{OnPlatform Android=False, Default=True}">
-                <Label Text="{x:Static strings:Resources.ActiveNotificationsExplanationTitle}" LineBreakMode="WordWrap" Style="{StaticResource ListTitleStyle}" Margin="0,10,0,10" />
-                <Label Text="{x:Static strings:Resources.ActiveNotificationsExplanation}" LineBreakMode="CharacterWrap" Style="{StaticResource BodyTextStyle}" HorizontalOptions="Start" MaximumWidthRequest="{OnPlatform Android=350, UWP=1400, MacCatalyst=1400}" Margin="0,10,0,10"/>
-            </StackLayout>--><!--
-            <Grid HeightRequest="40">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{OnPlatform UWP='0.3*', Default='0.6*'}"/>
-                    <ColumnDefinition Width="0.4*"/>
-                </Grid.ColumnDefinitions>
-                <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
-                    <Label VerticalOptions="Center" Text="Products Options" Style="{StaticResource ListTitleStyle}"
-                               Margin="0,10,0,10"/>
-                    <Button Text="Help" IsVisible="{OnPlatform Android='False', UWP='True', Default='False'}" 
-                                Command="{Binding DisplayHelp, Source={x:Reference page}}" 
-                                HeightRequest="40"
-                                Margin="10,10,0,10"/>
-                </StackLayout>
-
-                <Button Text="Help" 
-                        IsVisible="{OnPlatform Android='True', UWP='False', Default='True'}"
-                        Command="{Binding DisplayHelp, Source={x:Reference page}}" 
-                        HeightRequest="40" 
-                        HorizontalOptions="{OnPlatform Android='End', UWP='End', Default='End'}" 
-                        Grid.Column="{OnPlatform Default=1, UWP=0}"/>
-            </Grid>
-
-            --><!--<StackLayout Orientation="Horizontal">
-                <Label Text="{OnPlatform Default='Products Options', Android='Select an actively tracked product'}" 
-                       VerticalOptions="Center"
-                       Style="{StaticResource ListTitleStyle}" Margin="0,10,0,10"/>
-                <Button Text="Help" Command="{Binding DisplayHelp, Source={x:Reference page}}" HeightRequest="40" Margin="10,10,0,10"/>
-            </StackLayout>--><!--
-            
-
-            
-            <Picker Title="Select an actively tracked product"
-                ItemsSource="{Binding Products}"
-                ItemDisplayBinding="{Binding Name}"
-                SelectedItem="{Binding SelectedProduct}"
-                Margin="{OnPlatform Default='0,10,0,10', Android='0,2,0,2'}">
-                <Picker.Behaviors>
-                    <mct:EventToCommandBehavior EventName="SelectedIndexChanged"
-                                            Command="{Binding ItemSelected}"/>
-                </Picker.Behaviors>
-            </Picker>
-
-            
-        </StackLayout>-->
+        
         <views:ModelOptionsView Grid.Row="0"
                                 ItemSource="{Binding GroupedModelOptions}"
                                 NotificationActions="{Binding NotificationActions}"
@@ -85,30 +36,15 @@
                                 Products="{Binding Products}"
                                 SelectedProductCommand="{Binding ItemSelected}"
                                 SelectedProduct="{Binding SelectedProduct, Mode=OneWayToSource}"
-                                ZIndex="35"
-                                Margin="5,30,5,5"/>
+                                
+                                Margin="5,30,5,5"/> <!--ZIndex="35"-->
         <Button Style="{StaticResource RightBottomButton}"
                 Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
                 Command="{Binding SaveModelOptions}" 
                 IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                 IsVisible="{Binding IsLoggedIn}"
                 ZIndex="50"/>
-        <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
-                            LogInCommand="{Binding LogIn}"
-                            Grid.Row="0"
-                            ZIndex="{Binding IsLoggedIn, Converter={StaticResource BoolToZIndexConverter}}"/>
-        <!--<views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
-                         LogInCommand="{Binding LogIn}"
-                         Grid.Row="0"
-                         Grid.RowSpan="3"
-                         
-                         />
-        <Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
-                    Command="{Binding SaveModelOptions}" 
-                    IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-                     IsVisible="{Binding IsLoggedIn}"
-                    Grid.Row="2"/>-->
-        
+
     </Grid>
     
 </ContentPage>

@@ -45,9 +45,7 @@
                             SelectedProduct="{Binding SelectedProduct, Mode=OneWayToSource}"
                             Margin="0,25,0,0"
                             Grid.Row="0"
-                            ShowSaveButton="False"
-                            ZIndex="49"
-                            />
+                            ShowSaveButton="False"/>
         <!--BackgroundColor="{AppThemeBinding Dark={StaticResource DarkGray}, Light={StaticResource LightGray}}"-->
         <Button Style="{StaticResource RightBottomButton}"
                 Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
@@ -57,13 +55,7 @@
                 IsVisible="{Binding IsLoggedIn}"
                 HorizontalOptions="End"
                 HeightRequest="40"
-                WidthRequest="150"
-                ZIndex="50"
-                            />
-        <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
-                            LogInCommand="{Binding LogIn}"
-                            Grid.Row="0"
-                            ZIndex="{Binding IsLoggedIn, Converter={StaticResource BoolToZIndexConverter}}"/>
+                WidthRequest="150"/>
         <!--<StackLayout Grid.Row="1" BackgroundColor="{AppThemeBinding Dark={StaticResource DarkGray}, Light={StaticResource LightGray}}">
             <Button Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
                     VerticalOptions="Center"
