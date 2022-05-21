@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace OpenStockApp.Views.Settings;
 
-[XamlCompilation(XamlCompilationOptions.Compile)]
+//[XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class UserSettingsView : ContentView
 {
     public static readonly BindableProperty UserProperty = BindableProperty.Create(nameof(User), typeof(ObservableUser), typeof(UserSettingsView));

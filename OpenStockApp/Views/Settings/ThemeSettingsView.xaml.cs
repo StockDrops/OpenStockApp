@@ -2,7 +2,7 @@
 using OpenStockApp.ViewModels.Settings;
 namespace OpenStockApp.Views.Settings;
 
-[XamlCompilation(XamlCompilationOptions.Compile)]
+//[XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class ThemeSettingsView : ContentView
 {
     public ThemeSettingsView()
