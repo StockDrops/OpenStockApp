@@ -19,9 +19,9 @@
 		<ApplicationIdGuid>9833150E-67CE-483A-AE72-F712156DC535</ApplicationIdGuid>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.2.0</ApplicationDisplayVersion>
-		<ApplicationVersion>9</ApplicationVersion>
-		<Version>1.2.0</Version>
+		<ApplicationDisplayVersion>1.2.1</ApplicationDisplayVersion>
+		<ApplicationVersion>10</ApplicationVersion>
+		<Version>1.2.1</Version>
 
 		<!-- Required for C# Hot Reload -->
 		<UseInterpreter Condition="'$(Configuration)' == 'Debug'">True</UseInterpreter>
@@ -228,45 +228,47 @@
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
 	  <MtouchLink>SdkOnly</MtouchLink>
-	  <MtouchDebug>True</MtouchDebug>
+	  <MtouchDebug>False</MtouchDebug>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
 	  <MtouchLink>SdkOnly</MtouchLink>
-	  <MtouchDebug>True</MtouchDebug>
+	  <MtouchDebug>False</MtouchDebug>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-ios|AnyCPU'">
 	  <MtouchLink>SdkOnly</MtouchLink>
 	  <MtouchUseLlvm>True</MtouchUseLlvm>
 	  <Optimize>True</Optimize>
-	  <MtouchDebug>True</MtouchDebug>
+	  <MtouchDebug>False</MtouchDebug>
+	  <MtouchEnableBitcode>True</MtouchEnableBitcode>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-ios|AnyCPU'">
 	  <MtouchLink>SdkOnly</MtouchLink>
 	  <MtouchUseLlvm>True</MtouchUseLlvm>
-	  <MtouchDebug>True</MtouchDebug>
+	  <MtouchDebug>False</MtouchDebug>
+	  <MtouchEnableBitcode>True</MtouchEnableBitcode>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-maccatalyst|AnyCPU'">
 	  <MtouchLink>SdkOnly</MtouchLink>
-	  <MtouchDebug>True</MtouchDebug>
+	  <MtouchDebug>False</MtouchDebug>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-maccatalyst|AnyCPU'">
 	  <MtouchLink>SdkOnly</MtouchLink>
-	  <MtouchDebug>True</MtouchDebug>
+	  <MtouchDebug>False</MtouchDebug>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|AnyCPU'">
 	  <MtouchLink>SdkOnly</MtouchLink>
-	  <MtouchDebug>True</MtouchDebug>
+	  <MtouchDebug>False</MtouchDebug>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|AnyCPU'">
 	  <MtouchLink>SdkOnly</MtouchLink>
-	  <MtouchDebug>True</MtouchDebug>
+	  <MtouchDebug>False</MtouchDebug>
 	</PropertyGroup>
 	
 	<!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
