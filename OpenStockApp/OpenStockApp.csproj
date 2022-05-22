@@ -19,9 +19,9 @@
 		<ApplicationIdGuid>9833150E-67CE-483A-AE72-F712156DC535</ApplicationIdGuid>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.2.1</ApplicationDisplayVersion>
-		<ApplicationVersion>10</ApplicationVersion>
-		<Version>1.2.1</Version>
+		<ApplicationDisplayVersion>1.2.2</ApplicationDisplayVersion>
+		<ApplicationVersion>11</ApplicationVersion>
+		<Version>1.2.2</Version>
 
 		<!-- Required for C# Hot Reload -->
 		<UseInterpreter Condition="'$(Configuration)' == 'Debug'">True</UseInterpreter>
@@ -38,6 +38,8 @@
 		<CodesignProvision>VS: WildCard Development</CodesignProvision>
 		
 		<PlatformTarget>AnyCPU</PlatformTarget>
+		
+		<CodesignKey>Apple Development: Enrique Morell Salcedo (C4XYQG8Q4D)</CodesignKey>
 
 	</PropertyGroup>
 	
@@ -57,11 +59,11 @@
 	</PropertyGroup>
 	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Debug'">
 		<ProvisioningType>manual</ProvisioningType>
-				<!--<CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
-		<CodesignProvision>VS: WildCard Development</CodesignProvision>-->
+				<CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
+		<CodesignProvision>VS: WildCard Development</CodesignProvision>
 		<!--<_LibMonoLinkMode>Static</_LibMonoLinkMode>
 		<_LibXamarinLinkMode>Static</_LibXamarinLinkMode>-->
-		<CodesignKey>Apple Development: Enrique Morell Salcedo (C4XYQG8Q4D)</CodesignKey>
+		<!--<CodesignKey>Apple Development: Enrique Morell Salcedo (C4XYQG8Q4D)</CodesignKey>-->
 		<CodesignEntitlement>Entitlements.plist</CodesignEntitlement>
 	</PropertyGroup>
 	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Release'">
@@ -228,7 +230,7 @@
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
 	  <MtouchLink>SdkOnly</MtouchLink>
-	  <MtouchDebug>False</MtouchDebug>
+	  <MtouchDebug>True</MtouchDebug>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
@@ -240,7 +242,7 @@
 	  <MtouchLink>SdkOnly</MtouchLink>
 	  <MtouchUseLlvm>True</MtouchUseLlvm>
 	  <Optimize>True</Optimize>
-	  <MtouchDebug>False</MtouchDebug>
+	  <MtouchDebug>True</MtouchDebug>
 	  <MtouchEnableBitcode>True</MtouchEnableBitcode>
 	</PropertyGroup>
 	
@@ -253,7 +255,7 @@
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-maccatalyst|AnyCPU'">
 	  <MtouchLink>SdkOnly</MtouchLink>
-	  <MtouchDebug>False</MtouchDebug>
+	  <MtouchDebug>True</MtouchDebug>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-maccatalyst|AnyCPU'">
@@ -263,7 +265,7 @@
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|AnyCPU'">
 	  <MtouchLink>SdkOnly</MtouchLink>
-	  <MtouchDebug>False</MtouchDebug>
+	  <MtouchDebug>True</MtouchDebug>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|AnyCPU'">

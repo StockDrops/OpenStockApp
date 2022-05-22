@@ -20,15 +20,18 @@ namespace OpenStockApp.Pages.Alerts
              //TODO: One day I'd like to know why this is needed, and why the XAML binding is not working.
             //Behaviors.Add(new EventToCommandBehavior { EventName = nameof(this.Appearing), Command = notificationsPageViewModel.NavigateToPage });
             notificationsPageViewModel.ScrollTo = OnScrollTo;
-            Appearing += OnAppearing;
+            
         }
 
-        public async void OnAppearing(object? sender, EventArgs e)
+        protected async override void OnAppearing()
         {
             if (!notificationsPageViewModel.IsLoggedIn)
-                await (Shell.Current?.Navigation?.PushModalAsync(new LoginPage(), false) ?? Task.CompletedTask).ConfigureAwait(false);
+            {
+                if (Shell.Current?.Navigation?.ModalStack.Any() == false) //there's no modal already in the modal stack.
+                    await (Shell.Current?.Navigation?.PushModalAsync(new LoginPage(), false) ?? Task.CompletedTask).ConfigureAwait(false);
+            }
+            base.OnAppearing();
         }
-
 
         public void OnScrollTo(Result result)
         {
