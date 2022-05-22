@@ -71,10 +71,10 @@
 		<CodesignProvision>VS: WildCard Development</CodesignProvision>-->
 		<!--<_LibMonoLinkMode>Static</_LibMonoLinkMode>
 		<_LibXamarinLinkMode>Static</_LibXamarinLinkMode>-->
-		<!--<CodesignKey>Apple Distribution: StockDrops S.A.S. (M457K987S4)</CodesignKey>
-		<CodesignProvision>OpenStockApp Distribution</CodesignProvision>-->
-		<CodesignKey>Apple Development: Enrique Morell Salcedo (C4XYQG8Q4D)</CodesignKey>
-		<CodesignProvision>VS: WildCard Development</CodesignProvision>
+		<CodesignKey>Apple Distribution: StockDrops S.A.S. (M457K987S4)</CodesignKey>
+		<CodesignProvision>OpenStockApp Distribution</CodesignProvision>
+		<!-- <CodesignKey>Apple Development: Enrique Morell Salcedo (C4XYQG8Q4D)</CodesignKey>
+		<CodesignProvision>VS: WildCard Development</CodesignProvision> -->
 		<CodesignEntitlement>Entitlements.plist</CodesignEntitlement>
 		
 		<ArchiveOnBuild>true</ArchiveOnBuild>
