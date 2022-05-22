@@ -19,9 +19,9 @@
 		<ApplicationIdGuid>9833150E-67CE-483A-AE72-F712156DC535</ApplicationIdGuid>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.1.7</ApplicationDisplayVersion>
-		<ApplicationVersion>7</ApplicationVersion>
-		<Version>1.1.7</Version>
+		<ApplicationDisplayVersion>1.2.0</ApplicationDisplayVersion>
+		<ApplicationVersion>9</ApplicationVersion>
+		<Version>1.2.0</Version>
 
 		<!-- Required for C# Hot Reload -->
 		<UseInterpreter Condition="'$(Configuration)' == 'Debug'">True</UseInterpreter>
