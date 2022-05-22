@@ -130,9 +130,9 @@
                                IsVisible="{OnPlatform iOS={Binding ImageLicensed}, Default='True', MacCatalyst={Binding ImageLicensed}}"
                                HeightRequest="120"
                                 Aspect="AspectFit" Margin="0,10,0,10">
-                            <Image.Clip>
+                            <!--<Image.Clip>
                                     <RoundRectangleGeometry CornerRadius="10" Rect="10,10,120,120" />
-                            </Image.Clip>
+                            </Image.Clip>-->
                         </Image>
 
                     </StackLayout>
