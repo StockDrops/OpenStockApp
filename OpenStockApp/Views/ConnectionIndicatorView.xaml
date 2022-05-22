@@ -17,14 +17,14 @@
         </ResourceDictionary>
     </ContentView.Resources>
     <ContentView.Content>
-        <StackLayout Orientation="{OnPlatform  Default='Horizontal', iOS='Vertical'}" Margin="4,4,4,4">
+        <StackLayout Orientation="{OnPlatform  Default='Horizontal', iOS='Horizontal'}" Margin="2">
             
                 <Label Text="{Binding IsConnected, Source={x:Reference view}, Converter={StaticResource BoolToObjectConverter}, Mode=OneWay}"
                        VerticalOptions="Start" Margin="{OnPlatform Default=5, iOS='5,0,0,0'}" />
 
             <Button Text="Connect"  
                     HorizontalOptions="Start"
-                    IsEnabled="{Binding IsConnected, Source={x:Reference view}, Converter={StaticResource InvertedBoolConverter}}" Command="{Binding ConnectCommand}" IsVisible="{Binding IsConnected, Converter={StaticResource InvertedBoolConverter}}" />
+                    IsEnabled="{Binding IsConnected, Source={x:Reference view}, Converter={StaticResource InvertedBoolConverter}}" Command="{Binding ConnectCommand}" IsVisible="{Binding IsConnected, Source={x:Reference view}, Converter={StaticResource InvertedBoolConverter}}" />
         </StackLayout>
     </ContentView.Content>
 </ContentView>
