@@ -85,6 +85,8 @@ namespace OpenStockApp.ViewModels.Notifications
         public bool IsBusy { get; set; }
         public string? Title { get; set; }
 
+        public ICommand LogOut => throw new NotImplementedException();
+
         public void Dispose()
         {
             

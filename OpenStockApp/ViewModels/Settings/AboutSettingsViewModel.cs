@@ -77,7 +77,7 @@ namespace OpenStockApp.ViewModels.Settings
 
         public async Task OnShareLog(CancellationToken cancellationToken = default)
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "StockDrops\\logs\\applog.txt");
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Paths.LogFile);
             await Share.RequestAsync(new ShareFileRequest
             {
                 Title = Title,

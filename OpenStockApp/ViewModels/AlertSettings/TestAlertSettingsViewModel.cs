@@ -52,6 +52,8 @@ namespace OpenStockApp.ViewModels.AlertSettings
 
         public bool IsBusy { get; set; }
         public string? Title { get; set; }
+
+        public ICommand LogOut => throw new NotImplementedException();
         #endregion
         //public AsyncRelayCommand SaveUserOptions { get; set; }
 

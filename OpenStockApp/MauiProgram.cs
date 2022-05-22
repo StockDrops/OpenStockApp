@@ -136,8 +136,7 @@ public static class MauiProgram
 
         builder.Services.AddLogging(loggingBuilder =>
         {
-            
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "StockDrops\\logs\\applog.txt");
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Paths.LogFile);
             loggingBuilder.AddFile(path, fileLoggerOptions =>
             {
                 fileLoggerOptions.FileSizeLimitBytes = 5000000;
@@ -201,7 +200,7 @@ public static class MauiProgram
 
 
 
-        #region Hubs
+#region Hubs
 #if DEBUG
         builder.Services.Configure<NotificationsHubClientConfiguration>(builder.Configuration.GetSection($"{nameof(NotificationsHubClientConfiguration)}Debug"));
         builder.Services.Configure<BaseHubConfiguration>(builder.Configuration.GetSection($"{nameof(BaseHubConfiguration)}Debug"));
@@ -340,6 +339,10 @@ public static class MauiProgram
 #endif
         //configure
         builder.Services.Configure<AppConfig>(builder.Configuration.GetSection(nameof(AppConfig)));
+
+        builder.Services.AddSingleton<ViewModels.Users.LoginViewModel>();
+        builder.Services.AddSingleton<Pages.LoginPage>();
+        builder.Services.AddSingleton<ShellViewModel>();
         //Viewmodels
         builder.Services.AddTransient<AboutSettingsViewModel>();
         builder.Services.AddTransient<DiscordSettingsViewModel>();

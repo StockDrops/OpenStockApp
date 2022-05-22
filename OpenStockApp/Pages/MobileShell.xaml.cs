@@ -1,14 +1,18 @@
-﻿using OpenStockApp.ViewModels;
+﻿using OpenStockApp.Services;
+using OpenStockApp.ViewModels;
 
 namespace OpenStockApp.Pages
 {
-    public partial class MobileShell
+    public partial class MobileShell : Shell
     {
         public MobileShell()
         {
             InitializeComponent();
 
-            BindingContext = new ShellViewModel();
+            
+            var shellModel = ServiceLocator.GetRequiredService<ShellViewModel>();
+            BindingContext = shellModel;
+            //NavigatedTo += shellModel.OnAppearing;
         }
     }
 }

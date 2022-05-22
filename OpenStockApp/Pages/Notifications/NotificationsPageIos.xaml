@@ -35,13 +35,13 @@
                     Margin="5,5,5,10"
                     ZIndex="50"-->
         <CollectionView ItemsSource="{Binding Results}"
-                         ItemsUpdatingScrollMode="{OnPlatform Default='KeepItemsInView', iOS='KeepItemsInView'}"
-                    SelectionMode="None"
-                    Margin="5,5,5,10"
-                    x:Name="collectionView">
+                        ItemsUpdatingScrollMode="{OnPlatform Default='KeepItemsInView', iOS='KeepItemsInView'}"
+                        SelectionMode="None"
+                        Margin="5,5,5,10"
+                        x:Name="collectionView">
         <CollectionView.Header>
                 <Grid HeightRequest="195"
-                  Margin="0,0,10,0">
+                  Margin="0,0,8,5">
                     <StackLayout IsVisible="{Binding IsLoggedIn}"
                                  HorizontalOptions="CenterAndExpand">
                     <main:ConnectionIndicatorView IsConnected="{Binding IsConnected}"
@@ -63,25 +63,22 @@
                            BackgroundColor="{AppThemeBinding Dark={StaticResource SecondaryColor}, Light={StaticResource BackgroundColor}}"
                            IsVisible="{Binding IsLoggedIn}">
                         <StackLayout Grid.Row="1" Orientation="Horizontal">
-                            <StackLayout Orientation="Vertical">
-                                <Label Text="Enable alert settings" 
+                                <StackLayout Orientation="Vertical" VerticalOptions="Start">
+                                    <Label Text="Enable alert settings" 
                                            VerticalOptions="Center"
                                            Margin="{OnPlatform Default='10,0,10,0', Android='0,0,0,0', iOS='0,0,0,10'} "/>
-                                <Switch IsToggled="{Binding HasToApplyFilterSettings}"
+                                    <Switch IsToggled="{Binding HasToApplyFilterSettings}"
                                                 VerticalOptions="Center"
                                                 HorizontalOptions="Center">
-                                    <Switch.Behaviors>
-                                        <mct:EventToCommandBehavior EventName="Toggled"
+                                        <Switch.Behaviors>
+                                            <mct:EventToCommandBehavior EventName="Toggled"
                                                                     Command="{Binding ApplyFilterSettings}"/>
-                                    </Switch.Behaviors>
-                                </Switch>
-                                <views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='False', Android='True'}"  />
-                                <views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='True', Android='False'}"  />
+                                        </Switch.Behaviors>
+                                    </Switch>
+                                    <views:SocialButtons VerticalOptions="Center" Margin="5,0,5,0" IsVisible="{OnPlatform Default='False', Android='True'}"  />
+                                </StackLayout>
+                                <views:SocialButtons VerticalOptions="Start" Margin="10,0,0,0" IsVisible="{OnPlatform Default='False', Android='True', iOS='True'}"  />
                             </StackLayout>
-                            <StackLayout>
-                                <views:SocialButtons VerticalOptions="Center" Margin="5,0,20,0" IsVisible="{OnPlatform Default='False', Android='True', iOS='True'}"  />
-                            </StackLayout>
-                        </StackLayout>
                     </Frame>
                 </StackLayout>
 
@@ -99,7 +96,7 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="100"/>
-                        <RowDefinition Height="160"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="100"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -150,9 +147,10 @@
         </CollectionView.ItemTemplate>
         <CollectionView.Footer>
             <Grid>
-                <Grid IsVisible="{Binding IsLoggedIn}">
+                    <!--ZIndex="50"-->
+                    <Grid IsVisible="{Binding IsLoggedIn}">
                     <Button Margin="0,2,0,2"
-                        ZIndex="50"
+                        
                         Text="Load More?"
                         MinimumWidthRequest="{OnPlatform Android=100, iOS=100, UWP=300}"
                         HorizontalOptions="Center"

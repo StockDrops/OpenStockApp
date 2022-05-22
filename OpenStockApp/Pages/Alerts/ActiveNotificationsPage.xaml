@@ -43,7 +43,8 @@
                 Command="{Binding SaveModelOptions}" 
                 IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
                 IsVisible="{Binding IsLoggedIn}"
-                ZIndex="50"/>
+                />
+        <!--ZIndex="50"-->
 
     </Grid>
     

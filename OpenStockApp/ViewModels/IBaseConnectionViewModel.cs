@@ -3,12 +3,12 @@ using System.Windows.Input;
 
 namespace OpenStockApp.ViewModels
 {
-    public interface IBaseConnectionViewModel : IBaseViewModel
+    public interface IBaseConnectionViewModel : IBaseViewModel, IIdentityViewModel
     {
         public ICommand ConnectCommand { get; }
         public bool IsConnected { get; }
-        public bool IsLoggedIn { get; set; }
-        public ICommand LogIn { get; }
+        //public bool IsLoggedIn { get; set; }
+        //public ICommand LogIn { get; }
 
         public void Dispose();
         public void OnClosed(object? sender, Exception? exception);

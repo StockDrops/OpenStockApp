@@ -25,7 +25,8 @@
                 <Label Text="Log in or create an account below to see the latest alerts."
                             Style="{StaticResource BodyTextStyle}"
                                        HorizontalOptions="Center" />
-                <Button Text="Log In"
+                <Button Text="Log In or Create Account"
+                        Style="{StaticResource BaseButton}"
                                 Command="{Binding LogInCommand, Source={x:Reference view}}"
                                 IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}, Source={x:Reference view}}" />
 

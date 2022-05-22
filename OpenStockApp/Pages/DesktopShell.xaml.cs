@@ -1,3 +1,4 @@
+using OpenStockApp.Services;
 using OpenStockApp.ViewModels;
 
 namespace OpenStockApp.Pages;
@@ -7,7 +8,7 @@ public partial class DesktopShell : Shell
     public DesktopShell()
     {
         InitializeComponent();
-
-        BindingContext = new ShellViewModel();
+        var shellModel = ServiceLocator.GetRequiredService<ShellViewModel>();
+        BindingContext = shellModel;
     }
 }
