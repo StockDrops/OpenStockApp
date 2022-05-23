@@ -87,6 +87,17 @@
         <Setter Property="Margin" Value="{StaticResource SmallTopBottomRightMargin}" />
     </Style>
 
+    <Style x:Key="RightBottomButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+        <Setter Property="HeightRequest" Value="40"/>
+        <Setter Property="WidthRequest" Value="150" />
+        <Setter Property="VerticalOptions" Value="End"/>
+        <Setter Property="HorizontalOptions" Value="End"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
+    
+    <Style x:Key="BodyTextStyle" TargetType="{x:Type Label}">
+    </Style>
+
     <Style TargetType="Entry" x:Key="BaseEntry">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TDark}, Dark={StaticResource TLight}}" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>

@@ -149,7 +149,7 @@
     <value>Settings</value>
   </data>
   <data name="SettingsPageAboutText" xml:space="preserve">
-    <value>StockDrops App. Copyright StockDrops, 2021.</value>
+    <value>StockDrops App. Copyright StockDrops, {0}.</value>
   </data>
   <data name="SettingsPageAboutTitle" xml:space="preserve">
     <value>About this application</value>

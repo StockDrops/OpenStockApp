@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace OpenStockApp.ViewModels
 {
-	public class BaseViewModel : BindableObject
-	{
+    public class BaseViewModel : BindableObject, IBaseViewModel
+    {
 #nullable enable
-		static BindableProperty TitleProperty =
-			BindableProperty.Create(nameof(Title), typeof(string), typeof(BaseViewModel), string.Empty);
+        static BindableProperty TitleProperty =
+            BindableProperty.Create(nameof(Title), typeof(string), typeof(BaseViewModel), string.Empty);
 
 
         /// <summary>
@@ -19,10 +19,10 @@ namespace OpenStockApp.ViewModels
         /// </summary>
         /// <value>The title.</value>
         public string? Title
-		{
-			get => (string)GetValue(TitleProperty);
-			set => SetValue(TitleProperty, value);
-		}
+        {
+            get => (string)GetValue(TitleProperty);
+            set => SetValue(TitleProperty, value);
+        }
 
 
 

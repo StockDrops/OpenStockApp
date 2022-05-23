@@ -4,6 +4,7 @@
 	<TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Platforms>AnyCPU;ARM64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,10 +14,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.4" />
     <PackageReference Include="Microsoft.Graph" Version="4.25.0" />
-    <PackageReference Include="OpenStockApi.Core" Version="2.5.0" />
+    <PackageReference Include="OpenStockApi.Core" Version="2.8.0-dev" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OpenStockApp.Core.Email\OpenStockApp.Core.Email.csproj" />
     <ProjectReference Include="..\OpenStockApp.Core\OpenStockApp.Core.csproj" />
   </ItemGroup>
 

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OpenStockApp.Views.Settings;
 
-[XamlCompilation(XamlCompilationOptions.Compile)]
+//[XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class EmailSocialLoginButtonsView : ContentView
 {
     public EmailSocialLoginButtonsView()

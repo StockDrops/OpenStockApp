@@ -3,6 +3,7 @@ using OpenStockApp.Core.Contracts.Services;
 using OpenStockApp.Core.Contracts.Services.Hubs;
 using OpenStockApp.Core.Contracts.Services.Settings;
 using OpenStockApp.Core.Contracts.Services.Users;
+using OpenStockApp.Core.Models.Events;
 #if ANDROID
 using OpenStockApp.Platforms.Android;
 #endif
@@ -27,6 +28,7 @@ namespace OpenStockApp.Services
         private readonly IUserOptionsService userOptionsService;
         private readonly ILogger<ApplicationHostService> logger;
         private readonly INotificationHubService notificationHubService;
+        private readonly ITokenRegistrationService tokenRegistrationService;
         /// <summary>
         /// Default constructor with all the dependencies.
         /// </summary>
@@ -35,18 +37,29 @@ namespace OpenStockApp.Services
             IUserOptionsService userOptionsService, 
             ILogger<ApplicationHostService> logger,
             IEnumerable<IBaseHubClient> hubClients,
-            INotificationHubService notificationHubService
+            INotificationHubService notificationHubService,
+            ITokenRegistrationService tokenRegistrationService
             )
         {
             this.identityService = identityService;
             this.hubClients = hubClients;
             this.userOptionsService = userOptionsService;
             this.notificationHubService = notificationHubService;
+            this.tokenRegistrationService = tokenRegistrationService;
+          
             this.logger = logger;
 #if ANDROID
             MessagingCenter.Subscribe<FirebaseService, Result>(this, "NotificationReceived", async (sender, args) =>
             {
                 await OnNotificationReceived(sender, args);
+            });
+#endif
+#if IOS
+            MessagingCenter.Subscribe<AppDelegate, string>(this, Events.RegisterToken, async (sender, args) =>
+            {
+                var tokenSource = new CancellationTokenSource();
+                tokenSource.CancelAfter(10000);
+                await tokenRegistrationService.RegisterTokenAsync(args, tokenSource.Token);
             });
 #endif
         }

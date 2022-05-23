@@ -2,18 +2,12 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) and '$(MSBuildRuntimeType)' == 'Full'">$(TargetFrameworks);net6.0-windows10.0.19041</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041.0</TargetFrameworks>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>OpenStockApp</RootNamespace>
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
-
-		<AndroidPackageFormat>apk</AndroidPackageFormat>
-		<!-- We cannot using linking with EF CORE. It just breaks. -->
-		<AndroidLinkMode>None</AndroidLinkMode>
-		
 		<!--<DebugSymbols>True</DebugSymbols>
 		<DebugType>Full</DebugType>-->
     
@@ -21,30 +15,73 @@
 		<ApplicationTitle>StockDrops OpenStock App</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.stockdrops.StockDropsOpenStockApp</ApplicationId>
-		<ApplicationId Condition="$(TargetFramework.Contains('-windows'))">9833150E-67CE-483A-AE72-F712156DC535</ApplicationId>
+		<ApplicationId>com.stockdrops.openstockapp</ApplicationId>
+		<ApplicationIdGuid>9833150E-67CE-483A-AE72-F712156DC535</ApplicationIdGuid>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.1.4</ApplicationDisplayVersion>
-		<ApplicationVersion>5</ApplicationVersion>
-		<Version>1.1.4</Version>
+		<ApplicationDisplayVersion>1.2.2</ApplicationDisplayVersion>
+		<ApplicationVersion>11</ApplicationVersion>
+		<Version>1.2.2</Version>
 
 		<!-- Required for C# Hot Reload -->
 		<UseInterpreter Condition="'$(Configuration)' == 'Debug'">True</UseInterpreter>
 
-		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-ios'">14.2</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-maccatalyst'">14.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-android'">21.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</SupportedOSPlatformVersion>
-		<TargetPlatformMinVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+		
 		<Nullable>enable</Nullable>
-		<Platforms>AnyCPU</Platforms>
-		<ProvisioningType>automatic</ProvisioningType>
+		
+		<CodesignProvision>VS: WildCard Development</CodesignProvision>
+		
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		
+		<CodesignKey>Apple Development: Enrique Morell Salcedo (C4XYQG8Q4D)</CodesignKey>
+
 	</PropertyGroup>
-	<ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.1" />
-		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.1" />
-	</ItemGroup>
+	
+	<PropertyGroup Condition="$(TargetFramework.Contains('-android'))">
+		<AndroidPackageFormat>apk</AndroidPackageFormat>
+		<!-- We cannot using linking with EF CORE. It just breaks. -->
+		<AndroidLinkMode>None</AndroidLinkMode>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
+		<EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework.Contains('-windows')) and '$(Configuration)' == 'Release'">
+		<GenerateAppxPackageOnBuild>true</GenerateAppxPackageOnBuild>
+		<AppxPackageSigningEnabled>true</AppxPackageSigningEnabled>
+		<PackageCertificateThumbprint>f3ffd6400f5121320327716358758aaa55d3b6d6</PackageCertificateThumbprint>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Debug'">
+		<ProvisioningType>manual</ProvisioningType>
+				<CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
+		<CodesignProvision>VS: WildCard Development</CodesignProvision>
+		<!--<_LibMonoLinkMode>Static</_LibMonoLinkMode>
+		<_LibXamarinLinkMode>Static</_LibXamarinLinkMode>-->
+		<!--<CodesignKey>Apple Development: Enrique Morell Salcedo (C4XYQG8Q4D)</CodesignKey>-->
+		<CodesignEntitlement>Entitlements.plist</CodesignEntitlement>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Release'">
+		<RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
+		<ProvisioningType>manual</ProvisioningType>
+		<!--<CodesignKey>Apple Development: Enrique Morell Salcedo (C4XYQG8Q4D)</CodesignKey>
+		<CodesignProvision>VS: WildCard Development</CodesignProvision>-->
+		<!--<_LibMonoLinkMode>Static</_LibMonoLinkMode>
+		<_LibXamarinLinkMode>Static</_LibXamarinLinkMode>-->
+		<CodesignKey>Apple Distribution: StockDrops S.A.S. (M457K987S4)</CodesignKey>
+		<CodesignProvision>OpenStockApp Distribution</CodesignProvision>
+		<!-- <CodesignKey>Apple Development: Enrique Morell Salcedo (C4XYQG8Q4D)</CodesignKey>
+		<CodesignProvision>VS: WildCard Development</CodesignProvision> -->
+		<CodesignEntitlement>Entitlements.plist</CodesignEntitlement>
+		
+		<ArchiveOnBuild>true</ArchiveOnBuild>
+		<TcpPort>58181</TcpPort>
+	</PropertyGroup>
 	<ItemGroup>
 		<MauiIcon Include="Resources\appicon.svg" ForegroundFile="Resources\appicon.svg" Color="#512BD4" />
 
@@ -57,17 +94,14 @@
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
 	</ItemGroup>
-
 	<ItemGroup>
-	  <MauiImage Remove="Resources\Images\logo_stockdrops_small.svg" />
+		<MauiImage Remove="Resources\Images\logo_stockdrops_small.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <None Remove="appsettings.json" />
 	  <None Remove="Platforms\Android\google-services.json" />
 	  <None Remove="Platforms\Android\proguard.cfg" />
-	  <None Remove="Resources\Images\default_user.svg" />
-	  <None Remove="Resources\Images\default_user_dark.svg" />
 	  <None Remove="Resources\Images\discord_logo_color.svg" />
 	  <None Remove="Resources\Images\discord_logo_dark.svg" />
 	  <None Remove="Resources\Images\discord_logo_light.svg" />
@@ -86,11 +120,11 @@
 	</ItemGroup>
 
 
-	<ItemGroup>
+	<ItemGroup Condition="$(TargetFramework.Contains('-android'))">
 	  <ProguardConfiguration Include="Platforms\Android\proguard.cfg" />
 	</ItemGroup>
 
-	<ItemGroup>
+	<ItemGroup Condition="$(TargetFramework.Contains('-android'))">
 	  <GoogleServicesJson Include="Platforms\Android\google-services.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </GoogleServicesJson>
@@ -102,76 +136,6 @@
 	  </EmbeddedResource>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <MauiXaml Update="Pages\Alerts\ActiveNotificationsPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Alerts\AlertSettingsPageMobile.xaml">
-	    <SubType>Designer</SubType>
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Alerts\AlertSettingsPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Alerts\NotificationsPageMobile.xaml">
-	    <SubType>Designer</SubType>
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Alerts\NotificationsPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Alerts\RetailerOptionsPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\DesktopShell.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\MobileShell.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Resources\Styles\Labels.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Resources\Styles\Styles.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Resources\Styles\Theme.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Resources\Styles\_Thickness.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Styles\Labels.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Styles\Theme.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Styles\Themes\HC.Dark.Blue.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Styles\Themes\HC.Light.Blue.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Styles\_FontSizes.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Styles\_Thickness.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\ConnectionIndicatorView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\LogInView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\ModelOptionsView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\SocialButtons.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiImage Include="Resources\Images\icons\edit_notifications.svg" />
@@ -182,35 +146,29 @@
 	  <MauiImage Include="Resources\Images\icons\settings_dark.svg" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-pre8" />
-	  <PackageReference Include="EFCoreSecondLevelCacheInterceptor" Version="3.4.0" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-rc3" />
+	  <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
 	  <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
-	  <PackageReference Include="Microsoft.Identity.Client" Version="4.43.0" />
-	  <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.19.6" />
+	  <PackageReference Include="Microsoft.Identity.Client" Version="4.43.2-dev" />
+	  <PackageReference Condition="$(TargetFramework.Contains('-windows'))" Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.19.6" />
 	  <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
 	  <PackageReference Include="NReco.Logging.File" Version="1.1.4" />
-	  <PackageReference Include="OpenStockApi.Core" Version="2.5.0" />
+	  <PackageReference Include="OpenStockApi.Core" Version="2.8.0-dev" />
 	  <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
+	  <PackageReference Include="System.Runtime.Caching" Version="6.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\OpenStockApp.Core.Email\OpenStockApp.Core.Email.csproj" />
 	  <ProjectReference Include="..\OpenStockApp.Core.Maui\OpenStockApp.Core.Maui.csproj" />
 	  <ProjectReference Include="..\OpenStockApp.Core\OpenStockApp.Core.csproj" />
 	  <ProjectReference Include="..\OpenStockApp.Discord\OpenStockApp.Discord.csproj" />
-	  <ProjectReference Include="..\OpenStockApp.Ef\OpenStockApp.Ef.csproj" />
-	  <ProjectReference Include="..\OpenStockApp.Email\OpenStockApp.Email.csproj" />
 	  <ProjectReference Include="..\OpenStockApp.LegacyApi\OpenStockApp.LegacyApi.csproj" />
 	  <ProjectReference Include="..\OpenStockdApp.SignalR\OpenStockApp.SignalR.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Pages\Alerts\AlertSettingsPageMobile.xaml.cs">
-	    <DependentUpon>AlertSettingsPageMobile.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\Alerts\NotificationsPageMobile.xaml.cs">
-	    <DependentUpon>NotificationsPageMobile.xaml</DependentUpon>
-	  </Compile>
 	  <Compile Update="Resources\Strings\DiscordResources.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
@@ -244,6 +202,7 @@
 		<PackageReference Include="Xamarin.GooglePlayServices.Base" Version="117.6.0.2" />
 		<PackageReference Include="Xamarin.GooglePlayServices.Basement" Version="117.6.0.6" />
 		</ItemGroup>
+	
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
 	  <PackageReference Include="Xamarin.Firebase.Analytics">
 	    <Version>119.0.1.5</Version>
@@ -255,15 +214,96 @@
 	    <ForegroundFile>Resources\appiconfg.svg</ForegroundFile>
 	  </MauiImage>
 	</ItemGroup>
+	<ItemGroup>
+	  <MauiXaml Update="Pages\LoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Notifications\NotificationsPageIos.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+	
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<OutputType>WinExe</OutputType>
 		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
 	</PropertyGroup>
 	
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041|AnyCPU'">
-	  <Optimize>True</Optimize>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
+	  <MtouchLink>SdkOnly</MtouchLink>
+	  <MtouchDebug>True</MtouchDebug>
 	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
+	  <MtouchLink>SdkOnly</MtouchLink>
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-ios|AnyCPU'">
+	  <MtouchLink>SdkOnly</MtouchLink>
+	  <MtouchUseLlvm>True</MtouchUseLlvm>
+	  <Optimize>True</Optimize>
+	  <MtouchDebug>True</MtouchDebug>
+	  <MtouchEnableBitcode>True</MtouchEnableBitcode>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-ios|AnyCPU'">
+	  <MtouchLink>SdkOnly</MtouchLink>
+	  <MtouchUseLlvm>True</MtouchUseLlvm>
+	  <MtouchDebug>False</MtouchDebug>
+	  <MtouchEnableBitcode>True</MtouchEnableBitcode>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-maccatalyst|AnyCPU'">
+	  <MtouchLink>SdkOnly</MtouchLink>
+	  <MtouchDebug>True</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-maccatalyst|AnyCPU'">
+	  <MtouchLink>SdkOnly</MtouchLink>
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|AnyCPU'">
+	  <MtouchLink>SdkOnly</MtouchLink>
+	  <MtouchDebug>True</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|AnyCPU'">
+	  <MtouchLink>SdkOnly</MtouchLink>
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>
+	
+	<!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-ios|AnyCPU'">
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-maccatalyst|AnyCPU'">
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|AnyCPU'">
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-ios|AnyCPU'">
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-maccatalyst|AnyCPU'">
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|AnyCPU'">
+	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>-->
 	
 
 	<!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">

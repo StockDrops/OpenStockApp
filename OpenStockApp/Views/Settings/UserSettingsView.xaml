@@ -9,50 +9,41 @@
              xmlns:converters="clr-namespace:OpenStockApp.Converters"
              
              xmlns:mctbehaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
-             xmlns:appmodel="clr-namespace:Microsoft.Maui.Essentials;assembly=Microsoft.Maui.Essentials"
+             xmlns:appmodel="clr-namespace:Microsoft.Maui.ApplicationModel;assembly=Microsoft.Maui.Essentials"
              x:Class="OpenStockApp.Views.Settings.UserSettingsView"
+             x:DataType="vsettings:UserSettingsView"
              x:Name="ParentView"
              >
-    <!--x:DataType="viewmodels:UserSettingsViewModel"-->
     <ContentView.Resources>
         <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" EnumType="{x:Type appmodel:AppTheme}" />
     </ContentView.Resources>
-    <ContentView.Behaviors>
-        <mctbehaviors:EventToCommandBehavior EventName="ParentChanged"
-                                             Command="{Binding GetUserCommand}"
-                                             />
-    </ContentView.Behaviors>
     <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="48" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <Label Grid.Row="0"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0"
                Text="{x:Static strings:Resources.SettingsPageUserTitle}"
                Style="{StaticResource SubtitleTextStyle}" />
             <StackLayout Grid.Row="1"
-                     HorizontalOptions="Fill"
-                     >
+                         HorizontalOptions="Fill">
                 <Grid Margin="{StaticResource SmallTopMargin}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="{OnPlatform Android=70, Default=120}"/>
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                         <ColumnDefinition Width="{OnPlatform Android=70, Default=120}" />
+                        <ColumnDefinition Width="{OnPlatform Android=70, Default=120}" />
                         <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>                    
-                        <Image 
-                        Grid.Row="0"
+                    </Grid.ColumnDefinitions>
+                <Image  Grid.Row="0"
                         Grid.Column="0"
-                        
-                    WidthRequest="{OnPlatform Android=70, Default=120}"
-                    HeightRequest="{OnPlatform Android=70, Default=120}"
-                    VerticalOptions="Start"
-                    HorizontalOptions="Start"
-                    Source="default_user.png"
-                    Aspect="AspectFill">
+                        WidthRequest="{OnPlatform Android=70, Default=120}"
+                        HeightRequest="{OnPlatform Android=70, Default=120}"
+                        VerticalOptions="Start"
+                        HorizontalOptions="Start"
+                        Source="{Binding ImageProfileSource, Source={x:Reference ParentView}}"
+                        Aspect="AspectFill">
                     <Image.Clip>
                         <EllipseGeometry
                                 
@@ -70,44 +61,43 @@
                              Margin="{StaticResource XSmallLeftMargin}"
                              Orientation="Vertical"
                              VerticalOptions="Fill">
-                        <Label Margin="{StaticResource MediumTopMargin}"
-                            Text="{Binding User.Name}"
-                            Style="{StaticResource BodyTextStyle}"
-                            VerticalTextAlignment="Start"
-                            
-                            VerticalOptions="End"/>
+                    <!--{Binding User.Name}-->
+                    <Label Margin="{StaticResource MediumTopMargin}"
+                           Text="{Binding User.Name, Source={x:Reference ParentView}}"
+                           VerticalTextAlignment="Start"
+                           VerticalOptions="End"/>
                         <Label
-                            Text="{Binding User.UserName}"
+                            Text="{Binding User.UserName, Source={x:Reference ParentView}}"
+                            TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
                             Margin="{StaticResource XSmallTopMargin}"
-                            Style="{StaticResource BodyTextStyle}" />
+                             />
                         <!--<Label
+                        Style="{StaticResource BodyTextStyle}"
+                        Style="{StaticResource BodyTextStyle}"
+                        Style="{StaticResource BodyTextStyle}"
                             Text="Your Subscription"
                             Margin="{StaticResource XSmallTopMargin}"
                             Style="{StaticResource BodyTextStyle}" />-->
                         <Label
-                            Text="{Binding User.SubscriptionLevel}"
+                            Text="{Binding User.SubscriptionLevel, Source={x:Reference ParentView}}"
                             Margin="{StaticResource XSmallTopMargin}"
-                            Style="{StaticResource BodyTextStyle}" />
+                             />
                     </StackLayout>
                 </Grid>
-                <Button Text="{Binding RefreshUserButtonState.ButtonText}"
-                        IsEnabled="{Binding Source={x:Reference ParentView}, Path=BindingContext.RefreshUserButtonState.IsEnabled}"
+            <Button Text="{Binding RefreshButtonState.ButtonText, Source={x:Reference ParentView}}"
+                        IsEnabled="{Binding RefreshButtonState.IsEnabled, Source={x:Reference ParentView}}"
                         Margin="{StaticResource SmallTopBottomMargin}"
-                        Command="{Binding RefreshUserCommandAsync}"
+                        Command="{Binding RefreshCommand, Source={x:Reference ParentView}}"
                         HorizontalOptions="Start"
                         MinimumWidthRequest="150"
                             x:Name="refreshButton"/>
-            <Button Text="{Binding LogInOutButtonState.ButtonText}"
-                    IsEnabled="{Binding LogInOutButtonState.IsEnabled}"
-                    IsVisible="{Binding LogInOutButtonState.IsVisible}"
+            <Button Text="{Binding LogInOutButtonState.ButtonText, Source={x:Reference ParentView}}"
+                    IsEnabled="{Binding LogInOutButtonState.IsEnabled, Source={x:Reference ParentView}}"
+                    IsVisible="{Binding LogInOutButtonState.IsVisible, Source={x:Reference ParentView}}"
                     HorizontalOptions="Start"    
-                        Margin="{StaticResource SmallTopBottomMargin}"
-                        Command="{Binding LogInOutUserCommandAsync}"
-                        MinimumWidthRequest="150"
-                                />
-
+                    Margin="{StaticResource SmallTopBottomMargin}"
+                    Command="{Binding LogInOutCommand, Source={x:Reference ParentView}}"
+                    MinimumWidthRequest="150"/>
         </StackLayout>
         </Grid>
-
-    
 </ContentView>

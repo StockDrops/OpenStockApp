@@ -18,6 +18,7 @@ namespace OpenStockApp.ViewModels.Settings
     {
         public string? PrivacyStatementUrl => _appConfig?.PrivacyStatement;
         public string? LicenseAgreementUrl => _appConfig?.LicenseAgreement;
+        public string? CurrentYear => DateTime.Now.Year.ToString();
         public string? UserPortalUrl => _appConfig?.UserPortal;
         public string? VersionDescription => Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString();
 
@@ -76,7 +77,7 @@ namespace OpenStockApp.ViewModels.Settings
 
         public async Task OnShareLog(CancellationToken cancellationToken = default)
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "StockDrops\\logs\\applog.txt");
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Paths.LogFile);
             await Share.RequestAsync(new ShareFileRequest
             {
                 Title = Title,

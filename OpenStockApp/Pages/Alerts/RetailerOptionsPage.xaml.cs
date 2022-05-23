@@ -1,3 +1,4 @@
+using Microsoft.Toolkit.Mvvm.Input;
 using OpenStockApp.Services;
 using OpenStockApp.ViewModels.AlertSettings;
 using System.Windows.Input;
@@ -10,16 +11,19 @@ public partial class RetailerOptionsPage : ContentPage
 	public RetailerOptionsPage(RetailerOptionsViewModel retailerOptionsViewModel)
 	{
 		BindingContext = retailerOptionsViewModel;
-#if ANDROID || IOS
-        DisplayHelp = new Command(() => OnDisplayHelp());
+#if ANDROID || IOS || WINDOWS
+        DisplayHelp = new AsyncRelayCommand(OnDisplayHelp);
 #endif
         InitializeComponent();
-		MessagingCenter.Send(this, "NavigatedTo");
-
+        
+#if ANDROID
+        MessagingCenter.Send(this, "NavigatedTo");
+#endif
         MessagingCenter.Subscribe<RetailerOptionsViewModel, Exception?>(this, "saved", async (sender, args) =>
         {
             await OnSaved(sender, args);
         });
+
     }
     public async Task OnSaved(object? sender, object? exception)
     {
@@ -29,8 +33,8 @@ public partial class RetailerOptionsPage : ContentPage
             await DisplayAlert("Failed to Save", "Alerts settings were not saved since you are not connected to our server.", "Ok");
     }
     public ICommand DisplayHelp { get; set; }
-    public void OnDisplayHelp()
+    public async Task OnDisplayHelp(CancellationToken cancellationToken = default)
     {
-        DisplayAlert(StringResources.AddNotificationsExplanationTitle, StringResources.AddNotificationsExplanation, "Ok");
+        await DisplayAlert(StringResources.AddNotificationsExplanationTitle, StringResources.AddNotificationsExplanation, "Ok");
     }
 }

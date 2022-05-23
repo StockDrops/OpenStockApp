@@ -8,16 +8,17 @@ namespace OpenStockApp.Pages.Alerts;
 
 public partial class AlertSettingsPageMobile : ContentPage 
 {    
-    public AlertSettingsPageMobile(AlertSettingsViewModel alertSettingsViewModel)
+    public AlertSettingsPageMobile(IAlertSettingsViewModel alertSettingsViewModel)
     {        
         BindingContext = alertSettingsViewModel;
-#if ANDROID || IOS
+#if ANDROID || IOS || WINDOWS
         DisplayHelp = new Command(() => OnDisplayHelp());
 #endif
-        InitializeComponent();
+        InitializeComponent(); 
 
-        Behaviors.Add(new EventToCommandBehavior { EventName = nameof(this.NavigatedTo), Command = alertSettingsViewModel.LoadProducts });
-        MessagingCenter.Subscribe<AlertSettingsViewModel, Exception?>(this, "saved", async (sender, args) =>
+        Behaviors.Add(new EventToCommandBehavior { EventName = nameof(this.Appearing), Command = alertSettingsViewModel.LoadProducts });
+        //Behaviors.Add(new EventToCommandBehavior { EventName = nameof(this.NavigatedFrom), Command = alertSettingsViewModel.NavigatedAwayCommand });
+        MessagingCenter.Subscribe<IAlertSettingsViewModel, Exception?>(this, "saved", async (sender, args) =>
         {
             await OnSaved(sender, args);
         });

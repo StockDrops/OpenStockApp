@@ -8,11 +8,15 @@
         <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
     </ContentView.Resources>
     <ContentView.Content>
-        <Grid IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}, Source={x:Reference view}}" RowDefinitions="*, auto" Padding="{OnIdiom Desktop=200, Default=50}">
+        <Grid IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}, Source={x:Reference view}}" RowDefinitions="0.6*, 0.4*" Padding="{OnIdiom Desktop=200, Default=50}">
             <Image Source="sdlogo.png" HorizontalOptions="Center"
-                                   VerticalOptions="Center"/>
+                                        Aspect="AspectFit"
+                                    Grid.Row="0"
+                                   VerticalOptions="CenterAndExpand"
+                   MaximumHeightRequest="200"/>
             <StackLayout HorizontalOptions="CenterAndExpand"
                                          VerticalOptions="CenterAndExpand"
+                         Margin="0,30,0,20"
                                          Grid.Row="1"
                                          Spacing="20">
                 <Label Text="You aren't logged in yet."
@@ -21,7 +25,8 @@
                 <Label Text="Log in or create an account below to see the latest alerts."
                             Style="{StaticResource BodyTextStyle}"
                                        HorizontalOptions="Center" />
-                <Button Text="Log In"
+                <Button Text="Log In or Create Account"
+                        Style="{StaticResource BaseButton}"
                                 Command="{Binding LogInCommand, Source={x:Reference view}}"
                                 IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}, Source={x:Reference view}}" />
 

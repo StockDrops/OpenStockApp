@@ -1,8 +1,9 @@
 ﻿using Bucket4Csharp.Core.Interfaces;
 using Bucket4Csharp.Core.Models;
 using Discord;
+using Discord.Net.Rest;
+using Discord.Rest;
 using Discord.Webhook;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OpenStockApi.Core.Models.Products;
 using OpenStockApi.Core.Models.Regions;
@@ -15,14 +16,12 @@ using OpenStockApp.Core.Models.Settings;
 using OpenStockApp.Discord.Contracts.Services;
 using OpenStockApp.Discord.Models;
 using OpenStockApp.Discord.Services.Exceptions;
-using OpenStockApp.Ef.Models;
 using System.Net.Http.Json;
 
 namespace OpenStockApp.Discord.Services
 {
     public class DiscordWebhookService : IDiscordWebhookService, INotificationService
     {
-        private readonly IDbContextFactory<AppDbContext> contextFactory;
         private readonly ILogger<DiscordWebhookService> logger;
         private readonly ISubscriptionService subscriptionService;
         private readonly ISettingsService settingsService;
@@ -30,14 +29,12 @@ namespace OpenStockApp.Discord.Services
         private readonly HttpClient client;
         public DiscordWebhookService(ISubscriptionService subscriptionService,
             ISettingsService settingsService,
-            IDbContextFactory<AppDbContext> dbContextFactory,
             HttpClient client,
             ILogger<DiscordWebhookService> logger)
         {
             
             this.settingsService = settingsService;
             this.subscriptionService = subscriptionService;
-            contextFactory = dbContextFactory;
             this.client = client;
             this.logger = logger;
             schedulingBucket = (ISchedulingBucket)IBucket.CreateBuilder().AddLimit(Bandwidth.Simple(3, TimeSpan.FromSeconds(1))).Build();
@@ -76,13 +73,29 @@ namespace OpenStockApp.Discord.Services
                 // meaning they manually edited the Json settings file to get around the initial validation.
                 throw new InvalidDiscordWebhookServerException("The server is in the blacklist.");
             }
-            
-            return await executeDiscordWebhook(result, CreateWebhookClient(discordWebhookUrl));
+            try
+            {
+                var client = CreateWebhookClient(discordWebhookUrl);
+                return await executeDiscordWebhook(result, client);
+            }
+            catch(Exception ex)
+            {
+                logger.LogError(ex, "Failed to create webhook client");
+            }
+            return 0;
         }
         private DiscordWebhookClient CreateWebhookClient(string discordWebhookUrl)
         {
+            if (OperatingSystem.IsIOS())
+            {
+                return new DiscordWebhookClient(discordWebhookUrl, new DiscordRestConfig
+                {
+                    RestClientProvider = DefaultRestClientProvider.Create(true)
+                });
+            }
             return new DiscordWebhookClient(discordWebhookUrl);
         }
+
         private async Task<ulong> executeDiscordWebhook(Result result, DiscordWebhookClient webhookClient)
         {
             var message = "In stock: " + ResultToMessage(result, false);
@@ -116,33 +129,19 @@ namespace OpenStockApp.Discord.Services
                 suffix = " Opened In Browser!";
             }
             //this method will convert a resultDTO into a message in the notification
-            using var context = contextFactory.CreateDbContext();
+            
             if(result.Sku != null)
             {
                 //get the retailer name if it doesn't exist in the sku
                 string? retailerName = result.Sku.Retailer?.Name;
-                if(retailerName == null)
-                {
-                    retailerName = context.Retailers.Where(r => r.Id == result.Sku.RetailerId).Select(r => r.Name).FirstOrDefault();
-                }
-                
 
                 if (result.Sku?.Model != null && !string.IsNullOrEmpty(result.Sku?.Model.Name) && !string.IsNullOrEmpty(retailerName))
                 {
                     return $"{result.Sku.Model.Name} for {result.Price} at {retailerName}.{suffix}";
                 }
-                else
+                else if (result.Sku != null)
                 {
-                    //we need the local model
-                    var model = context.Models.Where(m => m.Id == result.Sku.ModelId).FirstOrDefault();
-                    if (model != null)
-                    {
-                        return $"{model.Name} is {result.StockMessage} at {retailerName}.{suffix}";
-                    }
-                    else if(result.Sku != null)
-                    {
-                        return $"Found item {result.Sku.Name} - {result.Sku.Value} : {result.StockMessage} at {retailerName}.{suffix}";
-                    }
+                    return $"Found item {result.Sku.Name} - {result.Sku.Value} : {result.StockMessage} at {retailerName}.{suffix}";
                 }
             }
             throw new ArgumentException("Result couldn't be transalated to a message");

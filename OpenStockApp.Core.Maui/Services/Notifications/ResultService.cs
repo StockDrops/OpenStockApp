@@ -59,7 +59,6 @@ namespace OpenStockApp.Core.Maui.Services.Notifications
 
         public async Task LoadFilteredResultsFromServerAsync(int pageSize, int pageNumber, CancellationToken cancellationToken = default)
         {
-            
             try
             {
                 var count = 0;
@@ -73,6 +72,9 @@ namespace OpenStockApp.Core.Maui.Services.Notifications
                 await foreach (var result in stream)
                 {
                     result.DateTimeFound = result.DateTimeFound.ToLocalTime();
+#if IOS
+                    await Task.Delay(50);
+#endif
                     DisplayResult?.Invoke(this, result);
                     count++;
                 }

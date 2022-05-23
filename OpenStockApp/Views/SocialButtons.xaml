@@ -46,7 +46,7 @@
                                     Margin="15,0,5,0"
                                    Url="https://twitter.com/stock_drops"
                                    Aspect="AspectFit"
-                                   Source="{AppThemeBinding Dark=twitter_logo_dark.png, Light=twitter_logo_blue.png, Default=twitter_logo_dark.png}"/>
+                                   Source="{AppThemeBinding Dark=twitter_logo_blue.png, Light=twitter_logo_blue.png, Default=twitter_logo_blue.png}"/>
 
 
         </Grid>

@@ -13,52 +13,39 @@
              >
     <ContentPage.Resources>
         <mct:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueObject="Busy... Please wait..." FalseObject="Save Alert Settings" />
+        <mct:BoolToObjectConverter x:Key="BoolToZIndexConverter" TrueObject="1" FalseObject="100" />
         <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
     </ContentPage.Resources>
     <ContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="NavigatedTo"
                                     Command="{Binding NavigatedToCommand}"/>
-        
     </ContentPage.Behaviors>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="{OnPlatform Android=40, Default=80}"/>
-        </Grid.RowDefinitions>
-        <StackLayout Margin="15" Grid.Row="0" IsVisible="{Binding IsLoggedIn}" >
-            <StackLayout IsVisible="{OnPlatform Android=False, Default=True}">
-                <Label Text="{x:Static strings:Resources.ActiveNotificationsExplanationTitle}" LineBreakMode="WordWrap" Style="{StaticResource ListTitleStyle}" Margin="0,10,0,10" />
-                <Label Text="{x:Static strings:Resources.ActiveNotificationsExplanation}" LineBreakMode="CharacterWrap" Style="{StaticResource BodyTextStyle}" HorizontalOptions="Start" MaximumWidthRequest="{OnPlatform Android=350, UWP=1400, MacCatalyst=1400}" Margin="0,10,0,10"/>
-            </StackLayout>
-            <Button Text="Help" Command="{Binding DisplayHelp, Source={x:Reference page}}" HeightRequest="40"/>
-
-            <Label Text="{OnPlatform Default='Products Options', Android='Select an actively tracked product'}" Style="{StaticResource ListTitleStyle}"/>
-            <Picker Title="Select an actively tracked product"
-                ItemsSource="{Binding Products}"
-                ItemDisplayBinding="{Binding Name}"
-                SelectedItem="{Binding SelectedProduct}"
-                Margin="{OnPlatform Default='0,10,0,10', Android='0,2,0,2'}">
-                <Picker.Behaviors>
-                    <mct:EventToCommandBehavior EventName="SelectedIndexChanged"
-                                            Command="{Binding ItemSelected}"/>
-                </Picker.Behaviors>
-            </Picker>
-
-            <views:ModelOptionsView ItemSource="{Binding GroupedModelOptions}"
+        
+        <views:ModelOptionsView Grid.Row="0"
+                                ItemSource="{Binding GroupedModelOptions}"
                                 NotificationActions="{Binding NotificationActions}"
+                                ProductPickerTitle="Select an actively tracked product"
                                 IsBusy="{Binding IsBusy}"
                                 IsLoggedIn="{Binding IsLoggedIn}"
+                                LogInCommand="{Binding LogIn}"
                                 ReloadSourceCommand="{Binding ReloadModels}"
-                                SaveModelOptionsCommand="{Binding SaveModelOptions}"
-                                VerticalOptions="StartAndExpand"/>
-        </StackLayout>
-        <Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
-                    Command="{Binding SaveModelOptions}" 
-                    IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
-                     IsVisible="{Binding IsLoggedIn}"
-                    Grid.Row="1"/>
-        <views:LogInView IsLoggedIn="{Binding IsLoggedIn}"
-                            LogInCommand="{Binding LogIn}" />
+                                SaveCommand="{Binding SaveModelOptions}"
+                                HelpTextTitle="{x:Static strings:Resources.ActiveNotificationsExplanationTitle}"
+                                HelpText="{x:Static strings:Resources.ActiveNotificationsExplanation}"
+                                Products="{Binding Products}"
+                                SelectedProductCommand="{Binding ItemSelected}"
+                                SelectedProduct="{Binding SelectedProduct, Mode=OneWayToSource}"
+                                
+                                Margin="5,30,5,5"/> <!--ZIndex="35"-->
+        <Button Style="{StaticResource RightBottomButton}"
+                Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
+                Command="{Binding SaveModelOptions}" 
+                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                IsVisible="{Binding IsLoggedIn}"
+                />
+        <!--ZIndex="50"-->
+
     </Grid>
     
 </ContentPage>

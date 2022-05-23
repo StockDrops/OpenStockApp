@@ -12,10 +12,12 @@ using OpenStockApp.Core.Maui.Models.Users;
 using OpenStockApp.Core.Models.Users;
 using OpenStockApp.Core.Contracts.Services.Users;
 using OpenStockApp.Core.Maui.Helpers;
-using Microsoft.Identity.Client.Extensions.Msal;
+
 
 #if ANDROID
 using Android.App;
+#elif WINDOWS
+using Microsoft.Identity.Client.Extensions.Msal;
 #endif
 
 namespace OpenStockApp.Services.Users
@@ -164,13 +166,16 @@ namespace OpenStockApp.Services.Users
                 embeddedView = false;
 #elif ANDROID
             embeddedView = false;
-            var options = new SystemWebViewOptions()
-            {
-                OpenBrowserAsync = SystemWebViewOptions.OpenWithChromeEdgeBrowserAsync
-            };
+            
 #else
+            
             embeddedView = false;
 #endif
+            var options = new SystemWebViewOptions()
+            {
+                OpenBrowserAsync = SystemWebViewOptions.OpenWithChromeEdgeBrowserAsync,
+                iOSHidePrivacyPrompt = true,
+            };
 
             if (!ConnectivityHelpers.IsInternetAvailable())
                 return LoginResultType.NoNetworkAvailable;
@@ -180,11 +185,15 @@ namespace OpenStockApp.Services.Users
 
                 _authenticationResult = await client.AcquireTokenInteractive(Scopes)
                                             .WithUseEmbeddedWebView(embeddedView)
-#if ANDROID
                                             .WithSystemWebViewOptions(options)
+                                            
+#if ANDROID
+
+                                            
                                                                                                                    .WithParentActivityOrWindow(Platform.CurrentActivity)
 #endif
                                                             .ExecuteAsync(cancellationToken);
+
                 UpdateLatestIdentifierUsedInteractively();
 
                 LoggedIn?.Invoke(this, EventArgs.Empty);
@@ -192,8 +201,15 @@ namespace OpenStockApp.Services.Users
             }
             catch (MsalClientException ex)
             {
+                System.Diagnostics.Debug.WriteLine($"{ex}");
                 if (ex.ErrorCode == "authentication_canceled")
                     return LoginResultType.CancelledByUser;
+#if DEBUG
+                if(ex.ErrorCode == "missing_entitlements")
+                {
+                    return LoginResultType.Success;
+                }
+#endif
                 if (embeddedView)
                     embeddedView = false;
                 logger?.LogError(ex, "");
@@ -439,43 +455,6 @@ namespace OpenStockApp.Services.Users
 
         }
 
-        //        private async Task<Subscription> _getSubscriptionAsync(string token, string user_id)
-        //        {
-        //            if (IsLoggedIn())
-        //            {
-        //                try
-        //                {
-        //#if DEBUG
-        //                    //user_id = "a0a309e1-bcae-4e0a-b763-56833a7a36da";
-        //#endif
-        //                    string endpoint = $"https://api.stockdrops.net/api/users/subscription/{user_id}";
-
-        //                    using var httpClient = _httpClientFactory.CreateClient("StockDropsApiService");
-
-        //                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-
-
-        //                    var sub = await httpClient.GetFromJsonAsync<SubscriptionDTO>(endpoint);
-
-
-        //                    SubscriptionLevels subscription;
-        //                    if (SubscriptionLevels.TryParse(sub.Name, ignoreCase: true, out subscription))
-        //                    {
-        //                        return new Subscription { Name = sub.Name, AlertLimit = sub.AlertLimit, Delay = sub.Delay, SubscriptionLevel = subscription };
-        //                    }
-        //                    return new Subscription { AlertLimit = 25, Delay = 2000, Name = "Couldn't Load Subscription. Defaulting to Free. This usually indicates connection issues.", SubscriptionLevel = SubscriptionLevels.Free };
-        //                    //SubscriptionLevels.Parse()
-        //                }
-        //                catch (Exception e)
-        //                {
-        //                     logger?.LogError(e, "");
-        //                }
-        //            }
-        //            return new Subscription { AlertLimit = 25, Delay = 2000, Name = "Couldn't Load Subscription. Defaulting to Free. This usually indicates connection issues.", SubscriptionLevel = SubscriptionLevels.Free };
-
-        //        }
-
         private async Task<bool> AcquireTokenSilentAsync(IEnumerable<string> scopes, CancellationToken cancellationToken = default)
         {
             //var retryPolicy = Policy
@@ -594,12 +573,14 @@ namespace OpenStockApp.Services.Users
             _integratedAuthAvailable = false;
             UsedAuthority = authority;
 
-            return PublicClientApplicationBuilder.Create(clientId)
-                                                    .WithB2CAuthority(authority)
+            var clientBuilder = PublicClientApplicationBuilder.Create(clientId)
+                                                    .WithB2CAuthority(authority);
 #if ANDROID
-                                                    .WithParentActivityOrWindow(() => MainActivity)
+                                                    clientBuilder.WithParentActivityOrWindow(() => MainActivity);
+#elif IOS || MACCATALYST
+                                                    clientBuilder.WithIosKeychainSecurityGroup("com.stockdrops.openstockapp");
 #endif
-                                                    .WithRedirectUri(redirectUri)
+           return clientBuilder.WithRedirectUri(redirectUri)
                                                     .Build();
         }
         private IPublicClientApplication InitializeWithAadMultipleOrgs(string clientId, bool integratedAuth = false, string? redirectUri = null)

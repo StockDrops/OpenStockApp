@@ -14,6 +14,7 @@ using OpenStockApp.Core.Maui.Services.Settings;
 using OpenStockApp.Core.Contracts.Services.Settings;
 using OpenStockApp.Models.Users;
 using OpenStockApp.Services;
+using System.Windows.Input;
 
 namespace OpenStockApp.ViewModels.AlertSettings
 {
@@ -34,7 +35,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
 
     }
 
-    public class AlertSettingsViewModel : BaseConnectionViewModel
+    public class AlertSettingsViewModel : BaseConnectionViewModel, IAlertSettingsViewModel, IBaseConnectionViewModel
     {
         #region Collections
         public ObservableCollection<Product> Products { get; set; } = new ObservableCollection<Product>();
@@ -53,13 +54,12 @@ namespace OpenStockApp.ViewModels.AlertSettings
 
         #region Commands
         public AsyncRelayCommand LoadProducts { get; set; }
-        public AsyncRelayCommand LoadModels { get; set; }
-        public AsyncRelayCommand LoadRetailers { get; set; }
+        public AsyncRelayCommand ProductSelected { get; set; }
 
         public AsyncRelayCommand SaveModelOptions { get; set; }
         public AsyncRelayCommand<string> PerformSearch { get; set; }
         #endregion
-        
+
         #region Services
         private readonly IUserOptionsHubClient userOptionsHub;
         private readonly IIdentityService identityService;
@@ -74,7 +74,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
             IUserOptionsService userOptionsService,
             IIdentityService identityService,
             IRetailerOptionsDisplayService retailerOptionsDisplayService,
-            IUserOptionsDisplayService userOptionsDisplayService)  : base(baseHubClient: userOptionsHub, identityService)
+            IUserOptionsDisplayService userOptionsDisplayService) : base(baseHubClient: userOptionsHub, identityService)
         {
             #region Service Assignements
             this.userOptionsHub = userOptionsHub;
@@ -85,8 +85,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
             #endregion
             #region Command Assigments
             LoadProducts = new AsyncRelayCommand(OnLoadProducts);
-            LoadRetailers = new AsyncRelayCommand(OnCountrySelected);
-            LoadModels = new AsyncRelayCommand(OnProductSelected);
+            ProductSelected = new AsyncRelayCommand(OnProductSelected);
             SaveModelOptions = new AsyncRelayCommand(OnSaveModelOptions);
             PerformSearch = new AsyncRelayCommand<string>(OnPerformSearch);
             #endregion
@@ -97,7 +96,6 @@ namespace OpenStockApp.ViewModels.AlertSettings
         {
             retailerOptionsDisplayService.DisplayRetailerOptions += OnDisplayRetailerOptions;
         }
-
 
         public void OnDisplayRetailerOptions(object? sender, RetailerOptions retailerOptions)
         {
@@ -121,11 +119,12 @@ namespace OpenStockApp.ViewModels.AlertSettings
             LoadActions();
             await LoadAllCountries();
             await LoadAllProducts();
-            
+
         }
-        public void LoadActions()
+        public async void LoadActions()
         {
             NotificationActions.Clear();
+            await Task.Delay(50);
             NotificationActions.Add(new DisplayedNotificationActions
             {
                 Action = NotificationAction.OpenProductUrl,
@@ -147,16 +146,25 @@ namespace OpenStockApp.ViewModels.AlertSettings
             IsBusy = true;
             try
             {
+#if IOS || ANDROID
+                var toast = new CommunityToolkit.Maui.Alerts.Toast() { Text = "Saving... Please Wait..." };
+                await toast.Show(cancellationToken);
+#endif
                 await userOptionsService.SaveCurrentUserOptionsAsync(cancellationToken);
                 IsBusy = false;
-                MessagingCenter.Send<AlertSettingsViewModel, Exception?>(this, "saved", null);
+                MessagingCenter.Send<IAlertSettingsViewModel, Exception?>(this, "saved", null);
+                System.Diagnostics.Debug.WriteLine("Saved");
+
+#if IOS || ANDROID
+                toast = new CommunityToolkit.Maui.Alerts.Toast() { Text = "Saved" };
+                await toast.Show();
+#endif
             }
             catch (HubNotConnected ex)
             {
                 IsBusy = false;
-                MessagingCenter.Send<AlertSettingsViewModel, Exception?>(this, "saved", ex);
+                MessagingCenter.Send<IAlertSettingsViewModel, Exception?>(this, "saved", ex);
             }
-            
         }
         /// <summary>
         /// 
@@ -186,27 +194,28 @@ namespace OpenStockApp.ViewModels.AlertSettings
         private async Task LoadModelsFromHub(CancellationToken cancellationToken = default)
         {
             IsBusy = true;
+            
             Models.Clear();
-            _ = Task.Run(async () =>
-            {
-                //await Task.Delay(1000);
-                var groupedOptions = await userOptionsDisplayService.GetGroupedObversableModelOptionsAsync(SelectedProduct, cancellationToken);
+            await Task.Delay(100);
+            
+            //await Task.Delay(1000);
+            var groupedOptions = await userOptionsDisplayService.GetGroupedObversableModelOptionsAsync(SelectedProduct, cancellationToken);
 
-                foreach (var options in groupedOptions)
-                {
-                    
-                    Dispatcher.Dispatch( () => Models.Add(options));
-                    //await Task.Delay(200);
-                }
-                Dispatcher.Dispatch(() => IsBusy = false);
-            });
+            foreach (var options in groupedOptions)
+            {
+
+                Models.Add(options);
+                await Task.Delay(50);
+            }
+            IsBusy = false;
         }
         private async Task LoadAllCountries(CancellationToken token = default)
         {
             IsBusy = true;
             var countries = await userOptionsHub.GetCountries(token);
             Countries.Clear();
-            foreach(var country in countries)
+            await Task.Delay(50);
+            foreach (var country in countries)
             {
                 Countries.Add(country);
             }
@@ -225,6 +234,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
 
             var products = await Task.Run(async () => await userOptionsHub.GetProducts(token));
             Products.Clear();
+            await Task.Delay(50);
             foreach (var product in products)
             {
                 Products.Add(product);

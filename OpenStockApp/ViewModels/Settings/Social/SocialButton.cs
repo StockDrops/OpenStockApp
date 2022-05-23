@@ -1,5 +1,5 @@
 ﻿using Microsoft.Toolkit.Mvvm.Input;
-using OpenStockApp.Email.Contracts;
+using OpenStockApp.Core.Email.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;

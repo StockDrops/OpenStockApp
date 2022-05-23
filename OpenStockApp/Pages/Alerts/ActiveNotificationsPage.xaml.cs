@@ -12,15 +12,16 @@ public partial class ActiveNotificationsPage : ContentPage
 
 		//Behaviors.Add(new EventToCommandBehavior { EventName = nameof(this.Focused), Command = activeNotificationsViewModel.NavigatedToCommand });
 		BindingContext = activeNotificationsViewModel;
-#if ANDROID || IOS
+#if ANDROID || IOS || WINDOWS
 		DisplayHelp = new Command(() => OnDisplayHelp());
 #endif
 		InitializeComponent();
-
+#if ANDROID //this is trying to workaround the events not working as expected.
 		MessagingCenter.Send(this, "NavigatedTo");
+#endif
 		//NavigatedTo += OnNavigatedTo; //These are not getting triggered. We need to see if it's still the case in RC1 and open a bug report.
 		//Appearing += OnNavigatedTo;
-		
+
 	}
 	public ICommand DisplayHelp { get; set; }
 	public void OnDisplayHelp()

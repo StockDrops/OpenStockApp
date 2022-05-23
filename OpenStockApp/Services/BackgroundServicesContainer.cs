@@ -1,4 +1,7 @@
-﻿namespace OpenStockApp.Services
+﻿#if WINDOWS
+using Microsoft.Win32;
+#endif
+namespace OpenStockApp.Services
 {
     public static class BackgroundServicesContainer
     {
@@ -30,6 +33,19 @@
             }
             //_ = applicationHostService?.StopAsync();
         }
+#if WINDOWS
+        public static void OnPowerStateChanged(object sender, PowerModeChangedEventArgs e)
+        {
+            if(e.Mode == PowerModes.Resume)
+            {
+                StartApp();
+            }
+            else if(e.Mode == PowerModes.Suspend)
+            {
+                StopApp();
+            }
+        }
+#endif
         public static void Resume()
         {
 

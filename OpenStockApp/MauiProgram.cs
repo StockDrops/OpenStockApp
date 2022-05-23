@@ -9,10 +9,9 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using OpenStockApp.ViewModels.Settings;
 using OpenStockApp.Models;
-using OpenStockApp.Ef.Models;
 using OpenStockApp.Core.Contracts.Services.Settings;
 using OpenStockApp.Core.Maui.Services.Settings;
-using OpenStockApp.Email.Models.Context;
+//using OpenStockApp.Email.Models.Context;
 using OpenStockApp.Discord.Contracts.Services;
 using OpenStockApp.Discord.Services;
 using OpenStockApp.Core.Services;
@@ -33,6 +32,9 @@ using OpenStockApp.Core.Maui.Services.Notifications;
 using OpenStockApp.Core.Maui.Contracts.Services;
 using Microsoft.Extensions.Logging;
 using OpenStockApp.Services.Users;
+using OpenStockApp.ViewModels.Notifications;
+using OpenStockApp.Services.Notifications;
+
 
 
 
@@ -41,6 +43,7 @@ using OpenStockApp.Services.Users;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.ApplicationModel.Activation;
 using OpenStockApp.Core.Maui.Platforms.Windows;
+using Microsoft.Win32;
 #elif ANDROID
 using OpenStockApp.Platforms.Android.Notifications;
 using OpenStockApp.Platforms.Android;
@@ -68,15 +71,28 @@ public static class MauiProgram
                 configure.OnLaunching((app, args) =>
                 {
                     BackgroundServicesContainer.StartApp();
+                    SystemEvents.PowerModeChanged += BackgroundServicesContainer.OnPowerStateChanged;
                 });
                 configure.OnLaunched((window, args) =>
                 {
                     ToastNotificationManagerCompat.OnActivated += WindowsNotificationService.OnActivated;
                 });
-               //configure.OnClosed((app, args) => BackgroundServicesContainer.StopApp());
+               configure.OnClosed((app, args) => {
+                    SystemEvents.PowerModeChanged -= BackgroundServicesContainer.OnPowerStateChanged;
+                    try{
+                        BackgroundServicesContainer.StopApp();
+                    }
+                   catch(Exception ex)
+                   {
+                       System.Diagnostics.Debug.WriteLine(ex);
+                   }
+                    
+                   
+               });
+                
             });
 #elif ANDROID
-                lifecycle.AddAndroid(configure =>
+            lifecycle.AddAndroid(configure =>
                 {
                     configure.OnApplicationCreating(activity =>
                    {
@@ -90,6 +106,18 @@ public static class MauiProgram
                     //    BackgroundServicesContainer.StartApp();
                     //});
                 });
+#elif IOS
+            lifecycle.AddiOS(configure =>
+            {
+                configure.OnActivated(activity =>
+                {
+                    BackgroundServicesContainer.StartApp();
+                });
+                configure.WillTerminate(activity =>
+                {
+                    BackgroundServicesContainer.StopApp();
+                });
+            });
 #endif
         });
         //configuration:
@@ -108,8 +136,7 @@ public static class MauiProgram
 
         builder.Services.AddLogging(loggingBuilder =>
         {
-            
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "StockDrops\\logs\\applog.txt");
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Paths.LogFile);
             loggingBuilder.AddFile(path, fileLoggerOptions =>
             {
                 fileLoggerOptions.FileSizeLimitBytes = 5000000;
@@ -124,41 +151,40 @@ public static class MauiProgram
             //config.AddJsonFile(ConfigFile, optional: false, reloadOnChange: true);
         
         //database
-        var dbConfig = builder.Configuration.GetSection(nameof(DatabaseConfiguration)).Get<DatabaseConfiguration>();
-        var emailOptions = builder.Configuration.GetSection(nameof(EmailOptions)).Get<EmailOptions>();
+        //var dbConfig = builder.Configuration.GetSection(nameof(DatabaseConfiguration)).Get<DatabaseConfiguration>();
+        //var emailOptions = builder.Configuration.GetSection(nameof(EmailOptions)).Get<EmailOptions>();
         
         var local_path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         var entryAssemblyName = Assembly.GetEntryAssembly()?.GetName()?.Name ?? "StockDrops";
         var localAppFolder = Path.Combine(local_path, $"StockDrops\\{entryAssemblyName}");
 
-        dbConfig.ConnectionString = dbConfig.ConnectionString?.Replace("[path]", Path.Combine(localAppFolder, dbConfig.DatabaseName!));
-        emailOptions.ConnectionString = emailOptions.ConnectionString?.Replace("[path]", Path.Combine(localAppFolder, emailOptions.DatabaseName!));
+        //dbConfig.ConnectionString = dbConfig.ConnectionString?.Replace("[path]", Path.Combine(localAppFolder, dbConfig.DatabaseName!));
+        //emailOptions.ConnectionString = emailOptions.ConnectionString?.Replace("[path]", Path.Combine(localAppFolder, emailOptions.DatabaseName!));
         
         //Create the folder if it doesn't exist.
         Directory.CreateDirectory(localAppFolder);
 
 
-        builder.Services.Configure<DatabaseConfiguration>(options =>
-        {
-            options.DatabaseName = dbConfig.DatabaseName;
-            options.ConnectionString = dbConfig.ConnectionString;
-        });
-        builder.Services.Configure<EmailOptions>(options =>
-        {
-            options.DatabaseName = emailOptions.DatabaseName;
-            options.EncryptionKey = emailOptions.EncryptionKey;
-            options.ConnectionString = emailOptions.ConnectionString;
-        });
+        //builder.Services.Configure<DatabaseConfiguration>(options =>
+        //{
+        //    options.DatabaseName = dbConfig.DatabaseName;
+        //    options.ConnectionString = dbConfig.ConnectionString;
+        //});
+        //builder.Services.Configure<EmailOptions>(options =>
+        //{
+        //    options.DatabaseName = emailOptions.DatabaseName;
+        //    options.EncryptionKey = emailOptions.EncryptionKey;
+        //    options.ConnectionString = emailOptions.ConnectionString;
+        //});
 
 
         builder.Services.AddSingleton<ApplicationHostService>();
 
         
 
-        builder.Services.AddDbContext<AppDbContext>();
-        builder.Services.AddDbContextFactory<AppDbContext>();
-        builder.Services.AddDbContext<EmailDbContext>();
-        builder.Services.AddDbContextFactory<EmailDbContext>();
+
+        //builder.Services.AddDbContext<EmailDbContext>();
+        //builder.Services.AddDbContextFactory<EmailDbContext>();
         builder.Services.AddMemoryCache();
 
         builder.Services.AddHttpClient<DiscordWebhookService>(client =>
@@ -174,7 +200,7 @@ public static class MauiProgram
 
 
 
-        #region Hubs
+#region Hubs
 #if DEBUG
         builder.Services.Configure<NotificationsHubClientConfiguration>(builder.Configuration.GetSection($"{nameof(NotificationsHubClientConfiguration)}Debug"));
         builder.Services.Configure<BaseHubConfiguration>(builder.Configuration.GetSection($"{nameof(BaseHubConfiguration)}Debug"));
@@ -221,8 +247,11 @@ public static class MauiProgram
         builder.Services.AddHttpClient<IApiService, ApiService>()
             .ConfigureHttpClient(httpClient =>
             {
-                if(!string.IsNullOrEmpty(apiConfig.ApiBaseUrl))
+                if (!string.IsNullOrEmpty(apiConfig.ApiBaseUrl))
+                {
                     httpClient.BaseAddress = new Uri(apiConfig.ApiBaseUrl);
+                    System.Diagnostics.Debug.WriteLine(apiConfig?.ApiBaseUrl);
+                }
             });
         builder.Services.AddSingleton<IEntityApiService<OpenStockApi.Core.Models.Users.User>, EntityApiService<OpenStockApi.Core.Models.Users.User>>(services =>
         {
@@ -254,6 +283,8 @@ public static class MauiProgram
             return new EntityApiService<OpenStockApi.Core.Models.Users.ModelOptions>(apiService, "/ModelOptions");
         });
 
+        builder.Services.AddSingleton<ITokenRegistrationApiService, TokenRegistrationApiService>();
+        builder.Services.AddSingleton<ITokenRegistrationService, TokenRegistrationService>();
 
         var legacyApiConfig = builder.Configuration.GetSection("LegacyApiConfiguration").Get<ApiConfiguration>();
         if (legacyApiConfig == null)
@@ -271,7 +302,9 @@ public static class MauiProgram
             {
                 var httpClientHandler = new HttpClientHandler();
                 httpClientHandler.CookieContainer = new CookieContainer();
+#if WINDOWS || ANDROID
                 httpClientHandler.AutomaticDecompression = DecompressionMethods.All;
+#endif
                 httpClientHandler.UseCookies = true;
                 //this SSL check should only happen in non debug code or else we might break when testing with localhost, or debugging with Fiddler.
 //#if !DEBUG
@@ -301,15 +334,22 @@ public static class MauiProgram
         builder.Services.AddSingleton<AndroidNotificationService>();
         builder.Services.AddSingleton<INotificationService, AndroidNotificationService>(services => services.GetRequiredService<AndroidNotificationService>()); ;
         builder.Services.AddSingleton<IAndroidNotificationBuilder, AndroidNotificationBuilder>();
+#elif IOS
+        builder.Services.AddSingleton<INotificationService, NotificationService>();
 #endif
         //configure
         builder.Services.Configure<AppConfig>(builder.Configuration.GetSection(nameof(AppConfig)));
+
+        builder.Services.AddSingleton<ViewModels.Users.LoginViewModel>();
+        builder.Services.AddSingleton<Pages.LoginPage>();
+        builder.Services.AddSingleton<ShellViewModel>();
         //Viewmodels
         builder.Services.AddTransient<AboutSettingsViewModel>();
         builder.Services.AddTransient<DiscordSettingsViewModel>();
         builder.Services.AddTransient<ThemeViewModel>();
-        builder.Services.AddTransient<UserSettingsViewModel>();
-        builder.Services.AddTransient<AlertSettingsViewModel>();
+        builder.Services.AddTransient<PersonalizationViewModel>();
+        builder.Services.AddTransient<IUserDataViewModel, UserDataViewModel>(); //UserDataViewModel
+        //builder.Services.AddTransient<AlertSettingsViewModel>();
         builder.Services.AddTransient<UserOptionsViewModel>();
         builder.Services.AddTransient<NotificationsPageViewModel>();
         builder.Services.AddTransient<ActiveNotificationsViewModel>();
@@ -318,15 +358,24 @@ public static class MauiProgram
         builder.Services.AddTransient<ActiveNotificationsPage>();
         builder.Services.AddTransient<AboutSettingsPage>();
         builder.Services.AddTransient<NotificationsPage>();
+        builder.Services.AddTransient<NotificationsPageIos>();
+        builder.Services.AddTransient<PersonalizationSettingsPage>();
 
         builder.Services.AddTransient<NotificationPageMobile>();
+#if false
+        builder.Services.AddTransient<INotificationsPageViewModel, TestNotificationViewModel>();
+        builder.Services.AddTransient<IAlertSettingsViewModel, TestAlertSettingsViewModel>();
+#else
+        builder.Services.AddTransient<IAlertSettingsViewModel, AlertSettingsViewModel>();
+        builder.Services.AddTransient<INotificationsPageViewModel, NotificationsPageViewModel>();
+#endif
         builder.Services.AddTransient<AlertSettingsPageMobile>();
         builder.Services.AddTransient<RetailerOptionsPage>();
         builder.Services.AddTransient<RetailerOptionsViewModel>();
 
         var app = builder.Build();
-        app.MigrateDatabase<AppDbContext>();
-        app.MigrateDatabase<EmailDbContext>();
+        //app.MigrateDatabase<AppDbContext>();
+        //app.MigrateDatabase<EmailDbContext>();
         return app;
 	}
 }
