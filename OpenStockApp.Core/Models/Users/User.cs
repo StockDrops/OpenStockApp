@@ -47,6 +47,7 @@ namespace OpenStockApp.Core.Models.Users
             Id = tokenUser.oid;
             DisplayName = tokenUser.name;
             Mail = tokenUser.preferred_username;
+            
         }
         /// <summary>
         /// 

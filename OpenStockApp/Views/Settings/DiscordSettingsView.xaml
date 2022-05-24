@@ -44,7 +44,6 @@
                        Style="{StaticResource BodyTextStyle}"/>
                     <Entry Keyboard="Url"
                            Text="{Binding WebhookUrl}"
-                           Style="{StaticResource BaseEntry}"
                            MaximumWidthRequest="{OnPlatform iOS=300, Android=800, Default=1500}"
                            MinimumWidthRequest="{OnPlatform Android=400, UWP=1200, Default=400, iOS=300}"
                            HorizontalOptions="StartAndExpand"

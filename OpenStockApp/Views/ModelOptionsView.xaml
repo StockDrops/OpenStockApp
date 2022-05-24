@@ -53,17 +53,17 @@
                                 </Grid>
 
 
-                                <Border Margin="0,5,0,0"
-                                        BackgroundColor="{AppThemeBinding Dark='#2a292f', Default='#2a292f'}"
-                                        Stroke="{AppThemeBinding Dark='#2a292f', Default='#2a292f'}"
-                                        Padding="10">
+                                <Border Margin="2,5,2,0"
+                                        BackgroundColor="{AppThemeBinding Dark='#2a292f', Light='#E0DFE2', Default='#2a292f'}"
+                                        Stroke="{AppThemeBinding Dark='#2a292f', Light='#E0DFE2', Default='#2a292f'}"
+                                        Padding="8">
                                     <Border.StrokeShape>
                                         <RoundRectangle CornerRadius="9" />
                                     </Border.StrokeShape>
                                     <Picker Title="{Binding ProductPickerTitle, Source={x:Reference view}}"
-                                            TitleColor="{AppThemeBinding Dark='#AEAEB2', Default='#AEAEB2'}"
-                                            TextColor="{AppThemeBinding Dark='#AEAEB2', Default='#AEAEB2'}"
-                                            BackgroundColor="{AppThemeBinding Dark='#2a292f', Default='#2a292f'}"
+                                            TitleColor="{AppThemeBinding Dark='#AEAEB2', Light='#989997', Default='#AEAEB2'}"
+                                            TextColor="{AppThemeBinding Dark='#AEAEB2', Light='#989997', Default='#AEAEB2'}"
+                                            BackgroundColor="{AppThemeBinding Dark='#2a292f', Light='#E0DFE2', Default='#2a292f'}"
                                             HeightRequest="{OnPlatform iOS=20, Default=10}"
                                             ItemsSource="{Binding Products, Source={x:Reference view}}"
                                             ItemDisplayBinding="{Binding Name}"

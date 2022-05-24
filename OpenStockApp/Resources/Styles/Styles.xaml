@@ -9,7 +9,7 @@
     <Color x:Key="Dark">#2B0B98</Color>
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">#141414</Color>
-    <Color x:Key="LightGray">#E5E5E1</Color>
+    <Color x:Key="LightGray">#E0DFE2</Color>
     <Color x:Key="MidGray">#969696</Color>
     <Color x:Key="DarkGray">#505050</Color>
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
@@ -190,7 +190,7 @@
     <Style TargetType="Picker">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark='#AEAEB2', Light='#2a292f', Default='#AEAEB2'}" />
         <Setter Property="TitleColor" Value="{AppThemeBinding Dark='#AEAEB2', Light='#2a292f', Default='#AEAEB2'}" />
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark='#2a292f', Light='#C8E5E5EA', Default='#2a292f'}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark='#2a292f', Light='#E0DFE2', Default='#2a292f'}" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="VisualStateManager.VisualStateGroups">
@@ -209,8 +209,8 @@
     </Style>
 
     <Style TargetType="Border" x:Key="PickerBorder">
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark='#2a292f', Default='#2a292f', Light='#C8E5E5EA'}"/>
-        <Setter Property="Stroke" Value="{AppThemeBinding Dark='#2a292f', Default='#2a292f', Light='#C8E5E5EA'}"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark='#2a292f', Default='#2a292f', Light='#E0DFE2'}"/>
+        <Setter Property="Stroke" Value="{AppThemeBinding Dark='#2a292f', Default='#2a292f', Light='#E0DFE2'}"/>
         <Setter Property="Padding" Value="10"/>
         <Setter Property="StrokeShape">
             <RoundRectangle CornerRadius="9" />
