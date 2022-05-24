@@ -28,22 +28,22 @@
     <CollectionView.Header>
                     <Grid Margin="{OnPlatform Default='5,2,5,2', Android='0,2,0,2', iOS='0,2,0,2'}"
                           RowDefinitions="200">
-                    <StackLayout IsVisible="{Binding IsLoggedIn, Source={x:Reference view}}">
-                        <StackLayout Margin="{OnPlatform iOS='5,10,5,0', Android='5', Default='30'}" 
+                    <VerticalStackLayout IsVisible="{Binding IsLoggedIn, Source={x:Reference view}}">
+                        <VerticalStackLayout Margin="{OnPlatform iOS='5,10,5,0', Android='5', Default='30'}" 
                                     IsVisible="{Binding IsLoggedIn, Source={x:Reference view}}" >
                             <Grid HeightRequest="40">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="{OnPlatform UWP='0.3*', Default='0.6*'}"/>
                                         <ColumnDefinition Width="0.4*"/>
                                     </Grid.ColumnDefinitions>
-                                    <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                                    <HorizontalStackLayout Grid.Row="0" Grid.Column="0" >
                                         <Label VerticalOptions="Center" Text="Products Options" Style="{StaticResource ListTitleStyle}"
                                    Margin="0,10,0,10"/>
                                         <Button Text="Help" IsVisible="{OnPlatform Android='False', UWP='True', Default='False'}" 
                                     Command="{Binding HelpCommand, Source={x:Reference view}}" 
                                     HeightRequest="40"
                                     Margin="10,10,0,10"/>
-                                    </StackLayout>
+                                    </HorizontalStackLayout>
                                     <Button Text="Help" 
                                     IsVisible="{OnPlatform Android='True', UWP='False', Default='True'}" 
                                     Command="{Binding HelpCommand, Source={x:Reference view}}" 
@@ -74,7 +74,7 @@
                                     </Picker>
                                 </Border>
 
-                            </StackLayout>
+                            </VerticalStackLayout>
 
                             <SearchBar x:Name="searchBar"
                                IsTextPredictionEnabled="True"
@@ -89,11 +89,11 @@
                                                         CommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
                                 </SearchBar.Behaviors>
                             </SearchBar>
-                            <StackLayout Orientation="Horizontal" Margin="0,2,0,2">
+                            <HorizontalStackLayout Margin="0,2,0,2">
                                 <Button Text="Enable All" Command="{Binding SelectCommand, Source={x:Reference view}}" Margin="0,0,5,0" />
                                 <Button Text="Disable All" Command="{Binding DeselectCommand, Source={x:Reference view}}" Margin="0,0,5,0" />
-                            </StackLayout>
-                        </StackLayout>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
                     </Grid>
                 </CollectionView.Header>
                 <!--<CollectionView.ItemsLayout>

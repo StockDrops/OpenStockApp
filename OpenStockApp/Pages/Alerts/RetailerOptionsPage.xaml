@@ -28,8 +28,8 @@
                         Margin="5,25,5,20">
             <CollectionView.Header>
                 <Grid IsVisible="{Binding IsLoggedIn}" Margin="5">
-                    <StackLayout>
-                        <StackLayout Grid.Row="0" Orientation="Horizontal">
+                    <VerticalStackLayout>
+                        <HorizontalStackLayout Grid.Row="0">
                             <Label VerticalOptions="Center" 
                                    Text="Retailer Options" 
                                    Style="{StaticResource ListTitleStyle}"
@@ -38,7 +38,7 @@
                                     Command="{Binding DisplayHelp, Source={x:Reference page}}" 
                                     HeightRequest="40"
                                     Margin="10,10,0,10"/>
-                        </StackLayout>
+                        </HorizontalStackLayout>
                         <Border Style="{StaticResource PickerBorder}" Margin="0,5,0,5">
                             <Picker Title="Select a country"
                                     ItemsSource="{Binding Countries}"
@@ -51,7 +51,7 @@
                             </Picker>
                         </Border>
                         
-                    </StackLayout>
+                    </VerticalStackLayout>
                 </Grid>
             </CollectionView.Header>
             <CollectionView.ItemTemplate>
@@ -60,13 +60,13 @@
                           HorizontalOptions="Start"
                           WidthRequest="100"
                           Margin="10,0,10,0">
-                        <StackLayout>
+                        <VerticalStackLayout>
                             <Label Text="{Binding Retailer.Name}" Style="{StaticResource ListTitleStyle}" />
-                            <StackLayout Orientation="Horizontal">
+                            <HorizontalStackLayout>
                                 <Label Text="Enable" VerticalOptions="Center" Margin="5" />
                                 <Switch IsToggled="{Binding IsEnabled}" VerticalOptions="Center"  Margin="5"/>
-                            </StackLayout>
-                        </StackLayout>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

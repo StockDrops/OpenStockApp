@@ -25,11 +25,11 @@ namespace OpenStockApp.Services.Notifications
                     );
                 await UNUserNotificationCenter.Current.AddNotificationRequestAsync(request);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex);
             }
-           
+
         }
 
         public async Task SendNotificationAsync(IEnumerable<Result> results)

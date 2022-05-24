@@ -17,7 +17,7 @@
         </ResourceDictionary>
     </ContentView.Resources>
     <ContentView.Content>
-        <StackLayout Orientation="{OnPlatform  Default='Horizontal', iOS='Horizontal'}" Margin="2">
+        <HorizontalStackLayout Margin="2">
             
                 <Label Text="{Binding IsConnected, Source={x:Reference view}, Converter={StaticResource BoolToObjectConverter}, Mode=OneWay}"
                        VerticalOptions="Start" Margin="{OnPlatform Default=5, iOS='5,0,2,0'}" />
@@ -25,6 +25,6 @@
             <Button Text="Connect"  
                     HorizontalOptions="Start"
                     IsEnabled="{Binding IsConnected, Source={x:Reference view}, Converter={StaticResource InvertedBoolConverter}}" Command="{Binding ConnectCommand}" IsVisible="{Binding IsConnected, Source={x:Reference view}, Converter={StaticResource InvertedBoolConverter}}" />
-        </StackLayout>
+        </HorizontalStackLayout>
     </ContentView.Content>
 </ContentView>

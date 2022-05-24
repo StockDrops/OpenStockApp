@@ -48,6 +48,7 @@ namespace OpenStockApp.Services
             this.tokenRegistrationService = tokenRegistrationService;
           
             this.logger = logger;
+            AppDomain.CurrentDomain.FirstChanceException += OnFirstChanceException;
 #if ANDROID
             MessagingCenter.Subscribe<FirebaseService, Result>(this, "NotificationReceived", async (sender, args) =>
             {
@@ -70,6 +71,10 @@ namespace OpenStockApp.Services
             await notificationHubService.ForwardNotificationReceived(remoteMessage);
         }
 #endif
+        private void OnFirstChanceException(object? sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
+        {
+            logger.LogWarning(e.Exception, "Unhandled exception");
+        }
 
         /// <summary>
         /// Starts the services as required.

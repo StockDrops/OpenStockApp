@@ -62,7 +62,8 @@ namespace OpenStockApp.Resources.Strings {
         
         /// <summary>
         ///   Looks up a localized string similar to You can use this page to browse your saved alert options. Select a product (only products that have been enabled by using &quot;Add Notifications&quot; will be shown). Then browse all your active notifications. 
-        ///You can make changes to them and save them by clicking the button at the bottom of the page..
+        ///You can make changes to them and save them by clicking the button at the bottom of the page.
+        ///If you do not see any active alerts in here, make sure you have clicked &quot;Save Alert Settings&quot; when adding the alerts..
         /// </summary>
         public static string ActiveNotificationsExplanation {
             get {

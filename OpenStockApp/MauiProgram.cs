@@ -38,7 +38,6 @@ using OpenStockApp.Services.Notifications;
 
 
 
-
 #if WINDOWS
 using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.ApplicationModel.Activation;
@@ -376,6 +375,7 @@ public static class MauiProgram
         var app = builder.Build();
         //app.MigrateDatabase<AppDbContext>();
         //app.MigrateDatabase<EmailDbContext>();
+        
         return app;
 	}
 }

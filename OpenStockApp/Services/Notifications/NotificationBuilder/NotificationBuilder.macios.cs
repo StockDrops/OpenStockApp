@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using UserNotifications;
 
 namespace OpenStockApp.Services.Notifications
@@ -24,7 +25,7 @@ namespace OpenStockApp.Services.Notifications
                 notificationContent.CategoryIdentifier = NotificationCategories.All;
 
                 notificationContent.UserInfo = new NSDictionary<NSString, NSString>(
-                    new NSString[]{ 
+                    new NSString[]{
                         new NSString(NotificationCategories.ProductUrl),
                         new NSString(NotificationCategories.AddToCart)
                     },

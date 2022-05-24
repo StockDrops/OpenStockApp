@@ -39,14 +39,14 @@
                                       ConnectCommand="{Binding BindingContext.ConnectCommand, Source={x:Reference page}}"
                                       Grid.Row="0"/>
         <ScrollView Grid.Row="1">
-            <StackLayout Margin="{OnPlatform iOS='30,60,30,30', Default='30'}" IsVisible="{Binding IsLoggedIn}">
+            <VerticalStackLayout Margin="{OnPlatform iOS='30,60,30,30', Default='30'}" IsVisible="{Binding IsLoggedIn}">
                 <!--<StackLayout IsVisible="{OnPlatform Android=False, Default=True}">
                     <Label Text="{x:Static strings:Resources.AddNotificationsExplanationTitle}" LineBreakMode="WordWrap" Style="{StaticResource ListTitleStyle}" Margin="0,10,0,10" />
                     <Label Text="{x:Static strings:Resources.AddNotificationsExplanation}" LineBreakMode="CharacterWrap" Style="{StaticResource BodyTextStyle}" HorizontalOptions="Start" MaximumWidthRequest="{OnPlatform Android=350, UWP=1400, MacCatalyst=1400}" Margin="0,10,0,10"/>
                 </StackLayout>-->
                 <Button Text="Help" Command="{Binding DisplayHelp, Source={x:Reference page}}" HeightRequest="40"/>
                 <Label Text="Retailer Options" Style="{StaticResource ListTitleStyle}" Margin="0,10,0,10"/>
-                <StackLayout>
+                <VerticalStackLayout>
 
 
                     <Picker Title="Select a country"
@@ -71,18 +71,18 @@
                                   
                             WidthRequest="100"
                                 Margin="10,0,10,0">
-                                    <StackLayout>
+                                    <VerticalStackLayout>
                                         <Label Text="{Binding Retailer.Name}" />
 
                                         <Label Text="Enable" />
                                         <Switch IsToggled="{Binding IsEnabled}"/>
                                         <!--<Picker SelectedItem="{Binding ModelOptions.NotificationAction}" />-->
-                                    </StackLayout>
+                                    </VerticalStackLayout>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
-                </StackLayout>
+                </VerticalStackLayout>
 
 
                 <Label Text="Products Options" Style="{StaticResource ListTitleStyle}"/>
@@ -199,7 +199,7 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>-->
             
-        </StackLayout>
+        </VerticalStackLayout>
     </ScrollView>
         <Button  Text="{Binding IsBusy, Converter={StaticResource BoolToObjectConverter}}"
                 Command="{Binding SaveModelOptions}" 

@@ -25,7 +25,7 @@
         <Label Grid.Row="0"
                Text="{x:Static strings:Resources.SettingsPageUserTitle}"
                Style="{StaticResource SubtitleTextStyle}" />
-            <StackLayout Grid.Row="1"
+            <VerticalStackLayout Grid.Row="1"
                          HorizontalOptions="Fill">
                 <Grid Margin="{StaticResource SmallTopMargin}">
                     <Grid.RowDefinitions>
@@ -53,13 +53,12 @@
                     </Image.Clip>
                 </Image>
                     
-                    <StackLayout Grid.Row="0"
+                    <VerticalStackLayout Grid.Row="0"
                                  Grid.Column="1"
                                  Grid.ColumnSpan="2"
                                  Grid.RowSpan="2"
                                 
                              Margin="{StaticResource XSmallLeftMargin}"
-                             Orientation="Vertical"
                              VerticalOptions="Fill">
                     <!--{Binding User.Name}-->
                     <Label Margin="{StaticResource MediumTopMargin}"
@@ -82,7 +81,7 @@
                             Text="{Binding User.SubscriptionLevel, Source={x:Reference ParentView}}"
                             Margin="{StaticResource XSmallTopMargin}"
                              />
-                    </StackLayout>
+                    </VerticalStackLayout>
                 </Grid>
             <Button Text="{Binding RefreshButtonState.ButtonText, Source={x:Reference ParentView}}"
                         IsEnabled="{Binding RefreshButtonState.IsEnabled, Source={x:Reference ParentView}}"
@@ -98,6 +97,6 @@
                     Margin="{StaticResource SmallTopBottomMargin}"
                     Command="{Binding LogInOutCommand, Source={x:Reference ParentView}}"
                     MinimumWidthRequest="150"/>
-        </StackLayout>
+        </VerticalStackLayout>
         </Grid>
 </ContentView>

@@ -39,7 +39,7 @@
                          Grid.RowSpan="3"
                             LogInCommand="{Binding LogIn}" />
         
-        <StackLayout Grid.Row="0" Grid.Column="0" IsVisible="{Binding IsLoggedIn}" HorizontalOptions="CenterAndExpand">
+        <VerticalStackLayout Grid.Row="0" Grid.Column="0" IsVisible="{Binding IsLoggedIn}" HorizontalOptions="CenterAndExpand">
             <main:ConnectionIndicatorView IsConnected="{Binding IsConnected}"
                                           ConnectCommand="{Binding ConnectCommand}"
                                           
@@ -59,7 +59,7 @@
                 </Grid.ColumnDefinitions>
                 <ActivityIndicator Grid.Column="1" IsRunning="{Binding IsRefreshing}" HorizontalOptions="Center" Margin="10" IsVisible="{OnPlatform Default=False, MacCatalyst=True, UWP=True, iOS=False}"/>
             </Grid>
-        </StackLayout>
+        </VerticalStackLayout>
         
         <Button Grid.Row="0"
                 Grid.Column="1"
@@ -73,8 +73,8 @@
                Grid.ColumnSpan="2" Margin="2"
                BackgroundColor="{AppThemeBinding Dark={StaticResource SecondaryColor}, Light={StaticResource BackgroundColor}}"
                IsVisible="{Binding IsLoggedIn}">
-            <StackLayout Grid.Row="1" Orientation="Horizontal">
-                <StackLayout Orientation="Vertical">
+            <HorizontalStackLayout Grid.Row="1">
+                <VerticalStackLayout>
                     <Label Text="Enable alert settings" 
                        VerticalOptions="Center"
                        Margin="{OnPlatform Default='10,0,10,0', Android='0,0,0,0', iOS='0,0,0,0'} "/>
@@ -88,11 +88,11 @@
                     </Switch>
                     <!--<views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='False', Android='True'}"  />-->
                     <!--<views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='True', Android='False'}"  />-->
-                </StackLayout>
-                <StackLayout>
+                </VerticalStackLayout>
+                <VerticalStackLayout>
                     <views:SocialButtons VerticalOptions="Center" Margin="10,0,10,0" IsVisible="{OnPlatform Default='False', Android='True', iOS='True'}"  />
-                </StackLayout>
-            </StackLayout>
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
             
         </Frame>
         
@@ -128,7 +128,7 @@
                                 <ColumnDefinition Width="3*"/>
                                 <ColumnDefinition Width="1*" />
                             </Grid.ColumnDefinitions>
-                            <StackLayout Grid.Column="0" Grid.Row="0" Margin="25">
+                            <VerticalStackLayout Grid.Column="0" Grid.Row="0" Margin="25">
                                 <Label Text="{Binding Sku.Model.Name}" 
                                    Style="{StaticResource ListTitleStyle}" 
                                        VerticalOptions="Center"
@@ -138,8 +138,8 @@
                                 <Label Text="{Binding Price}" />
                                 <Label Text="{Binding DateTimeFound, StringFormat='{0:g}'}"/>
 
-                            </StackLayout>
-                            <StackLayout Grid.Column="1" Grid.Row="0"  Margin="{OnPlatform Default='4,25,8,0', UWP=25}">
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" Grid.Row="0"  Margin="{OnPlatform Default='4,25,8,0', UWP=25}">
                                     
                                     <Image Source="{Binding ThumbnailUrl}" 
                                            MaximumHeightRequest="{OnPlatform Default=80, Android=50, iOS=50}"
@@ -148,8 +148,8 @@
                                        VerticalOptions="Start"
                                            Margin="{OnPlatform Default='0,1,0,1', UWP='0,10,0,10', iOS='0,1,0,1'}"/>
 
-                                </StackLayout>
-                            <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="25">
+                                </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="25">
 
                                 <Image Source="{Binding ImageUrl}" Aspect="AspectFit" HeightRequest="200" Margin="0,25,0,25">
                                     <!--<Image.Clip>
@@ -157,19 +157,19 @@
                                 </Image.Clip>-->
                                 </Image>
 
-                            </StackLayout>
-                            <StackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="25">
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="25">
 
                                 <views:HyperlinkButton Text="Product Url" Url="{Binding ProductUrl}" Margin="2" />
                                 <views:HyperlinkButton Url="{Binding AtcUrl}" Text="Add To Cart Url" IsVisible="{Binding AtcUrl, Converter={StaticResource IsNotNullOrEmptyConverter}}" Margin="2"/>
-                            </StackLayout>
+                            </VerticalStackLayout>
                         </Grid>
 
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
             </RefreshView>
-            <StackLayout Grid.Row="2" 
+            <VerticalStackLayout Grid.Row="2" 
                          VerticalOptions="End"
                          HorizontalOptions="End"
                          Margin="5">
@@ -198,7 +198,7 @@
                                     Text="End Reached"
                                     IsVisible="{Binding EndReached}"/>
 
-            </StackLayout>
+            </VerticalStackLayout>
         </Grid>
     </Grid>
 

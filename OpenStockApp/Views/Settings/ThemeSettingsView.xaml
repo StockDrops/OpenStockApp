@@ -26,7 +26,7 @@
                        Grid.Row="0"
                        Style="{StaticResource SubtitleTextStyle}"
                        Text="{x:Static strings:Resources.SettingsPageChooseThemeText}" />
-                <StackLayout Margin="{StaticResource XSmallTopMargin}" Grid.Row="1">
+                <VerticalStackLayout Margin="{StaticResource XSmallTopMargin}" Grid.Row="1">
                 <Frame CornerRadius="5"
                        Padding="2"
                        BackgroundColor="{AppThemeBinding Dark={StaticResource DarkGray}, Default={StaticResource White}}"
@@ -70,7 +70,7 @@
                             TextColor="{AppThemeBinding Dark={StaticResource BackgroundColor},Light={StaticResource BackgroundColorDark}}"    
                             IsChecked="{Binding Theme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Unspecified}" />
                 </Frame>
-            </StackLayout>
+            </VerticalStackLayout>
         </Grid>
     </ScrollView>
 </ContentView>

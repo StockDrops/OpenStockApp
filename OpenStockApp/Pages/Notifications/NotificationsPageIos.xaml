@@ -42,7 +42,7 @@
         <CollectionView.Header>
                 <Grid HeightRequest="195"
                   Margin="0,0,8,5">
-                    <StackLayout IsVisible="{Binding IsLoggedIn}"
+                    <VerticalStackLayout IsVisible="{Binding IsLoggedIn}"
                                  HorizontalOptions="CenterAndExpand">
                     <main:ConnectionIndicatorView IsConnected="{Binding IsConnected}"
                                                       ConnectCommand="{Binding ConnectCommand}"
@@ -62,8 +62,8 @@
                            Margin="{OnPlatform Default=4, iOS=15}"                           
                            BackgroundColor="{AppThemeBinding Dark={StaticResource SecondaryColor}, Light={StaticResource BackgroundColor}}"
                            IsVisible="{Binding IsLoggedIn}">
-                        <StackLayout Grid.Row="1" Orientation="Horizontal">
-                                <StackLayout Orientation="Vertical" VerticalOptions="Start">
+                        <HorizontalStackLayout Grid.Row="1">
+                                <VerticalStackLayout VerticalOptions="Start">
                                     <Label Text="Enable alert settings" 
                                            VerticalOptions="Center"
                                            Margin="{OnPlatform Default='10,0,10,0', Android='0,0,0,0', iOS='0,0,0,10'} "/>
@@ -76,11 +76,11 @@
                                         </Switch.Behaviors>
                                     </Switch>
                                     <views:SocialButtons VerticalOptions="Center" Margin="5,0,5,0" IsVisible="{OnPlatform Default='False', Android='True'}"  />
-                                </StackLayout>
+                                </VerticalStackLayout>
                                 <views:SocialButtons VerticalOptions="Start" Margin="10,0,0,0" IsVisible="{OnPlatform Default='False', Android='True', iOS='True'}"  />
-                            </StackLayout>
+                            </HorizontalStackLayout>
                     </Frame>
-                </StackLayout>
+                </VerticalStackLayout>
 
             </Grid>
         </CollectionView.Header>
@@ -103,7 +103,7 @@
                         <ColumnDefinition Width="3*"/>
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <StackLayout Grid.Column="0" Grid.Row="0" Margin="25">
+                    <VerticalStackLayout Grid.Column="0" Grid.Row="0" Margin="25">
                         <Label Text="{Binding Sku.Model.Name}" 
                                            MaximumWidthRequest="80"
                                    Style="{StaticResource ListTitleStyle}" 
@@ -114,8 +114,8 @@
                         <Label Text="{Binding Price}" />
                         <Label Text="{Binding DateTimeFound, StringFormat='{0:g}'}"/>
 
-                    </StackLayout>
-                    <StackLayout Grid.Column="1" Grid.Row="0"  Margin="{OnPlatform Default='10', UWP=25}">
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Grid.Row="0"  Margin="{OnPlatform Default='10', UWP=25}">
 
                         <Image Source="{Binding ThumbnailUrl}" 
                                            HeightRequest="{OnPlatform Default=80, Android=50, iOS=50}"
@@ -124,8 +124,8 @@
                                        VerticalOptions="Start"
                                            Margin="{OnPlatform Default='0,1,0,1', UWP='0,10,0,10', iOS='0,1,0,1'}"/>
 
-                    </StackLayout>
-                    <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="20">
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="20">
                         <Image Source="{Binding ImageUrl}"
                                IsVisible="{OnPlatform iOS={Binding ImageLicensed}, Default='True', MacCatalyst={Binding ImageLicensed}}"
                                HeightRequest="120"
@@ -135,12 +135,12 @@
                             </Image.Clip>-->
                         </Image>
 
-                    </StackLayout>
-                    <StackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="20">
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="20">
 
                         <views:HyperlinkButton Text="Product Url" Url="{Binding ProductUrl}" Margin="2" />
                         <views:HyperlinkButton Url="{Binding AtcUrl}" Text="Add To Cart Url" IsVisible="{Binding AtcUrl, Converter={StaticResource IsNotNullOrEmptyConverter}}" Margin="2"/>
-                    </StackLayout>
+                    </VerticalStackLayout>
                 </Grid>
 
             </DataTemplate>

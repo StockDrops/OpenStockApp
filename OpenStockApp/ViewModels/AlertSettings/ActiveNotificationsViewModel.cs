@@ -79,7 +79,7 @@ namespace OpenStockApp.ViewModels.AlertSettings
         {
             if (identityService.IsLoggedIn())
             {
-                var l = userOptionsService.UserOptions?.ModelOptions.Where(m => m.IsEnabled).Select(m => m.Model.Product).DistinctBy(p => p.Id).ToList();
+                var l = userOptionsService.UserOptions?.ModelOptions.Where(m => m.IsEnabled && m.Model?.Product != null).Select(m => m.Model.Product).DistinctBy(p => p.Id).ToList();
                 Products.Clear();
                 Guard.IsNotNull(l, "Product List");
                 foreach (var product in l)

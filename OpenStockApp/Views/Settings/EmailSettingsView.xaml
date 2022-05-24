@@ -16,13 +16,13 @@
         <mctconverters:BoolToObjectConverter FalseObject="Log In Microsoft Email" TrueObject="Log Out Microsoft Email" x:Key="LogInOutMicrosoftConverter" />
         <mctconverters:InvertedBoolConverter x:Key="InvertedBoolConverter" />
     </ContentView.Resources>
-    
-    <StackLayout HorizontalOptions="Fill">
+
+    <VerticalStackLayout HorizontalOptions="Fill">
         <Label
                     Margin="{StaticResource SmallTopMargin}"
                     Style="{StaticResource SubtitleTextStyle}"
                     Text="{x:Static properties:Resources.SettingsPageEmailTitle}" />
-        <StackLayout Margin="{StaticResource SmallTopBottomMargin}"
+        <VerticalStackLayout Margin="{StaticResource SmallTopBottomMargin}"
                      HorizontalOptions="Fill"
                      VerticalOptions="Fill">
             <Label
@@ -80,8 +80,7 @@
                         Style="{StaticResource LeftSideButton}"
                         Command="{Binding LogOutCommand}"
                         />
-            <StackLayout Orientation="Horizontal"
-                         >
+            <HorizontalStackLayout>
                 
                 <Button Text="Test Email Settings"
                         IsEnabled="{Binding IsLoggedIn}"
@@ -107,8 +106,8 @@
                            IsVisible="{Binding EmailOAuthConfirmationMessage.IsVisible}"/>
                     
                 </Grid>
-            </StackLayout>
-            <StackLayout Margin="{StaticResource XSmallTopMargin}"
+            </HorizontalStackLayout>
+            <VerticalStackLayout Margin="{StaticResource XSmallTopMargin}"
                          HorizontalOptions="Fill">
 
                 <Label Text="Enable Email Integration"
@@ -209,7 +208,7 @@
                           IsChecked="{Binding SmtpEmailUser.UseSSL}"
                           Style="{StaticResource BaseCheckBox}"
                           />
-                <StackLayout Orientation="Horizontal">
+                <HorizontalStackLayout>
                     <Button Text="Save Email Settings"
                             x:Name="EmailSaveButton" Style="{StaticResource LeftSideButton}"
                             IsEnabled="{Binding IsValid, Source={x:Reference FormValidator}, Mode=TwoWay}">
@@ -220,8 +219,8 @@
                     <Button Text="Test Email Settings"
                             IsEnabled="{Binding IsValid, Source={x:Reference FormValidator}, Mode=TwoWay}"
                             Style="{StaticResource LeftSideButton}" />
-                </StackLayout>
-            </StackLayout>
-        </StackLayout>
-    </StackLayout>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </VerticalStackLayout>
 </ContentView>

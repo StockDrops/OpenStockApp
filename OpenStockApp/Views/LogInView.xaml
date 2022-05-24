@@ -14,7 +14,7 @@
                                     Grid.Row="0"
                                    VerticalOptions="CenterAndExpand"
                    MaximumHeightRequest="200"/>
-            <StackLayout HorizontalOptions="CenterAndExpand"
+            <VerticalStackLayout HorizontalOptions="CenterAndExpand"
                                          VerticalOptions="CenterAndExpand"
                          Margin="0,30,0,20"
                                          Grid.Row="1"
@@ -30,7 +30,7 @@
                                 Command="{Binding LogInCommand, Source={x:Reference view}}"
                                 IsVisible="{Binding IsLoggedIn, Converter={StaticResource InvertedBoolConverter}, Source={x:Reference view}}" />
 
-            </StackLayout>
+            </VerticalStackLayout>
         </Grid>
     </ContentView.Content>
 </ContentView>

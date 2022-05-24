@@ -14,17 +14,17 @@
                 <RowDefinition Height="48" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-        
 
-                
 
-            <StackLayout Grid.Row="0" Margin="5,30,5,5">
+
+
+            <VerticalStackLayout Grid.Row="0" Margin="5,30,5,5">
                 <Label
                     Margin="{StaticResource SmallTopMargin}"
                     Style="{StaticResource SubtitleTextStyle}"
                     Text="{x:Static strings:Resources.SettingsPageAboutTitle}" />
-            </StackLayout>
-            <StackLayout Grid.Row="1"
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Row="1"
                      Margin="{StaticResource SmallLeftRightMargin}"
                      >
 
@@ -75,7 +75,7 @@
                 <views:TappedCopyableEntry Text="{Binding FirebaseToken}" IsReadOnly="True" CopiedCommandParameter="Firebase Token" IsVisible="{OnPlatform Android=True, Default=False}" />
                 <Button Text="Refresh Firebase Token" Command="{Binding RefreshTokenCommand}" Margin="0,10,0,10" HorizontalOptions="Start" IsVisible="{OnPlatform Android=True, Default=False}"/>
                 <Button Text="Share Log File" IsVisible="{OnPlatform Android=True, Default=True}" Command="{Binding ShareLog}" />
-            </StackLayout>
+            </VerticalStackLayout>
         </Grid>
     </ScrollView>
 </ContentPage>

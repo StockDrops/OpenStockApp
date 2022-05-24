@@ -18,7 +18,7 @@
     <!--BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark}, Light={StaticResource BackgroundColor}}"-->
 
     <ScrollView>
-        <StackLayout Margin="5,30,5,30" >
+        <VerticalStackLayout Margin="5,30,5,30" >
             <vs:UserSettingsView User="{Binding UserDataViewModel.User}"
                                      LogInOutButtonState="{Binding UserDataViewModel.LogInOutButtonState}"
                                      LogInOutCommand="{Binding UserDataViewModel.LogInOutUserCommandAsync}"
@@ -28,6 +28,6 @@
             <vs:ThemeSettingsView IsVisible="{OnPlatform Android=True, UWP=False, Default=True}"/>
             <views:SocialButtons />
 
-        </StackLayout>
+        </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

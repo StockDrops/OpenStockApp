@@ -26,8 +26,8 @@ public class MainActivity : MauiAppCompatActivity, IOnCompleteListener
         {
             CreateNotificationChannel(this);
         }
-        FirebaseMessaging.Instance.SubscribeToTopic(Topics.StockAlerts)
-                                  .AddOnCompleteListener(this);
+        //FirebaseMessaging.Instance.SubscribeToTopic(Topics.StockAlerts)
+        //                          .AddOnCompleteListener(this);
         //var token = FirebaseInstallations.Instance.GetToken(forceRefresh: false).AsAsync<InstallationTokenResult>().Result;
         //Console.WriteLine("got it");
 

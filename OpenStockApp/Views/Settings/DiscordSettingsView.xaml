@@ -25,18 +25,18 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <StackLayout Grid.Row="0" >
+            <VerticalStackLayout Grid.Row="0" >
 
             <Label Margin="{StaticResource SmallTopMargin}"
                    Style="{StaticResource SubtitleTextStyle}"
                    Text="{x:Static properties:Resources.SettingsPageDiscordTitle}" />
 
-            </StackLayout>
-            <StackLayout Grid.Row="1">
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Row="1">
                 <!--<Button Command="{Binding UpdateWebhookCommand}" Text="Why won't you fucking work..."/>-->
                 <Label Text="{x:Static properties:Resources.SettingsPageDiscordText}"
                    Style="{StaticResource BodyTextStyle}"/>
-                <StackLayout Margin="0,8,0,18"
+                <VerticalStackLayout Margin="0,8,0,18"
                          HorizontalOptions="Fill"
                          Grid.Column="0">
                     <Label Text="{x:Static properties:Resources.SettingsWebhookUrl}"
@@ -76,17 +76,17 @@
                             <RowDefinition Height="20" />
                         </Grid.RowDefinitions>
 
-                        <StackLayout>
+                        <VerticalStackLayout>
                             <Label Grid.Row="0" Grid.RowSpan="2"  
                                Text="{Binding Errors[0], Source={x:Reference DiscordValidator}, Mode=OneWay}"
                                
                                 IsVisible="{Binding IsNotValid, Source={x:Reference DiscordValidator}}"
                        
                        TextColor="Red"/>
-                        </StackLayout>
+                        </VerticalStackLayout>
                     </Grid>
-                </StackLayout>
-                <StackLayout Orientation="Horizontal"> <!--Adding VerticalOptions="CenterAndExpand" here for some reason breaks the bindingcontext.--> 
+                </VerticalStackLayout>
+                <HorizontalStackLayout> <!--Adding VerticalOptions="CenterAndExpand" here for some reason breaks the bindingcontext.--> 
                     <Button Text="{x:Static properties:Resources.SettingsWebhookUrlButtonText}"
                             Command="{Binding UpdateWebhookCommand}"
                             IsEnabled="{Binding IsValid, Source={x:Reference DiscordValidator}, Mode=TwoWay}"
@@ -98,7 +98,7 @@
                         IsEnabled="{Binding IsValid, Source={x:Reference DiscordValidator}, Mode=TwoWay}"
                         WidthRequest="180" 
                     />
-                </StackLayout>
+                </HorizontalStackLayout>
                 <Grid VerticalOptions="CenterAndExpand" Margin="0,10,0,10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -121,7 +121,7 @@
                         </Label.IsVisible>
                     </Label>
                 </Grid>
-            </StackLayout>
+            </VerticalStackLayout>
             <!--<StackLayout Grid.Row="0" >
 
                 <Label Margin="{StaticResource SmallTopMargin}"
