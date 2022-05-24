@@ -5,7 +5,7 @@
              x:Class="OpenStockApp.Views.SocialButtons"
              >
     <ContentView.Content>
-        <Grid HeightRequest="50">
+        <Grid HeightRequest="{OnPlatform Android=100, iOS=50}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{OnPlatform Default=50, UWP=150}" />
                 <ColumnDefinition Width="50" />

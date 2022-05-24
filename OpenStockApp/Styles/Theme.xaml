@@ -151,6 +151,11 @@
         <Setter Property="MinimumWidthRequest" Value="{OnPlatform Default=20, UWP=400}" />
         <Setter Property="HorizontalOptions" Value="{OnPlatform Default=Fill, UWP=StartAndExpand}" />
     </Style>
+
+    <Style TargetType="Entry" x:Key="iOSEntry">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={OnPlatform Default='#2a292f'}, Light={OnPlatform Default='#2a292f'}, Default={OnPlatform Default='#2a292f'}}" />
+    </Style>
+    
     <Style TargetType="Entry" x:Key="InvalidEntry" BasedOn="{StaticResource BaseEntry}">
         <Setter Property="TextColor" Value="Red"/>
     </Style>

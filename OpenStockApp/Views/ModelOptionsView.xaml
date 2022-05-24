@@ -38,7 +38,7 @@
                                     </Grid.ColumnDefinitions>
                                     <HorizontalStackLayout Grid.Row="0" Grid.Column="0" >
                                         <Label VerticalOptions="Center" Text="Products Options" Style="{StaticResource ListTitleStyle}"
-                                   Margin="0,10,0,10"/>
+                                                Margin="0,10,0,10"/>
                                         <Button Text="Help" IsVisible="{OnPlatform Android='False', UWP='True', Default='False'}" 
                                     Command="{Binding HelpCommand, Source={x:Reference view}}" 
                                     HeightRequest="40"
@@ -51,19 +51,33 @@
                                     HorizontalOptions="{OnPlatform Android='End', UWP='End', Default='End'}" 
                                     Grid.Column="{OnPlatform Default=1, UWP=0}"/>
                                 </Grid>
+                                <Picker Title="{Binding ProductPickerTitle, Source={x:Reference view}}"
+                                        Style="{StaticResource BasePicker}"
+                                        HeightRequest="{OnPlatform iOS=20}"
+                                        ItemsSource="{Binding Products, Source={x:Reference view}}"
+                                        ItemDisplayBinding="{Binding Name}"
+                                        IsVisible="{OnPlatform iOS='False', MacCatalyst='False', Default='True'}"
+                                        SelectedItem="{Binding SelectedProduct, Mode=OneWayToSource, Source={x:Reference view}}">
+                                    <Picker.Behaviors>
+                                        <mct:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding SelectedProductCommand, Source={x:Reference view}}" />
+                                    </Picker.Behaviors>
+                                </Picker>   
 
 
-                                <Border Margin="2,5,2,0"
-                                        BackgroundColor="{AppThemeBinding Dark='#2a292f', Light='#E0DFE2', Default='#2a292f'}"
+                            <Border Margin="2,5,2,0"
+                                    IsVisible="{OnPlatform Default='False', iOS='True', MacCatalyst='True'}"
+                                        BackgroundColor="{AppThemeBinding Dark={OnPlatform Android='Transparent', Default='#2a292f'}, Light={OnPlatform Android='Transparent', Default='#E0DFE2'}, Default='#2a292f'}"
                                         Stroke="{AppThemeBinding Dark='#2a292f', Light='#E0DFE2', Default='#2a292f'}"
                                         Padding="8">
                                     <Border.StrokeShape>
                                         <RoundRectangle CornerRadius="9" />
                                     </Border.StrokeShape>
-                                    <Picker Title="{Binding ProductPickerTitle, Source={x:Reference view}}"
-                                            TitleColor="{AppThemeBinding Dark='#AEAEB2', Light='#989997', Default='#AEAEB2'}"
+                        <!-- -->
+                        <Picker Title="{Binding ProductPickerTitle, Source={x:Reference view}}"
+                                Style="{StaticResource iOSPicker}"
+                                TitleColor="{AppThemeBinding Dark='#AEAEB2', Light='#989997', Default='#AEAEB2'}"
                                             TextColor="{AppThemeBinding Dark='#AEAEB2', Light='#989997', Default='#AEAEB2'}"
-                                            BackgroundColor="{AppThemeBinding Dark='#2a292f', Light='#E0DFE2', Default='#2a292f'}"
+                                            
                                             HeightRequest="{OnPlatform iOS=20, Default=10}"
                                             ItemsSource="{Binding Products, Source={x:Reference view}}"
                                             ItemDisplayBinding="{Binding Name}"
@@ -129,10 +143,10 @@
                 </CollectionView.GroupHeaderTemplate>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:ShowModel">
-                        <Grid HeightRequest="{OnPlatform Default=400, Android=250, iOS=255}"
+                        <Grid HeightRequest="{OnPlatform Default=400, Android=240, iOS=255}"
                               Padding="10"
                               
-                                  RowDefinitions="60,40,40,40,40,40"
+                                  RowDefinitions="50,40,40,40,20,60"
                                   Margin="0,10,20,10"
                                   ColumnDefinitions="0.35*,0.65*">
                             <Label Text="{Binding Model.Name}"
@@ -165,7 +179,8 @@
                                        IsTextPredictionEnabled="False"
                                        Text="{Binding ModelOptions.MaxPrice}" 
                                        MinimumWidthRequest="100"
-                                       BackgroundColor="{AppThemeBinding Dark={OnPlatform Default='#2a292f'}, Light={OnPlatform Default='#2a292f'}, Default={OnPlatform Default='#2a292f'}}"
+                                   Style="{OnPlatform iOS={StaticResource iOSEntry}}"
+                                      
                                        Margin="0,2,8,2"
                                        Grid.Row="2"
                                        Grid.Column="1">
@@ -186,7 +201,8 @@
                                        Keyboard="Numeric" 
                                        MinimumWidthRequest="100"
                                        Margin="0,2,8,2"
-                                       BackgroundColor="{AppThemeBinding Dark={OnPlatform Default='#2a292f'}, Light={OnPlatform Default='#2a292f'}, Default={OnPlatform Default='#2a292f'}}"
+                                   Style="{OnPlatform iOS={StaticResource iOSEntry}}"
+                                       
                                        Grid.Row="3"
                                        Grid.Column="1">
                                 <Entry.Behaviors>
@@ -199,22 +215,35 @@
                             </Entry>
 
                             <Label Text="Action:" 
-                                       Margin="0,10,0,5"
-                                       Grid.Row="4"
-                                       Grid.Column="0"/>
-                            <Frame BorderColor="{AppThemeBinding Dark='#2a292f', Default='#2a292f'}"
-                                        Padding="1"
-                                        Margin="2,0,8,4"
-                                        Grid.Row="5"
-                                        Grid.ColumnSpan="2"
+                                   Margin='{OnPlatform Default="0,2,0,2", Android="0,5,0,0"}'
+                                   
+                                    Grid.Row="4"
+                                    Grid.Column="0"/>
+                            <Picker ItemDisplayBinding="{Binding Description}"
+                                    IsVisible="{OnPlatform Default='True', iOS='False'}"
+                                    Grid.Row="5"
+                                    Grid.ColumnSpan="2"
+                                    HeightRequest="{OnPlatform Android=38, iOS=30}"
+                                    VerticalOptions="Start"
+                                    Margin="{OnPlatform Android='-4,0,0,0', iOS='0', Default='5'}"
+                                    Style="{OnPlatform iOS={StaticResource iOSPicker}, Default={StaticResource BasePicker}}"
+                                    SelectedIndex="{Binding ModelOptions.NotificationAction, Mode=TwoWay, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type users:NotificationAction}}"
+                                    ItemsSource="{Binding BindingContext.NotificationActions, Source={x:Reference view}}"
+                                                        />  
+                <Frame BorderColor="{AppThemeBinding Dark='#2a292f', Default='#2a292f'}"
+                                IsVisible="{OnPlatform Android='False', Default='False', iOS='True'}"
+                                    Padding="1"
+                                    Margin="2,2,8,4"
+                                    Grid.Row="5"
+                                    Grid.ColumnSpan="2"
+                       HeightRequest="35"
                                         IsClippedToBounds="True"
                                         BackgroundColor="{AppThemeBinding Dark={OnPlatform Default='#2a292f'}, Light={OnPlatform Default='#2a292f'}, Default={OnPlatform Default='#2a292f'}}"
                                         >
                                 <Picker ItemDisplayBinding="{Binding Description}"
                                             HeightRequest="30"
-                                            Margin="5"
-                                        
-                                        BackgroundColor="{AppThemeBinding Dark={OnPlatform Default='#2a292f'}, Light={OnPlatform Default='#2a292f'}, Default={OnPlatform Default='#2a292f'}}"
+                                            Margin="2,0,0,0"
+                                        Style="{OnPlatform iOS={StaticResource iOSPicker}, Default={StaticResource BasePicker}}"
                                         SelectedIndex="{Binding ModelOptions.NotificationAction, Mode=TwoWay, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type users:NotificationAction}}"
                                         ItemsSource="{Binding BindingContext.NotificationActions, Source={x:Reference view}}"
                                             />

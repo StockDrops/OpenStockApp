@@ -18,6 +18,7 @@
             <mct:IsStringNotNullOrEmptyConverter x:Key="IsNotNullOrEmptyConverter"/>
             <mct:BoolToObjectConverter x:Key="BoolToZIndexConverter" TrueObject="1" FalseObject="100" />
             <mct:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueObject="Busy... Please wait..." FalseObject="Refresh List From Server" />
+            <mct:BoolToObjectConverter x:Key="BTOCEndReachedLoadMore" TrueObject="End Reached" FalseObject="Load More?" />
             <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -36,6 +37,7 @@
                     ZIndex="50"-->
         <CollectionView ItemsSource="{Binding Results}"
                         ItemsUpdatingScrollMode="{OnPlatform Default='KeepItemsInView', iOS='KeepItemsInView'}"
+                        RemainingItemsThreshold="{OnPlatform Android=2, iOS=0}"
                         SelectionMode="None"
                         Margin="5,5,5,10"
                         x:Name="collectionView">
@@ -62,24 +64,24 @@
                            Margin="{OnPlatform Default=4, iOS=15}"                           
                            BackgroundColor="{AppThemeBinding Dark={StaticResource SecondaryColor}, Light={StaticResource BackgroundColor}}"
                            IsVisible="{Binding IsLoggedIn}">
-                        <HorizontalStackLayout Grid.Row="1">
+                            <HorizontalStackLayout Grid.Row="1">
                                 <VerticalStackLayout VerticalOptions="Start">
                                     <Label Text="Enable alert settings" 
                                            VerticalOptions="Center"
                                            Margin="{OnPlatform Default='10,0,10,0', Android='0,0,0,0', iOS='0,0,0,10'} "/>
                                     <Switch IsToggled="{Binding HasToApplyFilterSettings}"
-                                                VerticalOptions="Center"
-                                                HorizontalOptions="Center">
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center">
                                         <Switch.Behaviors>
                                             <mct:EventToCommandBehavior EventName="Toggled"
-                                                                    Command="{Binding ApplyFilterSettings}"/>
+                                                                        Command="{Binding ApplyFilterSettings}"/>
                                         </Switch.Behaviors>
                                     </Switch>
-                                    <views:SocialButtons VerticalOptions="Center" Margin="5,0,5,0" IsVisible="{OnPlatform Default='False', Android='True'}"  />
+                                    <!--<views:SocialButtons VerticalOptions="Center" Margin="5,0,5,0" IsVisible="{OnPlatform Default='False', Android='True'}"  />-->
                                 </VerticalStackLayout>
                                 <views:SocialButtons VerticalOptions="Start" Margin="10,0,0,0" IsVisible="{OnPlatform Default='False', Android='True', iOS='True'}"  />
                             </HorizontalStackLayout>
-                    </Frame>
+                        </Frame>
                 </VerticalStackLayout>
 
             </Grid>
@@ -87,8 +89,7 @@
         <CollectionView.ItemsLayout>
             <GridItemsLayout Orientation="Vertical"
                              Span="{OnPlatform Android=1, iOS=1, Default=1}"
-                             VerticalItemSpacing="10"
-                                     />
+                             VerticalItemSpacing="10"/>
         </CollectionView.ItemsLayout>
         <CollectionView.ItemTemplate>
             <DataTemplate x:DataType="modelsapi:Result">
@@ -103,33 +104,35 @@
                         <ColumnDefinition Width="3*"/>
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <VerticalStackLayout Grid.Column="0" Grid.Row="0" Margin="25">
+                    <VerticalStackLayout Grid.Column="0" Grid.Row="0" Margin="25,0,0,0" VerticalOptions="Start">
                         <Label Text="{Binding Sku.Model.Name}" 
-                                           MaximumWidthRequest="80"
-                                   Style="{StaticResource ListTitleStyle}" 
-                                       VerticalOptions="Center"
-                                   LineBreakMode="WordWrap"
-                                   TextTransform="Uppercase"/>
-                        <Label Text="{Binding Sku.Retailer.Name}" Margin="0,4,0,4" />
+                               MaximumWidthRequest="80"
+                               MaximumHeightRequest="40"
+                               Style="{StaticResource ListTitleStyle}" 
+                               VerticalOptions="Start"
+                               LineBreakMode="WordWrap"
+                               TextTransform="Uppercase"/>
+                        <Label Text="{Binding Sku.Retailer.Name}" />
                         <Label Text="{Binding Price}" />
                         <Label Text="{Binding DateTimeFound, StringFormat='{0:g}'}"/>
-
                     </VerticalStackLayout>
-                    <VerticalStackLayout Grid.Column="1" Grid.Row="0"  Margin="{OnPlatform Default='10', UWP=25}">
-
-                        <Image Source="{Binding ThumbnailUrl}" 
-                                           HeightRequest="{OnPlatform Default=80, Android=50, iOS=50}"
-                                           Aspect="AspectFit"  IsVisible="{Binding ThumbnailUrl, Converter={StaticResource IsNotNullOrEmptyConverter}}" Margin="0"  />
+                    <VerticalStackLayout Grid.Column="1" Grid.Row="0"  Margin="{OnPlatform Default='10,0,25 ,0', UWP=25}">
+                        
                         <Label Text="{Binding Id, StringFormat='Id: {0}'}"
-                                       VerticalOptions="Start"
-                                           Margin="{OnPlatform Default='0,1,0,1', UWP='0,10,0,10', iOS='0,1,0,1'}"/>
+                               VerticalOptions="Start"
+                               Margin="{OnPlatform Default='0,1,0,1', UWP='0,10,0,10', iOS='0,1,0,1'}"/>
+                            <Image Source="{Binding ThumbnailUrl}" 
+                               HeightRequest="{OnPlatform Default=80, Android=50, iOS=50}"
+                               Aspect="AspectFit"  
+                               IsVisible="{Binding ThumbnailUrl, Converter={StaticResource IsNotNullOrEmptyConverter}}" Margin="0"  />
 
-                    </VerticalStackLayout>
+                        </VerticalStackLayout>
                     <VerticalStackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="20">
                         <Image Source="{Binding ImageUrl}"
                                IsVisible="{OnPlatform iOS={Binding ImageLicensed}, Default='True', MacCatalyst={Binding ImageLicensed}}"
                                HeightRequest="120"
-                                Aspect="AspectFit" Margin="0,10,0,10">
+                               Aspect="AspectFit" 
+                               Margin="0,10,0,10">
                             <!--<Image.Clip>
                                     <RoundRectangleGeometry CornerRadius="10" Rect="10,10,120,120" />
                             </Image.Clip>-->
@@ -137,7 +140,6 @@
 
                     </VerticalStackLayout>
                     <VerticalStackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="20">
-
                         <views:HyperlinkButton Text="Product Url" Url="{Binding ProductUrl}" Margin="2" />
                         <views:HyperlinkButton Url="{Binding AtcUrl}" Text="Add To Cart Url" IsVisible="{Binding AtcUrl, Converter={StaticResource IsNotNullOrEmptyConverter}}" Margin="2"/>
                     </VerticalStackLayout>
@@ -146,27 +148,27 @@
             </DataTemplate>
         </CollectionView.ItemTemplate>
         <CollectionView.Footer>
-            <Grid>
+            <Grid HeightRequest="50">
                     <!--ZIndex="50"-->
-                    <Grid IsVisible="{Binding IsLoggedIn}">
-                    <Button Margin="0,2,0,2"
+                    <HorizontalStackLayout HorizontalOptions="Center">
+                        <Button Margin="0,2,0,2"
                         
-                        Text="Load More?"
-                        MinimumWidthRequest="{OnPlatform Android=100, iOS=100, UWP=300}"
-                        HorizontalOptions="Center"
-                        FontSize="Medium"
-                        FontAttributes="Bold"
-                        IsVisible="{Binding EndReached, Converter={StaticResource InvertedBoolConverter}}"
-                        Command="{Binding LoadMoreCommand}"/>
-            <Button Margin="0,2,0,2"
-                        MinimumWidthRequest="{OnPlatform Android=100, iOS=100, UWP=300}"
-                        HorizontalOptions="Center"
-                        FontSize="Medium"
-                        FontAttributes="Bold"
-                        IsEnabled="False"
-                        Text="End Reached"
-                        IsVisible="{Binding EndReached}"/>
-                </Grid>
+                            Text="{Binding EndReached, Converter={StaticResource BTOCEndReachedLoadMore}}"
+                            MinimumWidthRequest="{OnPlatform Android=100, iOS=100, UWP=300}"
+                            HorizontalOptions="Center"
+                            FontSize="Medium"
+                            FontAttributes="Bold"
+                            IsEnabled="{Binding EndReached, Converter={StaticResource InvertedBoolConverter}}"
+                            Command="{Binding LoadMoreCommand}"/>
+                        <!--<Button Margin="0,2,0,2"
+                            MinimumWidthRequest="{OnPlatform Android=100, iOS=100, UWP=300}"
+                            HorizontalOptions="Center"
+                            FontSize="Medium"
+                            FontAttributes="Bold"
+                            IsEnabled="False"
+                            Text="End Reached"
+                            IsVisible="{Binding EndReached}"/>-->
+                    </HorizontalStackLayout>
             </Grid>
         </CollectionView.Footer>
     </CollectionView>

@@ -29,17 +29,17 @@
                          HorizontalOptions="Fill">
                 <Grid Margin="{StaticResource SmallTopMargin}">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="{OnPlatform Android=70, Default=120}"/>
+                        <RowDefinition Height="{OnPlatform Default=120}"/>
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="{OnPlatform Android=70, Default=120}" />
+                        <ColumnDefinition Width="{OnPlatform Default=120}" />
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                 <Image  Grid.Row="0"
                         Grid.Column="0"
-                        WidthRequest="{OnPlatform Android=70, Default=120}"
-                        HeightRequest="{OnPlatform Android=70, Default=120}"
+                        WidthRequest="{OnPlatform Default=120}"
+                        HeightRequest="{OnPlatform Default=120}"
                         VerticalOptions="Start"
                         HorizontalOptions="Start"
                         Source="{Binding ImageProfileSource, Source={x:Reference ParentView}}"
@@ -47,19 +47,17 @@
                     <Image.Clip>
                         <EllipseGeometry
                                 
-                        Center="{OnPlatform Android='95,95', Default='60,60'}"
-                        RadiusX="{OnPlatform Android=85, Default=60}"
-                        RadiusY="{OnPlatform Android=85, Default=60}"/>
+                        Center="{OnPlatform Default='60,60'}"
+                        RadiusX="{OnPlatform Default=60}"
+                        RadiusY="{OnPlatform Default=60}"/>
                     </Image.Clip>
                 </Image>
-                    
                     <VerticalStackLayout Grid.Row="0"
-                                 Grid.Column="1"
-                                 Grid.ColumnSpan="2"
-                                 Grid.RowSpan="2"
-                                
-                             Margin="{StaticResource XSmallLeftMargin}"
-                             VerticalOptions="Fill">
+                                         Grid.Column="1"
+                                         Grid.ColumnSpan="2"
+                                         Grid.RowSpan="2"
+                                         Margin="{StaticResource XSmallLeftMargin}"
+                                         VerticalOptions="Fill">
                     <!--{Binding User.Name}-->
                     <Label Margin="{StaticResource MediumTopMargin}"
                            Text="{Binding User.Name, Source={x:Reference ParentView}}"

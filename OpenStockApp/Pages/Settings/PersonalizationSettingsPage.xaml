@@ -18,7 +18,7 @@
     <!--BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark}, Light={StaticResource BackgroundColor}}"-->
 
     <ScrollView>
-        <VerticalStackLayout Margin="5,30,5,30" >
+        <VerticalStackLayout Margin="{OnPlatform iOS='5,30,5,30', Android='0'}" >
             <vs:UserSettingsView User="{Binding UserDataViewModel.User}"
                                      LogInOutButtonState="{Binding UserDataViewModel.LogInOutButtonState}"
                                      LogInOutCommand="{Binding UserDataViewModel.LogInOutUserCommandAsync}"

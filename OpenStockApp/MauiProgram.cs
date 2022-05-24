@@ -57,11 +57,11 @@ public static class MauiProgram
         builder
             .UseMauiCommunityToolkit()
             
-            .UseMauiApp<App>();
-			//.ConfigureFonts(fonts =>
-			//{
-			//	fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-			//});
+            .UseMauiApp<App>()
+			.ConfigureFonts(fonts =>
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+            });
         builder.ConfigureLifecycleEvents(lifecycle =>
         {
 #if WINDOWS
