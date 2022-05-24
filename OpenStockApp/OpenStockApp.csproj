@@ -164,7 +164,7 @@
 	  <MauiImage Include="Resources\Images\icons\settings_dark.svg" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-rc3" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0" />
 	  <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
 	  <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
@@ -289,6 +289,11 @@
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|AnyCPU'">
 	  <MtouchLink>SdkOnly</MtouchLink>
 	  <MtouchDebug>False</MtouchDebug>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(TargetFramework)'=='net6.0-ios'">
+	  <CodesignKey>Apple Development: Enrique Morell Salcedo (C4XYQG8Q4D)</CodesignKey>
+	  <CodesignProvision>VS: WildCard Development</CodesignProvision>
 	</PropertyGroup>
 	
 	<!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
