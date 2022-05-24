@@ -115,7 +115,8 @@ namespace OpenStockApp.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Succesfully updated.\nReady to test..
+        ///   Looks up a localized string similar to Succesfully updated.
+        ///Ready to test..
         /// </summary>
         public static string WebhookSavedSuccesfully {
             get {

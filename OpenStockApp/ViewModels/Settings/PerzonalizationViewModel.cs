@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OpenStockApp.ViewModels.Settings
 {
-    public class PersonalizationViewModel : BaseViewModel
+    public class PersonalizationViewModel : BindableBaseViewModel
     {
         public IUserDataViewModel UserDataViewModel { get; set; }
         public PersonalizationViewModel(IUserDataViewModel userDataViewModel)

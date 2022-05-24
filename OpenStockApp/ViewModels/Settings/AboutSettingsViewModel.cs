@@ -14,7 +14,7 @@ using System.Reflection;
 namespace OpenStockApp.ViewModels.Settings
 {
     
-    public class AboutSettingsViewModel : BaseViewModel
+    public class AboutSettingsViewModel : BindableBaseViewModel
     {
         public string? PrivacyStatementUrl => _appConfig?.PrivacyStatement;
         public string? LicenseAgreementUrl => _appConfig?.LicenseAgreement;

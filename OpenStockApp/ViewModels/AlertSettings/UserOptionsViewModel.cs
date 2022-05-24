@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OpenStockApp.ViewModels.AlertSettings
 {
-    public class UserOptionsViewModel : BaseViewModel
+    public class UserOptionsViewModel : BindableBaseViewModel
     {
         /// <summary>
         /// 

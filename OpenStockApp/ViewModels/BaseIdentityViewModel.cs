@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace OpenStockApp.ViewModels
 {
-    public class BaseIdentityViewModel : BaseViewModel, IDisposable, IIdentityViewModel
+    public class BaseIdentityViewModel : BindableBaseViewModel, IDisposable, IIdentityViewModel
     {
 
         public BindableProperty IsLoggedInProperty = BindableProperty.Create(nameof(IsLoggedIn), typeof(bool), typeof(NotificationsPageViewModel));

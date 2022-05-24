@@ -9,7 +9,7 @@ namespace OpenStockApp.ViewModels
     public class BaseConnectionViewModel : BaseIdentityViewModel, IDisposable, IBaseConnectionViewModel
     {
         static BindableProperty IsConnectedProperty =
-            BindableProperty.Create(nameof(IsConnected), typeof(bool), typeof(BaseViewModel), false);
+            BindableProperty.Create(nameof(IsConnected), typeof(bool), typeof(BindableBaseViewModel), false);
 
         private readonly IBaseHubClient baseHubClient;
 

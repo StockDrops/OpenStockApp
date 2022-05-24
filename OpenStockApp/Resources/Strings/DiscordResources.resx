@@ -136,6 +136,7 @@
     <value>Error saving the webhook.</value>
   </data>
   <data name="WebhookSavedSuccesfully" xml:space="preserve">
-    <value>Succesfully updated.\nReady to test.</value>
+    <value>Succesfully updated.
+Ready to test.</value>
   </data>
 </root>

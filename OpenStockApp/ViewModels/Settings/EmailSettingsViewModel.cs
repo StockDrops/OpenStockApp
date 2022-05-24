@@ -47,7 +47,7 @@ using OpenStockApp.Core.Email.Contracts;
 //#endif
 namespace OpenStockApp.ViewModels.Settings;
 
-public class EmailSettingsViewModel : BaseViewModel
+public class EmailSettingsViewModel : BindableBaseViewModel
 {
     public ConfirmationMessage EmailOAuthConfirmationMessage { get; set; } = new ConfirmationMessage { IsVisible = false, Message = "", IsSuccess = false };
     private EmailUser emailUser;

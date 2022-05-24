@@ -11,7 +11,7 @@ using OpenStockApp.Resources.Strings;
 namespace OpenStockApp.ViewModels.Settings
 {
     
-    public class DiscordSettingsViewModel : ObservableObject
+    public class DiscordSettingsViewModel : BaseViewModel
     {
         public Command UpdateWebhookCommand { get; set; }
         public AsyncRelayCommand TestWebhookCommand { get; private set; }
@@ -57,6 +57,7 @@ namespace OpenStockApp.ViewModels.Settings
         }
         public async Task TestWebhookAsync()
         {
+            IsBusy = true;
             try
             {
                 var response = await discordWebhookService.TestDiscordWebhook(WebhookUrl);
@@ -84,10 +85,15 @@ namespace OpenStockApp.ViewModels.Settings
                 logger?.LogError(ex, "");
                 ErrorMessage = DiscordResources.DiscordWebhookDefaultErrorMessage;
             }
+            finally
+            {
+                IsBusy = false;
+            }
 
         }
         public void UpdateWebhook()
         {
+            IsBusy = true;
             if (settingsService.SaveSettingString(DiscordSettingsKeys.DiscordWebhookUrl, WebhookUrl))
             {
                 ConfirmationMessage.Message = DiscordResources.WebhookSavedSuccesfully;
@@ -98,6 +104,7 @@ namespace OpenStockApp.ViewModels.Settings
                 ConfirmationMessage.Message = DiscordResources.WebhookSavedError;
                 ConfirmationMessage.IsVisible = true;
             }
+            IsBusy = false;
         }
         private void LoadWebhookUrl()
         {
