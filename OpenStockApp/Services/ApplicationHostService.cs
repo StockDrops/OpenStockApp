@@ -54,6 +54,14 @@ namespace OpenStockApp.Services
             {
                 await OnNotificationReceived(sender, args);
             });
+            MessagingCenter.Subscribe<FirebaseService, string>(this, Events.RegisterToken, async (sender, args) =>
+            {
+                var tokenSource = new CancellationTokenSource();
+                tokenSource.CancelAfter(10000);
+#if RELEASE
+                await tokenRegistrationService.RegisterTokenAsync(args, tokenSource.Token);
+#endif
+            });
 #endif
 #if IOS
             MessagingCenter.Subscribe<AppDelegate, string>(this, Events.RegisterToken, async (sender, args) =>
@@ -63,7 +71,7 @@ namespace OpenStockApp.Services
                 await tokenRegistrationService.RegisterTokenAsync(args, tokenSource.Token);
             });
 #endif
-        }
+            }
 
 #if ANDROID
         private async Task OnNotificationReceived(FirebaseService sender, Result remoteMessage)

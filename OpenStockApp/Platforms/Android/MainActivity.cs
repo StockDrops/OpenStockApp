@@ -5,6 +5,7 @@ using Android.Gms.Common;
 using Android.Gms.Extensions;
 using Android.Gms.Tasks;
 using Android.OS;
+using Firebase;
 using Firebase.Installations;
 using Firebase.Messaging;
 using Microsoft.Identity.Client;
@@ -18,16 +19,17 @@ public class MainActivity : MauiAppCompatActivity, IOnCompleteListener
 {
 	protected override void OnCreate(Bundle savedInstanceState)
 	{
-		base.OnCreate(savedInstanceState);
-		Platform.Init(this, savedInstanceState);
+        Platform.Init(this, savedInstanceState);
+        base.OnCreate(savedInstanceState);
+		
 
 
         if (IsPlayServicesAvailable(this))
         {
             CreateNotificationChannel(this);
         }
-        //FirebaseMessaging.Instance.SubscribeToTopic(Topics.StockAlerts)
-        //                          .AddOnCompleteListener(this);
+        FirebaseMessaging.Instance.SubscribeToTopic(Topics.StockAlerts)
+                                  .AddOnCompleteListener(this);
         //var token = FirebaseInstallations.Instance.GetToken(forceRefresh: false).AsAsync<InstallationTokenResult>().Result;
         //Console.WriteLine("got it");
 
@@ -84,7 +86,7 @@ public class MainActivity : MauiAppCompatActivity, IOnCompleteListener
 
 #pragma warning disable CA1416 // Validate platform compatibility, this is not reachable in API 26 <
 
-        var notificationManager = (NotificationManager)context.GetSystemService(NotificationService);
+        var notificationManager = (NotificationManager?)context.GetSystemService(NotificationService);
 
         // Don't re-create the notification channel if we already created it
         if (notificationManager is not null && notificationManager.GetNotificationChannel(CHANNEL_ID) == null)
@@ -92,8 +94,9 @@ public class MainActivity : MauiAppCompatActivity, IOnCompleteListener
             var channel = new NotificationChannel(CHANNEL_ID,
                 "FCM Notifications",
                 NotificationImportance.Max);
-
+            channel.EnableVibration(true);
             notificationManager.CreateNotificationChannel(channel);
+            
         }
        
 #pragma warning restore CA1416 // Validate platform compatibility

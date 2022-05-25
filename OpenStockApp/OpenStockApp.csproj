@@ -136,16 +136,12 @@
 	  <None Remove="Services\Notifications\NotificationService\NotificationService.macios.cs" />
 	</ItemGroup>
 
+	
 
-	<ItemGroup Condition="$(TargetFramework.Contains('-android'))">
+
+	<!--<ItemGroup Condition="$(TargetFramework.Contains('-android'))">
 	  <ProguardConfiguration Include="Platforms\Android\proguard.cfg" />
-	</ItemGroup>
-
-	<ItemGroup Condition="$(TargetFramework.Contains('-android'))">
-	  <GoogleServicesJson Include="Platforms\Android\google-services.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </GoogleServicesJson>
-	</ItemGroup>
+	</ItemGroup>-->
 
 
 	<ItemGroup>
@@ -215,17 +211,16 @@
 	  <Folder Include="Platforms\Android\Services\" />
 	</ItemGroup>
 	<ItemGroup Condition="$(TargetFramework.Contains('-android'))">
+		<GoogleServicesJson Include="Platforms\Android\google-services.json" />
 		<PackageReference Include="Xamarin.Google.Dagger" Version="2.39.1" />
 		<PackageReference Include="Xamarin.Firebase.Messaging" Version="122.0.0.2" />
 		<PackageReference Include="Xamarin.GooglePlayServices.Base" Version="117.6.0.2" />
 		<PackageReference Include="Xamarin.GooglePlayServices.Basement" Version="117.6.0.6" />
-		</ItemGroup>
-	
-	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
-	  <PackageReference Include="Xamarin.Firebase.Analytics">
-	    <Version>119.0.1.5</Version>
-	  </PackageReference>
+		<PackageReference Include="Xamarin.Firebase.Analytics">
+			<Version>119.0.1.5</Version>
+		</PackageReference>
 	</ItemGroup>
+
 	<ItemGroup>
 	  <MauiImage Update="Resources\Images\sdlogo.svg">
 	    <Color>#512BD4</Color>

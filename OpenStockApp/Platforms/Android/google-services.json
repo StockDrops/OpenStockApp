@@ -36,6 +36,35 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:406151457977:android:54a6dce5293bc474687f68",
+        "android_client_info": {
+          "package_name": "com.stockdrops.openstockapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "406151457977-2u8esi47ltt1fsduugbvj8uhugotob2e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxb1o6MwrsbFe0_QzPeGiobdQr12aEJWo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "406151457977-2u8esi47ltt1fsduugbvj8uhugotob2e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:406151457977:android:ce86d9bc899ed00e687f68",
         "android_client_info": {
           "package_name": "com.stockdrops.stockdropsmobileapp"
