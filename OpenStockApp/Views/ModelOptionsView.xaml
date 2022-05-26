@@ -103,9 +103,9 @@
                                                         CommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
                                 </SearchBar.Behaviors>
                             </SearchBar>
-                            <HorizontalStackLayout Margin="0,2,0,2">
-                                <Button Text="Enable All" Command="{Binding SelectCommand, Source={x:Reference view}}" Margin="0,0,5,0" />
-                                <Button Text="Disable All" Command="{Binding DeselectCommand, Source={x:Reference view}}" Margin="0,0,5,0" />
+                            <HorizontalStackLayout Margin="2,2,2,2">
+                                <Button Text="Enable All" Command="{Binding SelectCommand, Source={x:Reference view}}" Margin="2,0,5,0" />
+                                <Button Text="Disable All" Command="{Binding DeselectCommand, Source={x:Reference view}}" Margin="2,0,5,0" />
                             </HorizontalStackLayout>
                         </VerticalStackLayout>
                     </Grid>

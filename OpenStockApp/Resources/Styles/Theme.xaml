@@ -78,7 +78,7 @@
     <Style x:Key="BaseButton" TargetType="Button">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource TextOnPrimaryColor}, Light={StaticResource TextOnPrimaryColor}}" />
         <Setter Property="FontFamily" Value="OpenSansRegular" />
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource PrimaryColorDark}, Light={StaticResource PrimaryColor}, Default={StaticResource PrimaryColor}}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource TPrimary}, Light={StaticResource TPrimary}, Default={StaticResource TPrimary}}" />
         <Setter Property="Padding" Value="14,10" />
     </Style>
     <Style TargetType="Button" x:Key="LeftSideButton" BasedOn="{StaticResource BaseButton}">
