@@ -40,6 +40,8 @@
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		
 		<CodesignKey>Apple Development: Enrique Morell Salcedo (C4XYQG8Q4D)</CodesignKey>
+		
+		<AndroidSigningKeyStore>stockdrops.keystore</AndroidSigningKeyStore>
 
 	</PropertyGroup>
 	<!--https://docs.microsoft.com/en-us/dotnet/maui/platform-integration/configure-multi-targeting#configure-filename-based-multi-targeting -->
@@ -58,11 +60,6 @@
 		<None Include="**\*.windows.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
 	</ItemGroup>
 	
-	<PropertyGroup Condition="$(TargetFramework.Contains('-android'))">
-		<AndroidPackageFormat>apk</AndroidPackageFormat>
-		<!-- We cannot using linking with EF CORE. It just breaks. -->
-		<AndroidLinkMode>None</AndroidLinkMode>
-	</PropertyGroup>
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
 	</PropertyGroup>
@@ -97,6 +94,15 @@
 		<ArchiveOnBuild>true</ArchiveOnBuild>
 		<TcpPort>58181</TcpPort>
 	</PropertyGroup>
+
+	<!-- Android publishing -->
+	<PropertyGroup Condition="$(TargetFramework.Contains('-android')) and '$(Configuration)' == 'Release'">
+		<AndroidKeyStore>True</AndroidKeyStore>
+		<AndroidSigningKeyStore>stockdrops.keystore</AndroidSigningKeyStore>
+		<AndroidSigningKeyAlias>stockdrops</AndroidSigningKeyAlias>
+	</PropertyGroup>
+	
+	
 	<ItemGroup>
 		<MauiIcon Include="Resources\appicon.svg" ForegroundFile="Resources\appicon.svg" Color="#512BD4" />
 
@@ -241,55 +247,16 @@
 		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
 	</PropertyGroup>
 	
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
-	  <MtouchLink>SdkOnly</MtouchLink>
-	  <MtouchDebug>True</MtouchDebug>
-	</PropertyGroup>
-	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
-	  <MtouchLink>SdkOnly</MtouchLink>
-	  <MtouchDebug>False</MtouchDebug>
+	  <AndroidUseAapt2>True</AndroidUseAapt2>
+	  <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+	  <AndroidPackageFormat>aab</AndroidPackageFormat>
 	</PropertyGroup>
 	
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-ios|AnyCPU'">
-	  <MtouchLink>SdkOnly</MtouchLink>
-	  <MtouchUseLlvm>True</MtouchUseLlvm>
-	  <Optimize>True</Optimize>
-	  <MtouchDebug>True</MtouchDebug>
-	  <MtouchEnableBitcode>True</MtouchEnableBitcode>
-	</PropertyGroup>
-	
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-ios|AnyCPU'">
-	  <MtouchLink>SdkOnly</MtouchLink>
-	  <MtouchUseLlvm>True</MtouchUseLlvm>
-	  <MtouchDebug>False</MtouchDebug>
-	  <MtouchEnableBitcode>True</MtouchEnableBitcode>
-	</PropertyGroup>
-	
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-maccatalyst|AnyCPU'">
-	  <MtouchLink>SdkOnly</MtouchLink>
-	  <MtouchDebug>True</MtouchDebug>
-	</PropertyGroup>
-	
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-maccatalyst|AnyCPU'">
-	  <MtouchLink>SdkOnly</MtouchLink>
-	  <MtouchDebug>False</MtouchDebug>
-	</PropertyGroup>
-	
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|AnyCPU'">
-	  <MtouchLink>SdkOnly</MtouchLink>
-	  <MtouchDebug>True</MtouchDebug>
-	</PropertyGroup>
-	
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|AnyCPU'">
-	  <MtouchLink>SdkOnly</MtouchLink>
-	  <MtouchDebug>False</MtouchDebug>
-	</PropertyGroup>
-	
-	<PropertyGroup Condition="'$(TargetFramework)'=='net6.0-ios'">
+	<!--<PropertyGroup Condition="'$(TargetFramework)'=='net6.0-ios'">
 	  <CodesignKey>Apple Development: Enrique Morell Salcedo (C4XYQG8Q4D)</CodesignKey>
 	  <CodesignProvision>VS: WildCard Development</CodesignProvision>
-	</PropertyGroup>
+	</PropertyGroup>-->
 	
 	<!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
 	  <MtouchDebug>False</MtouchDebug>

@@ -333,4 +333,7 @@ If you do not see any active alerts in here, make sure you have clicked "Save Al
   <data name="ProductUrlButtonText" xml:space="preserve">
     <value>Open Product Url</value>
   </data>
+  <data name="FilterAlertsSwitchText" xml:space="preserve">
+    <value>Filter by Alert Settings</value>
+  </data>
 </root>

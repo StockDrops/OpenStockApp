@@ -8,6 +8,7 @@
              xmlns:modelsapi="clr-namespace:OpenStockApi.Core.Models.Searches;assembly=OpenStockApi.Core"
              xmlns:views="clr-namespace:OpenStockApp.Views"
              xmlns:main="clr-namespace:OpenStockApp"
+             xmlns:resources="clr-namespace:OpenStockApp.Resources.Strings"
              x:DataType="notifications:NotificationsPageViewModel"
              x:Class="OpenStockApp.Pages.Alerts.NotificationsPageIos"
              x:Name="page"
@@ -66,7 +67,7 @@
                            IsVisible="{Binding IsLoggedIn}">
                             <HorizontalStackLayout Grid.Row="1">
                                 <VerticalStackLayout VerticalOptions="Start">
-                                    <Label Text="Enable alert settings" 
+                                    <Label Text="{x:Static resources:Resources.FilterAlertsSwitchText}" 
                                            VerticalOptions="Center"
                                            Margin="{OnPlatform Default='10,0,10,0', Android='0,0,0,0', iOS='0,0,0,10'} "/>
                                     <Switch IsToggled="{Binding HasToApplyFilterSettings}"

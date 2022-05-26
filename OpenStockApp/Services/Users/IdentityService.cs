@@ -536,7 +536,7 @@ namespace OpenStockApp.Services.Users
         /// <returns></returns>
         private async Task ConfigureCache()
         {
-#if WINDOWS || MACCATALYST
+#if WINDOWS
             try
             {
                 var folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "StockDrops\\Cache");
@@ -553,7 +553,6 @@ namespace OpenStockApp.Services.Users
             {
                 logger.LogError(e, "");
             }
-
 #endif
 
         }

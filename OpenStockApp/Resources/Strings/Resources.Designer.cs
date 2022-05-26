@@ -225,6 +225,15 @@ namespace OpenStockApp.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filter by Alert Settings.
+        /// </summary>
+        public static string FilterAlertsSwitchText {
+            get {
+                return ResourceManager.GetString("FilterAlertsSwitchText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notifications.
         /// </summary>
         public static string MainPageTitle {
