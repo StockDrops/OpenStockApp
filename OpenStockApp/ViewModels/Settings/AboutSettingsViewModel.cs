@@ -4,6 +4,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 using OpenStockApp.Core.Contracts.Services.Hubs;
 using OpenStockApp.Core.Contracts.Services.Users;
 using OpenStockApp.Models;
+using OpenStockApp.Core.Contracts.Services.Settings;
 
 #if ANDROID
 using Firebase.Messaging;
@@ -41,7 +42,13 @@ namespace OpenStockApp.ViewModels.Settings
             get => (string?)GetValue(FirebaseTokenProperty);
             set => SetValue(FirebaseTokenProperty, value);
         }
-
+        public static readonly BindableProperty UserOptionsIdProperty = BindableProperty.Create(nameof(UserOptionsId), typeof(long), typeof(AboutSettingsViewModel));
+        public long UserOptionsId
+        {
+            get => (long)GetValue(UserOptionsIdProperty);
+            set => SetValue(UserOptionsIdProperty, value);
+        }
+        public Command RefreshUserOptionsIdCommand { get; }
         public Command RefreshConnectionIdCommand { get; set; }
         public AsyncRelayCommand RefreshTokenCommand { get; set; }
         private void RefreshConnectionId()
@@ -60,7 +67,8 @@ namespace OpenStockApp.ViewModels.Settings
         private readonly AppConfig _appConfig;
         private readonly INotificationsHubClient _notificationsHubClient;
         private readonly IIdentityService identityService;
-        public AboutSettingsViewModel(INotificationsHubClient notificationsHubClient, IIdentityService identityService, IOptions<AppConfig> appConfig)
+        private readonly IUserOptionsService userOptionsService;
+        public AboutSettingsViewModel(INotificationsHubClient notificationsHubClient, IIdentityService identityService, IOptions<AppConfig> appConfig, IUserOptionsService userOptionsService)
         {
             _appConfig = appConfig.Value;
             _notificationsHubClient = notificationsHubClient;
@@ -68,11 +76,16 @@ namespace OpenStockApp.ViewModels.Settings
             RefreshTokenCommand = new AsyncRelayCommand(RefreshFirebaseToken);
             ShareLog = new AsyncRelayCommand(OnShareLog);
             this.identityService = identityService;
-
+            this.userOptionsService = userOptionsService;
             UserId = identityService.GetUniqueId();
-
+            UserOptionsId = userOptionsService.UserOptions?.Id ?? 0;
             identityService.LoggedIn += OnLoggedIn;
             identityService.LoggedOut += OnLoggedOut;
+
+            RefreshUserOptionsIdCommand = new Command(() =>
+            {
+                UserOptionsId = this.userOptionsService.UserOptions?.Id ?? 0;
+            });
         }
 
         public async Task OnShareLog(CancellationToken cancellationToken = default)

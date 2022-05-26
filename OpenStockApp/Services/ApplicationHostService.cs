@@ -5,6 +5,8 @@ using OpenStockApp.Core.Contracts.Services.Settings;
 using OpenStockApp.Core.Contracts.Services.Users;
 using OpenStockApp.Core.Models.Events;
 #if ANDROID
+using Firebase.Messaging;
+using Android.Gms.Extensions;
 using OpenStockApp.Platforms.Android;
 #endif
 using OpenStockApp.SignalR.Services;
@@ -56,11 +58,12 @@ namespace OpenStockApp.Services
             });
             MessagingCenter.Subscribe<FirebaseService, string>(this, Events.RegisterToken, async (sender, args) =>
             {
-                var tokenSource = new CancellationTokenSource();
-                tokenSource.CancelAfter(10000);
-#if RELEASE
-                await tokenRegistrationService.RegisterTokenAsync(args, tokenSource.Token);
-#endif
+                await RegisterToken(args);
+            });
+            MessagingCenter.Subscribe<MainActivity>(this, Events.RegisterToken, async (sender) =>
+            {
+                var token = (await FirebaseMessaging.Instance.GetToken().AsAsync<Java.Lang.String>()).ToString();
+                await RegisterToken(token);
             });
 #endif
 #if IOS
@@ -72,11 +75,21 @@ namespace OpenStockApp.Services
             });
 #endif
             }
+        private async Task RegisterToken(string token, CancellationToken cancellationToken = default)
+        {
+            if(cancellationToken == default)
+            {
+                var tokenSource = new CancellationTokenSource();
+                tokenSource.CancelAfter(20000);
+                cancellationToken = tokenSource.Token;
+            }
+            await tokenRegistrationService.RegisterTokenAsync(token, cancellationToken);
+        }
 
 #if ANDROID
         private async Task OnNotificationReceived(FirebaseService sender, Result remoteMessage)
         {
-            await notificationHubService.ForwardNotificationReceived(remoteMessage);
+            await notificationHubService.ForwardNotificationReceived(remoteMessage, true);
         }
 #endif
         private void OnFirstChanceException(object? sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
@@ -102,12 +115,14 @@ namespace OpenStockApp.Services
                 }
                 await Task.WhenAll(tasks); //about 3 s
                 await userOptionsService.InitializeAsync(cancellationToken); //hubs need to be initialized first.
+//#if ANDROID
+//                await registerTask;
+//#endif
             }
             catch(Exception ex)
             {
                 logger.LogError(ex, "Error while initializing the app.");
             }
-            
         }
         private async Task StartHub(IBaseHubClient hubClient, CancellationToken cancellationToken = default)
         {

@@ -167,7 +167,6 @@
                                        Grid.Column="0"/>
                             <CheckBox IsChecked="{Binding ModelOptions.IsEnabled}"
                                           VerticalOptions="Center"
-                                          BackgroundColor="{AppThemeBinding Default={OnPlatform iOS='Transparent'}}"
                                           Grid.Row="1"
                                           Grid.Column="1"/>
 
@@ -176,9 +175,9 @@
                                        Grid.Row="2"
                                        Grid.Column="0"/>
                             <Entry Keyboard="Numeric" 
-                                       IsTextPredictionEnabled="False"
-                                       Text="{Binding ModelOptions.MaxPrice}" 
-                                       MinimumWidthRequest="100"
+                                    IsTextPredictionEnabled="False"
+                                    Text="{Binding ModelOptions.MaxPrice}" 
+                                    MinimumWidthRequest="100"
                                    Style="{OnPlatform iOS={StaticResource iOSEntry}}"
                                       
                                        Margin="0,2,8,2"

@@ -236,12 +236,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IDiscordWebhookService, DiscordWebhookService>(services => services.GetRequiredService<DiscordWebhookService>());
         builder.Services.AddSingleton<INotificationService, DiscordWebhookService>(services => services.GetRequiredService<DiscordWebhookService>());
 
-        var apiConfig = builder.Configuration.GetSection(nameof(ApiConfiguration)).Get<ApiConfiguration>();
-        if(apiConfig == null)
-            throw new ArgumentNullException(nameof(ApiConfiguration));
-
-
-
+        var apiConfig = builder.Configuration.GetSection(nameof(ApiConfiguration)).Get<ApiConfiguration>() ?? throw new ArgumentNullException(nameof(ApiConfiguration));
 
         builder.Services.AddHttpClient<IApiService, ApiService>()
             .ConfigureHttpClient(httpClient =>
@@ -251,7 +246,15 @@ public static class MauiProgram
                     httpClient.BaseAddress = new Uri(apiConfig.ApiBaseUrl);
                     System.Diagnostics.Debug.WriteLine(apiConfig?.ApiBaseUrl);
                 }
+            })
+            .ConfigureHttpMessageHandlerBuilder(httpHandler =>
+            {
+                httpHandler.PrimaryHandler = new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
+                };
             });
+            
         builder.Services.AddSingleton<IEntityApiService<OpenStockApi.Core.Models.Users.User>, EntityApiService<OpenStockApi.Core.Models.Users.User>>(services =>
         {
             var apiService = services.GetRequiredService<IApiService>();

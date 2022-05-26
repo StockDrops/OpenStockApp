@@ -19,9 +19,9 @@
 		<ApplicationIdGuid>9833150E-67CE-483A-AE72-F712156DC535</ApplicationIdGuid>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.2.2</ApplicationDisplayVersion>
-		<ApplicationVersion>11</ApplicationVersion>
-		<Version>1.2.2</Version>
+		<ApplicationDisplayVersion>1.2.3</ApplicationDisplayVersion>
+		<ApplicationVersion>12</ApplicationVersion>
+		<Version>1.2.3</Version>
 
 		<!-- Required for C# Hot Reload -->
 		<UseInterpreter Condition="'$(Configuration)' == 'Debug'">True</UseInterpreter>
@@ -101,7 +101,7 @@
 		<MauiIcon Include="Resources\appicon.svg" ForegroundFile="Resources\appicon.svg" Color="#512BD4" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\appiconfg.svg" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\appiconfg.svg" Color="#512BD4" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />

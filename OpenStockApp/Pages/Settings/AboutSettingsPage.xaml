@@ -74,7 +74,12 @@
                 <Label Text="Firebase Token" Margin="0,10,0,10" IsVisible="{OnPlatform Android=True, Default=False}"/>
                 <views:TappedCopyableEntry Text="{Binding FirebaseToken}" IsReadOnly="True" CopiedCommandParameter="Firebase Token" IsVisible="{OnPlatform Android=True, Default=False}" />
                 <Button Text="Refresh Firebase Token" Command="{Binding RefreshTokenCommand}" Margin="0,10,0,10" HorizontalOptions="Start" IsVisible="{OnPlatform Android=True, Default=False}"/>
+                <Label Text="User Options Id" />
+                <views:TappedCopyableEntry Text="{Binding UserOptionsId}" IsReadOnly="True" CopiedCommandParameter="User Options Id" />
+                <Button Text="Refresh User Options Id" Command="{Binding RefreshUserOptionsIdCommand}" Margin="0,10,0,10" HorizontalOptions="Start" />
+
                 <Button Text="Share Log File" IsVisible="{OnPlatform Android=True, Default=True}" Command="{Binding ShareLog}" />
+                
             </VerticalStackLayout>
         </Grid>
     </ScrollView>

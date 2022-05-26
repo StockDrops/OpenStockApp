@@ -10,6 +10,7 @@ using Firebase.Installations;
 using Firebase.Messaging;
 using Microsoft.Identity.Client;
 using OpenStockApi.Core.Models.Firebase;
+using OpenStockApp.Core.Models.Events;
 //using Plugin.FirebasePushNotification;
 
 namespace OpenStockApp;
@@ -30,6 +31,8 @@ public class MainActivity : MauiAppCompatActivity, IOnCompleteListener
         }
         FirebaseMessaging.Instance.SubscribeToTopic(Topics.StockAlerts)
                                   .AddOnCompleteListener(this);
+
+        MessagingCenter.Send(this, Events.RegisterToken);
         //var token = FirebaseInstallations.Instance.GetToken(forceRefresh: false).AsAsync<InstallationTokenResult>().Result;
         //Console.WriteLine("got it");
 
@@ -56,7 +59,7 @@ public class MainActivity : MauiAppCompatActivity, IOnCompleteListener
         //		};
 
     }
-	protected override void OnActivityResult(int requestCode, Result resultCode, Intent? data)
+    protected override void OnActivityResult(int requestCode, Result resultCode, Intent? data)
     {
         base.OnActivityResult(requestCode, resultCode, data);
 		AuthenticationContinuationHelper.SetAuthenticationContinuationEventArgs(requestCode, resultCode, data);

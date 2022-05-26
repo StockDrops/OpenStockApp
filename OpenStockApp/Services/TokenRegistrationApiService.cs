@@ -25,7 +25,7 @@ namespace OpenStockApp.Services
         public async Task<TokenRegistrationResponse?> RegisterTokenAsync(string token, string? arn = null, CancellationToken cancellationToken = default)
         {
             var deviceType = deviceService.GetDeviceType();
-            var url = $"api/tokens/register/{token}?deviceType={deviceType}&deviceName={HttpUtility.UrlPathEncode(DeviceInfo.Name)}";
+            var url = $"api/tokens/register/{HttpUtility.UrlEncode(token)}?deviceType={deviceType}&deviceName={HttpUtility.UrlPathEncode(DeviceInfo.Name)}";
             if (arn != null)
             {
                 url += $"&arn={arn}";

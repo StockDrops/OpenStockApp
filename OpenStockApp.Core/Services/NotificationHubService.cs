@@ -27,7 +27,7 @@ namespace OpenStockApp.Core.Services
             this.memoryCache = memoryCache;
         }
 
-        public async Task ForwardNotificationReceived(Result? result, CancellationToken cancellationToken = default)
+        public async Task ForwardNotificationReceived(Result? result, bool doNotFilter = false, CancellationToken cancellationToken = default)
         {
             if (result == null)
                 return;
@@ -40,15 +40,16 @@ namespace OpenStockApp.Core.Services
                 memoryCache.Set(result.Id, true, TimeSpan.FromMinutes(5));
             }
 
-            if (filterService.CanShowNotification(result))
+            if (doNotFilter || filterService.CanShowNotification(result))
             {
                 var tasks = new List<Task>();
                 foreach (var notificationService in notificationServices)
                 {
                     tasks.Add(notificationService.SendNotificationAsync(result));
                 }
-                await Task.WhenAll(tasks);                
+                await Task.WhenAll(tasks);
             }
+
             //the event must be sent regardless.
             OnNotificationReceived(result);
         }
@@ -57,7 +58,7 @@ namespace OpenStockApp.Core.Services
             var tasks = new List<Task>();
             foreach(var result in results)
             {
-                tasks.Add(ForwardNotificationReceived(result, cancellationToken));
+                tasks.Add(ForwardNotificationReceived(result, cancellationToken: cancellationToken));
             }
             await Task.WhenAll(tasks);
         }

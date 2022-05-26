@@ -10,7 +10,7 @@ namespace OpenStockApp.Core.Contracts.Services
     public interface INotificationHubService
     {
         public event EventHandler<Result>? NotificationReceived;
-        public Task ForwardNotificationReceived(Result? result, CancellationToken cancellationToken = default);
+        public Task ForwardNotificationReceived(Result? result, bool doNotFilter = false, CancellationToken cancellationToken = default);
         public Task ForwardNotificationReceived(IEnumerable<Result> results, CancellationToken cancellationToken = default);
     }
 }

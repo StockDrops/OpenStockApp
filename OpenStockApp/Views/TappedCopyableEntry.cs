@@ -55,8 +55,8 @@ namespace OpenStockApp.Views
                         });
                 })
             });
-            SetDefaultCopiedCommand();
 #endif
+            SetDefaultCopiedCommand();
         }
         protected void SetDefaultCopiedCommand()
         {
