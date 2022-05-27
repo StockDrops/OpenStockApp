@@ -172,6 +172,7 @@
 	  <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
 	  <PackageReference Include="Microsoft.Identity.Client" Version="4.43.2-dev" />
 	  <PackageReference Condition="$(TargetFramework.Contains('-windows'))" Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.19.6" />
+	  <PackageReference Condition="$(TargetFramework.Contains('-windows'))" Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.2" />
 	  <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
 	  <PackageReference Include="NReco.Logging.File" Version="1.1.4" />
 	  <PackageReference Include="OpenStockApi.Core" Version="2.8.0-dev" />

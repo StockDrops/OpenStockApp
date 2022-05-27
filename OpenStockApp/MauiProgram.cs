@@ -41,7 +41,6 @@ using OpenStockApp.Services.Notifications;
 #if WINDOWS
 using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.ApplicationModel.Activation;
-using OpenStockApp.Core.Maui.Platforms.Windows;
 using Microsoft.Win32;
 #elif ANDROID
 using OpenStockApp.Platforms.Android.Notifications;
@@ -74,7 +73,7 @@ public static class MauiProgram
                 });
                 configure.OnLaunched((window, args) =>
                 {
-                    ToastNotificationManagerCompat.OnActivated += WindowsNotificationService.OnActivated;
+                    ToastNotificationManagerCompat.OnActivated += Core.Maui.Platforms.Windows.WindowsNotificationService.OnActivated;
                 });
                configure.OnClosed((app, args) => {
                     SystemEvents.PowerModeChanged -= BackgroundServicesContainer.OnPowerStateChanged;
@@ -331,7 +330,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<INotificationHubService, NotificationHubService>();
         builder.Services.AddSingleton<INotificationService, NotificationActionService>();
 #if WINDOWS
-        builder.Services.AddSingleton<INotificationService, WindowsNotificationService>();
+        builder.Services.AddSingleton<INotificationService, Core.Maui.Platforms.Windows.WindowsNotificationService>();
 #elif ANDROID
         builder.Services.AddSingleton<AndroidNotificationService>();
         builder.Services.AddSingleton<INotificationService, AndroidNotificationService>(services => services.GetRequiredService<AndroidNotificationService>()); ;

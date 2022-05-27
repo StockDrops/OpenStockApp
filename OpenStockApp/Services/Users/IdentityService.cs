@@ -182,14 +182,21 @@ namespace OpenStockApp.Services.Users
 
             try
             {
+                AcquireTokenInteractiveParameterBuilder builder = client.AcquireTokenInteractive(Scopes);
 
-                _authenticationResult = await client.AcquireTokenInteractive(Scopes)
-                                            .WithUseEmbeddedWebView(embeddedView)
-                                            .WithSystemWebViewOptions(options)
+                if (embeddedView)
+                {
+                    builder = builder.WithUseEmbeddedWebView(embeddedView);
+                }
+                else
+                {
+                    builder = builder.WithSystemWebViewOptions(options);
+                }
+
+                _authenticationResult = await builder
                                             
 #if ANDROID
 
-                                            
                                                                                                                    .WithParentActivityOrWindow(Platform.CurrentActivity)
 #endif
                                                             .ExecuteAsync(cancellationToken);

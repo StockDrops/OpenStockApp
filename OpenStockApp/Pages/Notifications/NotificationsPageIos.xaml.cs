@@ -22,15 +22,23 @@ namespace OpenStockApp.Pages.Alerts
             notificationsPageViewModel.ScrollTo = OnScrollTo;
             
         }
-
+        
         protected async override void OnAppearing()
         {
+            base.OnAppearing();
+
             if (!notificationsPageViewModel.IsLoggedIn)
             {
-                if (Shell.Current?.Navigation?.ModalStack.Any() == false) //there's no modal already in the modal stack.
+                if (Shell.Current?.Navigation?.ModalStack.Any() == false)
+                {
+#if WINDOWS
+                    await Task.Delay(1000);
+#endif
+                    //there's no modal already in the modal stack.
                     await (Shell.Current?.Navigation?.PushModalAsync(new LoginPage(), false) ?? Task.CompletedTask).ConfigureAwait(false);
+                } 
             }
-            base.OnAppearing();
+
         }
 
         public void OnScrollTo(Result result)
@@ -42,7 +50,7 @@ namespace OpenStockApp.Pages.Alerts
                 //    collectionView?.ScrollTo(0, position: ScrollToPosition.Start);
             }
             catch { }
-#endif  
+#endif
         }
     }
 }
